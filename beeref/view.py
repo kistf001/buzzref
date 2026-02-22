@@ -441,12 +441,51 @@ class BeeGraphicsView(MainControlsMixin,
             pos,
             self.scene.sample_color_at(self.mapToScene(pos)))
 
-    def on_action_capture_area(self):
-        """Start capture area mode."""
+    def on_action_capture(self):
+        """Show capture choice dialog (menu callback)."""
         self.cancel_active_modes()
-        logger.debug('Entering capture area mode')
-        self.viewport().setCursor(Qt.CursorShape.CrossCursor)
-        self.active_mode = self.CAPTURE_MODE
+        self._show_capture_choice_dialog()
+
+    def _show_capture_choice_dialog(self):
+        """Show modal dialog to choose capture type."""
+        msgbox = QtWidgets.QMessageBox(self)
+        msgbox.setWindowTitle(self.tr('Capture'))
+        msgbox.setText(self.tr('Select capture type:'))
+
+        scene_btn = msgbox.addButton(
+            self.tr('Scene Area'),
+            QtWidgets.QMessageBox.ButtonRole.ActionRole)
+        screen_btn = msgbox.addButton(
+            self.tr('Screen'),
+            QtWidgets.QMessageBox.ButtonRole.ActionRole)
+
+        msgbox.exec()
+
+        if msgbox.clickedButton() == scene_btn:
+            logger.debug('User chose scene capture')
+            self.viewport().setCursor(Qt.CursorShape.CrossCursor)
+            self.active_mode = self.CAPTURE_MODE
+        elif msgbox.clickedButton() == screen_btn:
+            logger.debug('User chose screen capture')
+            self._start_screen_capture()
+
+    def on_action_capture_area(self):
+        """Start capture - scene or screen based on mouse position."""
+        self.cancel_active_modes()
+
+        cursor_pos = self.mapFromGlobal(self.cursor().pos())
+        scene_pos = self.mapToScene(cursor_pos)
+        items_rect = self.scene.itemsBoundingRect()
+
+        if items_rect.isEmpty() or not items_rect.contains(scene_pos):
+            # Mouse outside scene items → screen capture
+            logger.debug('Mouse outside scene area - starting screen capture')
+            self._start_screen_capture()
+        else:
+            # Mouse inside scene items → scene capture
+            logger.debug('Mouse inside scene area - starting scene capture')
+            self.viewport().setCursor(Qt.CursorShape.CrossCursor)
+            self.active_mode = self.CAPTURE_MODE
 
     def do_capture_area(self):
         """Capture the selected area and add it as a new image item."""
@@ -514,9 +553,12 @@ class BeeGraphicsView(MainControlsMixin,
         self.actiongroup_set_enabled('screen_capture_available', enabled)
         logger.debug(f'Screen capture available: {enabled}')
 
-    def on_action_capture_screen(self):
+    def _start_screen_capture(self):
         """Start screen capture - platform specific."""
-        self.cancel_active_modes()
+        if not self.check_screen_capture_available():
+            logger.warning('Screen capture not available')
+            return
+
         logger.debug('Starting screen capture')
 
         if sys.platform == 'linux' and is_wayland():

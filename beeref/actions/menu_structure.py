@@ -140,8 +140,7 @@ class MenuRegistry(QObject):
                     MENU_SEPARATOR,
                     'show_color_gamut',
                     'sample_color',
-                    'capture_area',
-                    'capture_screen',
+                    'capture',
                 ],
             },
             {
