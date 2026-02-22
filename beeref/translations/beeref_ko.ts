@@ -140,146 +140,155 @@
     </message>
     <message>
         <location filename="../actions/actions.py" line="320" />
+        <source>Capture &amp;Area</source>
+        <translation>영역 캡처(&amp;A)</translation>
+    </message>
+    <message>
+        <location filename="../actions/actions.py" line="327" />
+        <source>Capture &amp;Screen</source>
+        <translation>화면 캡처(&amp;S)</translation>
+    </message>
+    <message>
+        <location filename="../actions/actions.py" line="334" />
         <source>&amp;Crop</source>
         <translation>자르기(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="327" />
+        <location filename="../actions/actions.py" line="341" />
         <source>Flip &amp;Horizontally</source>
         <translation>가로로 뒤집기(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="334" />
+        <location filename="../actions/actions.py" line="348" />
         <source>Flip &amp;Vertically</source>
         <translation>세로로 뒤집기(&amp;V)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="341" />
+        <location filename="../actions/actions.py" line="355" />
         <source>&amp;New Scene</source>
         <translation>새 씬(&amp;N)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="347" />
+        <location filename="../actions/actions.py" line="361" />
         <source>&amp;Fit Scene</source>
         <translation>씬 맞춤(&amp;F)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="353" />
+        <location filename="../actions/actions.py" line="367" />
         <source>Fit &amp;Selection</source>
         <translation>선택 맞춤(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="360" />
+        <location filename="../actions/actions.py" line="374" />
         <source>Reset &amp;Scale</source>
         <translation>크기 초기화(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="366" />
+        <location filename="../actions/actions.py" line="380" />
         <source>Reset &amp;Rotation</source>
         <translation>회전 초기화(&amp;R)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="372" />
+        <location filename="../actions/actions.py" line="386" />
         <source>Reset &amp;Flip</source>
         <translation>뒤집기 초기화(&amp;F)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="378" />
+        <location filename="../actions/actions.py" line="392" />
         <source>Reset Cro&amp;p</source>
         <translation>자르기 초기화(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="384" />
+        <location filename="../actions/actions.py" line="398" />
         <source>Reset &amp;All</source>
         <translation>모두 초기화(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="391" />
+        <location filename="../actions/actions.py" line="405" />
         <source>&amp;Select All</source>
         <translation>모두 선택(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="397" />
+        <location filename="../actions/actions.py" line="411" />
         <source>Deselect &amp;All</source>
         <translation>선택 해제(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="403" />
+        <location filename="../actions/actions.py" line="417" />
         <source>&amp;Help</source>
         <translation>도움말(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="409" />
+        <location filename="../actions/actions.py" line="423" />
         <source>&amp;About</source>
         <translation>정보(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="414" />
+        <location filename="../actions/actions.py" line="428" />
         <source>Show &amp;Debug Log</source>
         <translation>디버그 로그 표시(&amp;D)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="419" />
+        <location filename="../actions/actions.py" line="433" />
         <source>Show &amp;Scrollbars</source>
         <translation>스크롤바 표시(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="426" />
+        <location filename="../actions/actions.py" line="440" />
         <source>Show &amp;Menu Bar</source>
         <translation>메뉴바 표시(&amp;M)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="433" />
+        <location filename="../actions/actions.py" line="447" />
         <source>Show &amp;Title Bar</source>
         <translation>제목표시줄 표시(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="440" />
+        <location filename="../actions/actions.py" line="454" />
         <source>Move &amp;Window</source>
         <translation>창 이동(&amp;W)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="446" />
+        <location filename="../actions/actions.py" line="460" />
         <source>&amp;Fullscreen</source>
         <translation>전체화면(&amp;F)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="453" />
+        <location filename="../actions/actions.py" line="467" />
         <source>&amp;Always On Top</source>
         <translation>항상 위에(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="459" />
+        <location filename="../actions/actions.py" line="473" />
         <source>&amp;Settings</source>
         <translation>설정(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="464" />
+        <location filename="../actions/actions.py" line="478" />
         <source>&amp;Keyboard &amp;&amp; Mouse</source>
         <translation>키보드 &amp;&amp; 마우스(&amp;K)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="469" />
+        <location filename="../actions/actions.py" line="483" />
         <source>&amp;Open Settings Folder</source>
         <translation>설정 폴더 열기(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="474" />
+        <location filename="../actions/actions.py" line="488" />
         <source>&amp;Draw</source>
         <translation>그리기(&amp;D)</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="480" />
+        <location filename="../actions/actions.py" line="494" />
         <source>Brush &amp;Color...</source>
         <translation>브러시 색상(&amp;C)...</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="485" />
+        <location filename="../actions/actions.py" line="499" />
         <source>Brush &amp;Size...</source>
         <translation>브러시 크기(&amp;S)...</translation>
     </message>
-</context>
-<context>
+</context><context>
     <name>AllocationLimitWidget</name>
     <message>
         <location filename="../widgets/settings.py" line="205" />
@@ -291,8 +300,7 @@
         <source>The maximum image size that can be loaded (in megabytes). Set to 0 for no limitation.</source>
         <translation>불러올 수 있는 최대 이미지 크기(MB 단위). 0으로 설정하면 제한 없음.</translation>
     </message>
-</context>
-<context>
+</context><context>
     <name>ArrangeDefaultWidget</name>
     <message>
         <location filename="../widgets/settings.py" line="143" />
@@ -344,8 +352,7 @@
         <source>Arrange Square (by filename)</source>
         <translation>정사각형 정렬 (파일명순)</translation>
     </message>
-</context>
-<context>
+</context><context>
     <name>ArrangeGapWidget</name>
     <message>
         <location filename="../widgets/settings.py" line="191" />
@@ -357,34 +364,188 @@
         <source>The gap between images when using arrange actions.</source>
         <translation>정렬 기능 사용 시 이미지 사이 간격.</translation>
     </message>
-</context>
-<context>
+</context><context>
+    <name>BeeGraphicsView</name>
+    <message>
+        <location filename="../view.py" line="251" />
+        <source>Discard unsaved changes?</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="744" />
+        <location filename="../view.py" line="724" />
+        <location filename="../view.py" line="261" />
+        <source>There are unsaved changes. Are you sure you want to open a new scene?</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="485" />
+        <source>Area captured and added as new image</source>
+        <translation>영역이 캡처되어 새 이미지로 추가되었습니다</translation>
+    </message>
+    <message>
+        <location filename="../view.py" line="647" />
+        <source>Screen area captured</source>
+        <translation>화면 영역이 캡처되었습니다</translation>
+    </message>
+    <message>
+        <location filename="../view.py" line="693" />
+        <source>Select Brush Color</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="701" />
+        <source>Brush Size</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="701" />
+        <source>Size (px):</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="714" />
+        <source>Problem loading file</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="715" />
+        <source>&lt;p&gt;Problem loading file %s&lt;/p&gt;&lt;p&gt;Not accessible or not a proper bee file&lt;/p&gt;</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="737" />
+        <source>Loading %s</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="752" />
+        <source>Open file</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="763" />
+        <source>Problem saving file</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="764" />
+        <source>&lt;p&gt;Problem saving file %s&lt;/p&gt;&lt;p&gt;File/directory not accessible&lt;/p&gt;</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="777" />
+        <source>Saving %s</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="787" />
+        <source>Save file</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="804" />
+        <source>Export Scene to Image</source>
+        <translation>씬을 이미지로 내보내기</translation>
+    </message>
+    <message>
+        <location filename="../view.py" line="828" />
+        <source>Exporting %s</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="838" />
+        <source>Problem writing file</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="839" />
+        <source>&lt;p&gt;Problem writing file %s&lt;/p&gt;</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="846" />
+        <source>Export Images</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="870" />
+        <location filename="../view.py" line="859" />
+        <source>Exporting to %s</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="877" />
+        <source>There are unsaved changes. Are you sure you want to quit?</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="894" />
+        <source>About %s</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="899" />
+        <source>Visit the %s website</source>
+        <translation type="unfinished" />
+    </message>
+    <message numerus="yes">
+        <location filename="../view.py" line="919" />
+        <source>%n image(s) could not be opened.</source>
+        <translation>
+            <numerusform />
+        </translation>
+    </message>
+    <message>
+        <location filename="../view.py" line="922" />
+        <source>Problem loading images</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="945" />
+        <source>Loading images</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="956" />
+        <source>Select one or more images to open</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="1016" />
+        <source>No image data or text in clipboard or image too big</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../view.py" line="1215" />
+        <source>Copied color to clipboard: %s</source>
+        <translation type="unfinished" />
+    </message>
+</context><context>
     <name>BeeProgressDialog</name>
     <message>
-        <location filename="../widgets/__init__.py" line="38" />
+        <location filename="../widgets/__init__.py" line="39" />
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
-</context>
-<context>
+</context><context>
     <name>ChangeOpacityDialog</name>
     <message>
-        <location filename="../widgets/__init__.py" line="234" />
+        <location filename="../widgets/__init__.py" line="235" />
         <source>Change Opacity:</source>
         <translation>불투명도 변경:</translation>
     </message>
     <message>
-        <location filename="../widgets/__init__.py" line="239" />
+        <location filename="../widgets/__init__.py" line="240" />
         <source>Opacity:</source>
         <translation>불투명도:</translation>
     </message>
     <message>
-        <location filename="../widgets/__init__.py" line="260" />
+        <location filename="../widgets/__init__.py" line="261" />
         <source>Opacity: %s%%</source>
         <translation>불투명도: %s%%</translation>
     </message>
-</context>
-<context>
+</context><context>
     <name>ConfirmCloseUnsavedWidget</name>
     <message>
         <location filename="../widgets/settings.py" line="218" />
@@ -401,54 +562,61 @@
         <source>Confirm when closing</source>
         <translation>닫을 때 확인</translation>
     </message>
-</context>
-<context>
+</context><context>
+    <name>ControlsDialog</name>
+    <message>
+        <source>&amp;Restore Defaults</source>
+        <translation type="vanished">기본값 복원(&amp;R)</translation>
+    </message>
+    <message>
+        <source>Restore defaults?</source>
+        <translation type="vanished">기본값을 복원하시겠습니까?</translation>
+    </message>
+</context><context>
     <name>DebugLogDialog</name>
     <message>
-        <location filename="../widgets/__init__.py" line="128" />
+        <location filename="../widgets/__init__.py" line="129" />
         <source>%s Debug Log</source>
         <translation>%s 디버그 로그</translation>
     </message>
     <message>
-        <location filename="../widgets/__init__.py" line="138" />
+        <location filename="../widgets/__init__.py" line="139" />
         <source>Co&amp;py To Clipboard</source>
         <translation>클립보드에 복사(&amp;P)</translation>
     </message>
-</context>
-<context>
+</context><context>
     <name>ExportImagesFileExistsDialog</name>
     <message>
-        <location filename="../widgets/__init__.py" line="334" />
+        <location filename="../widgets/__init__.py" line="335" />
         <source>File exists</source>
         <translation>파일 존재</translation>
     </message>
     <message>
-        <location filename="../widgets/__init__.py" line="340" />
+        <location filename="../widgets/__init__.py" line="341" />
         <source>File already exists:</source>
         <translation>파일이 이미 존재합니다:</translation>
     </message>
     <message>
-        <location filename="../widgets/__init__.py" line="343" />
+        <location filename="../widgets/__init__.py" line="344" />
         <source>Skip this file</source>
         <translation>이 파일 건너뛰기</translation>
     </message>
     <message>
-        <location filename="../widgets/__init__.py" line="344" />
+        <location filename="../widgets/__init__.py" line="345" />
         <source>Skip all existing files</source>
         <translation>기존 파일 모두 건너뛰기</translation>
     </message>
     <message>
-        <location filename="../widgets/__init__.py" line="345" />
+        <location filename="../widgets/__init__.py" line="346" />
         <source>Overwrite this file</source>
         <translation>이 파일 덮어쓰기</translation>
     </message>
     <message>
-        <location filename="../widgets/__init__.py" line="346" />
+        <location filename="../widgets/__init__.py" line="347" />
         <source>Overwrite all existing files</source>
         <translation>기존 파일 모두 덮어쓰기</translation>
     </message>
-</context>
-<context>
+</context><context>
     <name>GamutDialog</name>
     <message>
         <location filename="../widgets/color_gamut.py" line="109" />
@@ -460,29 +628,26 @@
         <source>Threshold:</source>
         <translation>임계값:</translation>
     </message>
-</context>
-<context>
+</context><context>
     <name>GamutWidget</name>
     <message>
         <location filename="../widgets/color_gamut.py" line="102" />
         <source>Counting pixels...</source>
         <translation>픽셀 계산 중...</translation>
     </message>
-</context>
-<context>
+</context><context>
     <name>HelpDialog</name>
     <message>
-        <location filename="../widgets/__init__.py" line="72" />
+        <location filename="../widgets/__init__.py" line="73" />
         <source>%s Help</source>
         <translation>%s 도움말</translation>
     </message>
     <message>
-        <location filename="../widgets/__init__.py" line="84" />
+        <location filename="../widgets/__init__.py" line="85" />
         <source>&amp;Controls</source>
         <translation>조작법(&amp;C)</translation>
     </message>
-</context>
-<context>
+</context><context>
     <name>ImageStorageFormatWidget</name>
     <message>
         <location filename="../widgets/settings.py" line="166" />
@@ -524,8 +689,7 @@
         <source>Small bee file, but lossy and no transparency support</source>
         <translation>작은 bee 파일이지만 손실 압축이며 투명도 미지원</translation>
     </message>
-</context>
-<context>
+</context><context>
     <name>LanguageWidget</name>
     <message>
         <location filename="../widgets/settings.py" line="253" />
@@ -542,8 +706,7 @@
         <source>Select the application language. Restart required for changes to take effect.</source>
         <translation>애플리케이션 언어를 선택하세요. 변경 사항을 적용하려면 재시작이 필요합니다.</translation>
     </message>
-</context>
-<context>
+</context><context>
     <name>MenuRegistry</name>
     <message>
         <location filename="../actions/menu_structure.py" line="39" />
@@ -596,35 +759,33 @@
         <translation>이미지(&amp;I)</translation>
     </message>
     <message>
-        <location filename="../actions/menu_structure.py" line="146" />
+        <location filename="../actions/menu_structure.py" line="148" />
         <source>&amp;Settings</source>
         <translation>설정(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../actions/menu_structure.py" line="154" />
+        <location filename="../actions/menu_structure.py" line="156" />
         <source>&amp;Help</source>
         <translation>도움말(&amp;H)</translation>
     </message>
-</context>
-<context>
+</context><context>
     <name>SceneToPixmapExporterDialog</name>
     <message>
-        <location filename="../widgets/__init__.py" line="172" />
+        <location filename="../widgets/__init__.py" line="173" />
         <source>Export Scene to Image</source>
         <translation>씬을 이미지로 내보내기</translation>
     </message>
     <message>
-        <location filename="../widgets/__init__.py" line="177" />
+        <location filename="../widgets/__init__.py" line="178" />
         <source>Width:</source>
         <translation>너비:</translation>
     </message>
     <message>
-        <location filename="../widgets/__init__.py" line="185" />
+        <location filename="../widgets/__init__.py" line="186" />
         <source>Height:</source>
         <translation>높이:</translation>
     </message>
-</context>
-<context>
+</context><context>
     <name>SettingsDialog</name>
     <message>
         <location filename="../widgets/settings.py" line="301" />
@@ -656,8 +817,7 @@
         <source>Do you want to restore all settings to their default values?</source>
         <translation>모든 설정을 기본값으로 복원하시겠습니까?</translation>
     </message>
-</context>
-<context>
+</context><context>
     <name>WelcomeOverlay</name>
     <message>
         <location filename="../widgets/welcome_overlay.py" line="101" />
@@ -669,5 +829,4 @@
         <source>&lt;p&gt;Paste or drop images here.&lt;/p&gt;&lt;p&gt;Right-click for more options.&lt;/p&gt;</source>
         <translation>&lt;p&gt;이미지를 여기에 붙여넣거나 끌어다 놓으세요.&lt;/p&gt;&lt;p&gt;더 많은 옵션은 마우스 오른쪽 클릭.&lt;/p&gt;</translation>
     </message>
-</context>
-</TS>
+</context></TS>
