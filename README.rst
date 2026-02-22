@@ -1,33 +1,41 @@
-BeeRef — A Simple Reference Image Viewer
-========================================
+BuzzRef — A Feature-Enhanced Reference Image Viewer
+====================================================
 
 .. raw:: html
 
-   <img align="left" width="100" height="100" src="https://raw.githubusercontent.com/rbreu/beeref/main/beeref/assets/logo.png">
+   <img align="left" width="100" height="100" src="https://raw.githubusercontent.com/kistf001/buzzref/main/beeref/assets/logo.png">
 
-`BeeRef <https://beeref.org>`_ lets you quickly arrange your reference images and view them while you create. Its minimal interface is designed not to get in the way of your creative process.
+**BuzzRef** is an actively maintained fork of `BeeRef <https://github.com/rbreu/beeref>`_ by Rebecca Breu, released under GPL-3.0.
 
-|python-version| |github-ci-flake8| |github-ci-pytest| |codecov| |downloads-total| |downloads-latest|
+This fork focuses on incorporating community contributions, bug fixes, and new features that enhance the creative workflow.
+
+|python-version| |github-ci-flake8| |github-ci-pytest|
 
 .. image:: https://github.com/rbreu/beeref/blob/main/images/screenshot.png
 
-.. |python-version| image:: https://github.com/rbreu/beeref/blob/main/images/python_version_badge.svg
+.. |python-version| image:: https://img.shields.io/badge/python-3.9%2B-blue
    :target: https://www.python.org/
 
-.. |github-ci-flake8| image:: https://github.com/rbreu/beeref/actions/workflows/flake8.yml/badge.svg
-   :target: https://github.com/rbreu/beeref/actions/workflows/flake8.yml
+.. |github-ci-flake8| image:: https://github.com/kistf001/buzzref/actions/workflows/flake8.yml/badge.svg
+   :target: https://github.com/kistf001/buzzref/actions/workflows/flake8.yml
 
-.. |github-ci-pytest| image:: https://github.com/rbreu/beeref/actions/workflows/pytest.yml/badge.svg
-   :target: https://github.com/rbreu/beeref/actions/workflows/pytest.yml
+.. |github-ci-pytest| image:: https://github.com/kistf001/buzzref/actions/workflows/pytest.yml/badge.svg
+   :target: https://github.com/kistf001/buzzref/actions/workflows/pytest.yml
 
-.. |codecov| image:: https://codecov.io/gh/rbreu/beeref/branch/main/graph/badge.svg?token=QA8HR1VVAL
-   :target: https://codecov.io/gh/rbreu/beeref
 
-.. |downloads-total| image:: https://img.shields.io/github/downloads/rbreu/beeref/total.svg
-   :target: https://github.com/rbreu/beeref/releases
+What's Different from BeeRef
+----------------------------
 
-.. |downloads-latest| image:: https://img.shields.io/github/downloads/rbreu/beeref/latest/total.svg
-   :target: https://github.com/rbreu/beeref/releases
+**New Features:**
+
+* **Sketching/Drawing Mode** — Press ``D`` to enter draw mode. Supports tablet pressure sensitivity, customizable brush size and color
+* **Movable Crop Rectangle** — Drag the crop area to reposition it before applying
+* Improved pytest integration (command line flags no longer conflict)
+
+**Compatibility:**
+
+* Python 3.9+ support (including Python 3.13)
+* Updated dependency constraints for better compatibility
 
 
 Installation
@@ -36,21 +44,19 @@ Installation
 Stable Release
 ~~~~~~~~~~~~~~
 
-Get the file for your operating system (Windows, Linux, macOS) from the `latest release <https://github.com/rbreu/beeref/releases>`_. The different Linux versions are built on different versions of Ubuntu. The should work on other distros as well, but you might have to try which one works.
+Get the file for your operating system (Windows, Linux, macOS) from the `latest release <https://github.com/kistf001/buzzref/releases>`_.
 
-**Linux users** need to give the file executable rights before running it. Optional: If you want to have BeeRef appear in the app menu, save the desktop file from the `release section <https://github.com/rbreu/beeref/releases>`_ in ``~/.local/share/applications``, save the `logo <https://raw.githubusercontent.com/rbreu/beeref/main/beeref/assets/logo.png>`_, and adjust the path names in the desktop file to match the location of your BeeRef installation.
+**Linux users** need to give the file executable rights before running it.
 
-**MacOS X users**, look at `detailed instructions <https://beeref.org/macosx-run.html>`_ if you have problems running BeeRef.
-
-Follow further releases via the `atom feed <https://github.com/rbreu/beeref/releases.atom>`_.
+**MacOS X users**, look at `detailed instructions <https://beeref.org/macosx-run.html>`_ if you have problems running BuzzRef.
 
 
 Development Version
 ~~~~~~~~~~~~~~~~~~~
 
-To get the current development version, you need to have a working Python 3 environment. Run the following command to install the development version::
+To get the current development version, you need to have a working Python 3.9+ environment::
 
-  pip install git+https://github.com/rbreu/beeref.git
+  pip install git+https://github.com/kistf001/buzzref.git
 
 Then run ``beeref`` or ``beeref filename.bee``.
 
@@ -59,12 +65,12 @@ Features
 --------
 
 * Move, scale, rotate, crop and flip images
+* **NEW:** Sketch directly on the canvas with pressure-sensitive drawing
+* **NEW:** Move crop rectangles before applying
 * Mass-scale images to the same width, height or size
 * Mass-arrange images vertically, horizontally or for optimal usage of space
 * Add text notes
-* Enable always-on-top-mode and disable the title bar to let the BeeRef window unobtrusively float above your art program:
-
-.. image:: https://github.com/rbreu/beeref/blob/main/images/screenshot.png
+* Enable always-on-top-mode and disable the title bar to let the window unobtrusively float above your art program
 
 
 Regarding the bee file format
@@ -74,13 +80,13 @@ All images are embedded into the bee file as PNG or JPG. The bee file format is 
 
   sqlite3 myfile.bee -Axv
 
-Options for exporting from inside BeeRef are planned, but the above always works independently of BeeRef.
+Options for exporting from inside BuzzRef are planned, but the above always works independently of BuzzRef.
 
 
 Troubleshooting
 ---------------
 
-You can access the log output via *Help -> Show Debug Log*. In case BeeRef doesn't start at all, you can find the log file here:
+You can access the log output via *Help -> Show Debug Log*. In case BuzzRef doesn't start at all, you can find the log file here:
 
 Windows:
 
@@ -94,4 +100,19 @@ Linux and MacOS:
 Notes for developers
 --------------------
 
-BeeRef is written in Python and PyQt6. For more info, see `CONTRIBUTING.rst <https://github.com/rbreu/beeref/blob/main/CONTRIBUTING.rst>`_.
+BuzzRef is written in Python and PyQt6. For more info, see `CONTRIBUTING.rst <https://github.com/kistf001/buzzref/blob/main/CONTRIBUTING.rst>`_.
+
+
+Credits
+-------
+
+* Original BeeRef by `Rebecca Breu <https://github.com/rbreu>`_
+* Sketching feature (`PR #150 <https://github.com/rbreu/beeref/pull/150>`_) by `Cinderflame-Linear <https://github.com/Cinderflame-Linear>`_
+* Crop rectangle improvements (`PR #115 <https://github.com/rbreu/beeref/pull/115>`_) by `DarkDefender <https://github.com/DarkDefender>`_
+* Pytest flag fix (`PR #117 <https://github.com/rbreu/beeref/pull/117>`_) by `DarkDefender <https://github.com/DarkDefender>`_
+
+
+License
+-------
+
+This project is licensed under the GPL-3.0 License - see the `LICENSE <LICENSE>`_ file for details.
