@@ -22,8 +22,10 @@ import signal
 import sys
 
 from PyQt6 import QtCore, QtWidgets
+from PyQt6.QtCore import QTranslator, QLocale, QLibraryInfo
 
 from beeref import constants
+from beeref.translations import TRANSLATIONS_PATH
 from beeref.assets import BeeAssets
 from beeref.config import CommandlineArgs, BeeSettings, logfile_name
 from beeref.utils import create_palette_from_dict
@@ -113,6 +115,32 @@ def main():
 
     os.environ["QT_DEBUG_PLUGINS"] = "1"
     app = BeeRefApplication(sys.argv)
+
+    # Load Qt base translations (standard dialogs, buttons, etc.)
+    qt_translator = QTranslator(app)
+    qt_path = QLibraryInfo.path(QLibraryInfo.LibraryPath.TranslationsPath)
+    if qt_translator.load(QLocale.system(), 'qtbase', '_', qt_path):
+        app.installTranslator(qt_translator)
+
+    # Load BeeRef translations
+    translator = QTranslator(app)
+    # Check user preference first, fall back to system locale
+    lang_setting = settings.valueOrDefault('General/language')
+    if lang_setting and lang_setting != 'system':
+        locale = lang_setting
+    else:
+        locale = QLocale.system().name()  # e.g., ko_KR, ja_JP
+
+    if translator.load(f'beeref_{locale}', TRANSLATIONS_PATH):
+        app.installTranslator(translator)
+        logger.info(f'Loaded translation for locale: {locale}')
+    else:
+        # Try language code only (e.g., 'ko' from 'ko_KR')
+        lang = locale.split('_')[0]
+        if translator.load(f'beeref_{lang}', TRANSLATIONS_PATH):
+            app.installTranslator(translator)
+            logger.info(f'Loaded translation for language: {lang}')
+
     palette = create_palette_from_dict(constants.COLORS)
     app.setPalette(palette)
     bee = BeeRefMainWindow(app)  # NOQA:F841

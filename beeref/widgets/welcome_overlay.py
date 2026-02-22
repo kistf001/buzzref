@@ -87,9 +87,6 @@ class RecentFilesView(QtWidgets.QListView):
 class WelcomeOverlay(MainControlsMixin, QtWidgets.QWidget):
     """Some basic info to be displayed when the scene is empty."""
 
-    txt = """<p>Paste or drop images here.</p>
-             <p>Right-click for more options.</p>"""
-
     def __init__(self, parent):
         super().__init__(parent)
         self.control_target = parent
@@ -101,7 +98,7 @@ class WelcomeOverlay(MainControlsMixin, QtWidgets.QWidget):
         files_layout = QtWidgets.QVBoxLayout()
         files_layout.addStretch(50)
         files_layout.addWidget(
-            QtWidgets.QLabel('<h3>Recent Files</h3>', self))
+            QtWidgets.QLabel(self.tr('<h3>Recent Files</h3>'), self))
         self.files_view = RecentFilesView(self, parent)
         files_layout.addWidget(self.files_view)
         files_layout.addStretch(50)
@@ -109,7 +106,9 @@ class WelcomeOverlay(MainControlsMixin, QtWidgets.QWidget):
         self.files_widget.hide()
 
         # Help text
-        self.label = QtWidgets.QLabel(self.txt, self)
+        txt = self.tr('<p>Paste or drop images here.</p>'
+                      '<p>Right-click for more options.</p>')
+        self.label = QtWidgets.QLabel(txt, self)
         self.label.setAlignment(Qt.AlignmentFlag.AlignVCenter
                                 | Qt.AlignmentFlag.AlignCenter)
         self.layout = QtWidgets.QHBoxLayout()

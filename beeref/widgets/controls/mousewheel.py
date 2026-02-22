@@ -33,7 +33,7 @@ class MouseWheelModifiersEditor(MouseControlsEditorBase):
 
     def __init__(self, parent, index):
         self.init_dialog(parent, index, KeyboardSettings.MOUSEWHEEL_ACTIONS,
-                         'MouseWheel Controls for:')
+                         self.tr('Mouse Wheel Controls for:'))
         self.init_modifiers_input()
         self.init_button_row()
         self.show()

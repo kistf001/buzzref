@@ -114,6 +114,10 @@ settings_events = BeeSettingsEvents()
 class BeeSettings(QtCore.QSettings):
 
     FIELDS = {
+        'General/language': {
+            'default': 'system',
+            'validate': lambda x: isinstance(x, str),
+        },
         'Save/confirm_close_unsaved': {
             'default': True,
             'cast': bool,

@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 class ControlsDialog(QtWidgets.QDialog):
     def __init__(self, parent):
         super().__init__(parent)
-        self.setWindowTitle('Keyboard & Mouse Controls')
+        self.setWindowTitle(self.tr('Keyboard & Mouse Controls'))
         tabs = QtWidgets.QTabWidget()
 
         # Keyboard shortcuts
@@ -38,11 +38,11 @@ class ControlsDialog(QtWidgets.QDialog):
         keyboard.setLayout(kb_layout)
         table = KeyboardShortcutsView(keyboard)
         search_input = QtWidgets.QLineEdit()
-        search_input.setPlaceholderText('Search...')
+        search_input.setPlaceholderText(self.tr('Search...'))
         search_input.textChanged.connect(table.model().setFilterFixedString)
         kb_layout.addWidget(search_input)
         kb_layout.addWidget(table)
-        tabs.addTab(keyboard, '&Keyboard Shortcuts')
+        tabs.addTab(keyboard, self.tr('&Keyboard Shortcuts'))
 
         # Mouse controls
         mouse = QtWidgets.QWidget(parent)
@@ -50,11 +50,11 @@ class ControlsDialog(QtWidgets.QDialog):
         mouse.setLayout(mouse_layout)
         table = MouseView(mouse)
         search_input = QtWidgets.QLineEdit()
-        search_input.setPlaceholderText('Search...')
+        search_input.setPlaceholderText(self.tr('Search...'))
         search_input.textChanged.connect(table.model().setFilterFixedString)
         mouse_layout.addWidget(search_input)
         mouse_layout.addWidget(table)
-        tabs.addTab(mouse, '&Mouse')
+        tabs.addTab(mouse, self.tr('&Mouse'))
 
         # Mouse wheel controls
         mousewheel = QtWidgets.QWidget(parent)
@@ -62,11 +62,11 @@ class ControlsDialog(QtWidgets.QDialog):
         mousewheel.setLayout(wheel_layout)
         table = MouseWheelView(mousewheel)
         search_input = QtWidgets.QLineEdit()
-        search_input.setPlaceholderText('Search...')
+        search_input.setPlaceholderText(self.tr('Search...'))
         search_input.textChanged.connect(table.model().setFilterFixedString)
         wheel_layout.addWidget(search_input)
         wheel_layout.addWidget(table)
-        tabs.addTab(mousewheel, 'Mouse &Wheel')
+        tabs.addTab(mousewheel, self.tr('Mouse &Wheel'))
 
         layout = QtWidgets.QVBoxLayout()
         self.setLayout(layout)
@@ -76,7 +76,7 @@ class ControlsDialog(QtWidgets.QDialog):
         buttons = QtWidgets.QDialogButtonBox(
             QtWidgets.QDialogButtonBox.StandardButton.Close)
         buttons.rejected.connect(self.reject)
-        reset_btn = QtWidgets.QPushButton('&Restore Defaults')
+        reset_btn = QtWidgets.QPushButton(self.tr('&Restore Defaults'))
         reset_btn.setAutoDefault(False)
         reset_btn.clicked.connect(self.on_restore_defaults)
         buttons.addButton(reset_btn,
@@ -88,9 +88,9 @@ class ControlsDialog(QtWidgets.QDialog):
     def on_restore_defaults(self, *args, **kwargs):
         reply = QtWidgets.QMessageBox.question(
             self,
-            'Restore defaults?',
-            'Do you want to restore all keyboard and mouse settings '
-            'to their default values?')
+            self.tr('Restore defaults?'),
+            self.tr('Do you want to restore all keyboard and mouse settings '
+                    'to their default values?'))
 
         if reply == QtWidgets.QMessageBox.StandardButton.Yes:
             KeyboardSettings().restore_defaults()

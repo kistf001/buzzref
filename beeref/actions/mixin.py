@@ -19,8 +19,8 @@ import os.path
 
 from PyQt6 import QtGui, QtWidgets
 
-from .actions import Action, actions
-from .menu_structure import menu_structure, MENU_SEPARATOR
+from .actions import Action, get_actions
+from .menu_structure import get_menu_structure, MENU_SEPARATOR
 
 
 class ActionsMixin:
@@ -36,7 +36,7 @@ class ActionsMixin:
         self.bee_actiongroups = defaultdict(list)
         self._post_create_functions = []
         self._create_actions()
-        self._create_menu(self.context_menu, menu_structure)
+        self._create_menu(self.context_menu, get_menu_structure())
         for func, arg in self._post_create_functions:
             func(arg)
         del self._post_create_functions
@@ -68,7 +68,7 @@ class ActionsMixin:
                 partial(self._store_checkable_setting, settings_key))
 
     def _create_actions(self):
-        for action in actions.values():
+        for action in get_actions().values():
             qaction = QtGui.QAction(action.text, self)
             qaction.setAutoRepeat(False)
             shortcuts = action.get_shortcuts()
@@ -91,7 +91,7 @@ class ActionsMixin:
             return menu
         for item in items:
             if isinstance(item, str):
-                menu.addAction(actions[item].qaction)
+                menu.addAction(get_actions()[item].qaction)
             if item == MENU_SEPARATOR:
                 menu.addSeparator()
             if isinstance(item, dict):
@@ -117,7 +117,7 @@ class ActionsMixin:
                             menu_id='_build_recent_files',
                             text=f'File {i + 1}',
                             shortcuts=[f'Ctrl+{key}'])
-            actions[action_id] = action
+            get_actions()[action_id] = action
 
             if i < len(files):
                 filename = files[i]
@@ -134,6 +134,6 @@ class ActionsMixin:
         for action in self._recent_files_submenu.actions():
             self.removeAction(action)
         self._recent_files_submenu.clear()
-        for key in list(actions.keys()):
+        for key in list(get_actions().keys()):
             if key.startswith('recent_files_'):
-                actions[key].qaction = None
+                get_actions()[key].qaction = None
