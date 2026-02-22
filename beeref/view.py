@@ -441,6 +441,11 @@ class BeeGraphicsView(MainControlsMixin,
             pos,
             self.scene.sample_color_at(self.mapToScene(pos)))
 
+    def on_action_show_filename(self):
+        item = self.scene.selectedItems()[0]
+        if hasattr(item, 'filename') and item.filename:
+            widgets.BeeNotification(self, os.path.basename(item.filename))
+
     def on_action_capture(self):
         """Show capture choice dialog (menu callback)."""
         self.cancel_active_modes()

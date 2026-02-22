@@ -316,6 +316,13 @@ class ActionsRegistry(QObject):
                 group='active_when_items_in_scene',
             ),
             Action(
+                id='show_filename',
+                text=self.tr('Show &Filename'),
+                shortcuts=['F'],
+                callback='on_action_show_filename',
+                group='active_when_single_image',
+            ),
+            Action(
                 id='capture',
                 text=self.tr('Capture...'),
                 callback='on_action_capture',

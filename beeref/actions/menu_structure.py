@@ -139,6 +139,7 @@ class MenuRegistry(QObject):
                     'grayscale',
                     MENU_SEPARATOR,
                     'show_color_gamut',
+                    'show_filename',
                     'sample_color',
                     'capture',
                 ],

@@ -139,7 +139,12 @@
         <translation>색상 추출</translation>
     </message>
     <message>
-        <location filename="../actions/actions.py" line="320" />
+        <location filename="../actions/actions.py" line="319" />
+        <source>Show &amp;Filename</source>
+        <translation>파일명 표시(&amp;F)</translation>
+    </message>
+    <message>
+        <location filename="../actions/actions.py" line="326" />
         <source>Capture...</source>
         <translation>캡처...</translation>
     </message>
