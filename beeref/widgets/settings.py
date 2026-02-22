@@ -15,12 +15,14 @@
 
 from functools import partial
 import logging
+import os
 
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import Qt
 
 from beeref import constants
 from beeref.config import BeeSettings, settings_events
+from beeref.translations import TRANSLATIONS_PATH
 
 
 logger = logging.getLogger(__name__)
@@ -134,70 +136,178 @@ class SingleCheckboxGroup(GroupBase):
 
 
 class ArrangeDefaultWidget(RadioGroup):
-    TITLE = 'Default Arrange Method:'
-    HELPTEXT = ('How images are arranged when inserted in batch')
     KEY = 'Items/arrange_default'
-    OPTIONS = (
-        ('optimal', 'Optimal', 'Arrange Optimal'),
-        ('horizontal', 'Horizontal (by filename)',
-         'Arrange Horizontal (by filename)'),
-        ('vertical', 'Vertical (by filename)',
-         'Arrange Vertical (by filename)'),
-        ('square', 'Square (by filename)', 'Arrannge Square (by filename)'))
+
+    @property
+    def TITLE(self):
+        return self.tr('Default Arrange Method:')
+
+    @property
+    def HELPTEXT(self):
+        return self.tr('How images are arranged when inserted in batch')
+
+    @property
+    def OPTIONS(self):
+        return (
+            ('optimal', self.tr('Optimal'), self.tr('Arrange Optimal')),
+            ('horizontal', self.tr('Horizontal (by filename)'),
+             self.tr('Arrange Horizontal (by filename)')),
+            ('vertical', self.tr('Vertical (by filename)'),
+             self.tr('Arrange Vertical (by filename)')),
+            ('square', self.tr('Square (by filename)'),
+             self.tr('Arrange Square (by filename)')))
 
 
 class ImageStorageFormatWidget(RadioGroup):
-    TITLE = 'Image Storage Format:'
-    HELPTEXT = ('How images are stored inside bee files.'
-                ' Changes will only take effect on newly saved images.')
     KEY = 'Items/image_storage_format'
-    OPTIONS = (
-        ('best', 'Best Guess',
-         ('Small images and images with alpha channel are stored as png,'
-          ' everything else as jpg')),
-        ('png', 'Always PNG', 'Lossless, but large bee file'),
-        ('jpg', 'Always JPG',
-         'Small bee file, but lossy and no transparency support'))
+
+    @property
+    def TITLE(self):
+        return self.tr('Image Storage Format:')
+
+    @property
+    def HELPTEXT(self):
+        return self.tr('How images are stored inside bee files.'
+                       ' Changes will only take effect on newly saved images.')
+
+    @property
+    def OPTIONS(self):
+        return (
+            ('best', self.tr('Best Guess'),
+             self.tr('Small images and images with alpha channel are stored as png,'
+                     ' everything else as jpg')),
+            ('png', self.tr('Always PNG'), self.tr('Lossless, but large bee file')),
+            ('jpg', self.tr('Always JPG'),
+             self.tr('Small bee file, but lossy and no transparency support')))
 
 
 class ArrangeGapWidget(IntegerGroup):
-    TITLE = 'Arrange Gap:'
-    HELPTEXT = ('The gap between images when using arrange actions.')
     KEY = 'Items/arrange_gap'
     MIN = 0
     MAX = 200
 
+    @property
+    def TITLE(self):
+        return self.tr('Arrange Gap:')
+
+    @property
+    def HELPTEXT(self):
+        return self.tr('The gap between images when using arrange actions.')
+
 
 class AllocationLimitWidget(IntegerGroup):
-    TITLE = 'Maximum Image Size:'
-    HELPTEXT = ('The maximum image size that can be loaded (in megabytes). '
-                'Set to 0 for no limitation.')
     KEY = 'Items/image_allocation_limit'
     MIN = 0
     MAX = 10000
 
+    @property
+    def TITLE(self):
+        return self.tr('Maximum Image Size:')
+
+    @property
+    def HELPTEXT(self):
+        return self.tr('The maximum image size that can be loaded (in megabytes). '
+                       'Set to 0 for no limitation.')
+
 
 class ConfirmCloseUnsavedWidget(SingleCheckboxGroup):
-    TITLE = 'Confirm when closing an unsaved file:'
-    HELPTEXT = (
-        'When about to close an unsaved file, should BeeRef ask for '
-        'confirmation?')
-    LABEL = 'Confirm when closing'
     KEY = 'Save/confirm_close_unsaved'
+
+    @property
+    def TITLE(self):
+        return self.tr('Confirm when closing an unsaved file:')
+
+    @property
+    def HELPTEXT(self):
+        return self.tr('When about to close an unsaved file, should BeeRef ask for '
+                       'confirmation?')
+
+    @property
+    def LABEL(self):
+        return self.tr('Confirm when closing')
+
+
+class LanguageWidget(GroupBase):
+    KEY = 'General/language'
+
+    # Language code -> Display name mapping
+    # Note: Native names are not translated (they show in their own language)
+    LANGUAGES = {
+        'system': None,  # Translated at runtime
+        'en': 'English',
+        'ko': '한국어 (Korean)',
+    }
+
+    def __init__(self):
+        super().__init__()
+        self.ignore_value_changed = False
+
+        self.combo = QtWidgets.QComboBox()
+
+        # Detect available translations
+        available = self._get_available_languages()
+
+        for code, name in self.LANGUAGES.items():
+            if code in available or code in ('system', 'en'):
+                # Translate 'System Default' at runtime
+                display_name = self.tr('System Default') if code == 'system' else name
+                self.combo.addItem(display_name, code)
+
+    @property
+    def TITLE(self):
+        return self.tr('Language:')
+
+    @property
+    def HELPTEXT(self):
+        return self.tr('Select the application language. Restart required for changes to take effect.')
+
+        # Set current value
+        current = self.settings.valueOrDefault(self.KEY)
+        index = self.combo.findData(current)
+        if index >= 0:
+            self.combo.setCurrentIndex(index)
+
+        self.combo.currentIndexChanged.connect(self._on_combo_changed)
+        self.layout.addWidget(self.combo)
+        self.layout.addStretch(100)
+
+    def _get_available_languages(self):
+        """Scan translations directory for available .qm files."""
+        available = set()
+        if os.path.exists(TRANSLATIONS_PATH):
+            for filename in os.listdir(TRANSLATIONS_PATH):
+                if filename.startswith('beeref_') and filename.endswith('.qm'):
+                    # Extract language code from beeref_ko.qm -> ko
+                    lang = filename[7:-3]  # Remove 'beeref_' and '.qm'
+                    # Handle both 'ko' and 'ko_KR' formats
+                    available.add(lang.split('_')[0])
+        return available
+
+    def _on_combo_changed(self, index):
+        if self.ignore_value_changed:
+            return
+        code = self.combo.itemData(index)
+        self.on_value_changed(code)
+
+    def set_value(self, value):
+        index = self.combo.findData(value)
+        if index >= 0:
+            self.combo.setCurrentIndex(index)
 
 
 class SettingsDialog(QtWidgets.QDialog):
     def __init__(self, parent):
         super().__init__(parent)
-        self.setWindowTitle(f'{constants.APPNAME} Settings')
+        self.setWindowTitle(self.tr('BeeRef Settings'))
         tabs = QtWidgets.QTabWidget()
 
         # Miscellaneous
         misc = QtWidgets.QWidget()
         misc_layout = QtWidgets.QGridLayout()
         misc.setLayout(misc_layout)
-        misc_layout.addWidget(ConfirmCloseUnsavedWidget(), 0, 0)
-        tabs.addTab(misc, '&Miscellaneous')
+        misc_layout.addWidget(LanguageWidget(), 0, 0)
+        misc_layout.addWidget(ConfirmCloseUnsavedWidget(), 0, 1)
+        tabs.addTab(misc, self.tr('&Miscellaneous'))
 
         # Images & Items
         items = QtWidgets.QWidget()
@@ -207,7 +317,7 @@ class SettingsDialog(QtWidgets.QDialog):
         items_layout.addWidget(AllocationLimitWidget(), 0, 1)
         items_layout.addWidget(ArrangeGapWidget(), 1, 0)
         items_layout.addWidget(ArrangeDefaultWidget(), 1, 1)
-        tabs.addTab(items, '&Images && Items')
+        tabs.addTab(items, self.tr('&Images && Items'))
 
         layout = QtWidgets.QVBoxLayout()
         self.setLayout(layout)
@@ -217,7 +327,7 @@ class SettingsDialog(QtWidgets.QDialog):
         buttons = QtWidgets.QDialogButtonBox(
             QtWidgets.QDialogButtonBox.StandardButton.Close)
         buttons.rejected.connect(self.reject)
-        reset_btn = QtWidgets.QPushButton('&Restore Defaults')
+        reset_btn = QtWidgets.QPushButton(self.tr('&Restore Defaults'))
         reset_btn.setAutoDefault(False)
         reset_btn.clicked.connect(self.on_restore_defaults)
         buttons.addButton(reset_btn,
@@ -229,8 +339,8 @@ class SettingsDialog(QtWidgets.QDialog):
     def on_restore_defaults(self, *args, **kwargs):
         reply = QtWidgets.QMessageBox.question(
             self,
-            'Restore defaults?',
-            'Do you want to restore all settings to their default values?')
+            self.tr('Restore defaults?'),
+            self.tr('Do you want to restore all settings to their default values?'))
 
         if reply == QtWidgets.QMessageBox.StandardButton.Yes:
             BeeSettings().restore_defaults()

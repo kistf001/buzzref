@@ -19,7 +19,7 @@ import logging
 from PyQt6 import QtWidgets, QtCore
 
 from beeref import constants
-from beeref.actions.actions import actions
+from beeref.actions.actions import get_actions
 from beeref.config import KeyboardSettings, settings_events
 
 
@@ -30,7 +30,7 @@ class KeyboardShortcutsEditor(QtWidgets.QKeySequenceEdit):
 
     def __init__(self, parent, index):
         super().__init__(parent)
-        self.action = actions[index.row()]
+        self.action = get_actions()[index.row()]
         try:
             self.old_value = self.action.get_shortcuts()[index.column() - 2]
         except IndexError:
@@ -55,18 +55,18 @@ class KeyboardShortcutsEditor(QtWidgets.QKeySequenceEdit):
 
         self.remove_from_other = None
         self.finished_last_called_with = shortcut
-        for action in actions.values():
+        for action in get_actions().values():
             if action == self.action:
                 continue
             if shortcut in action.get_shortcuts():
                 txt = ': '.join(action.menu_path + [action.text])
                 txt = txt.replace('&', '').removesuffix('...')
-                msg = ('<p>This shortcut is already used for:</p>'
-                       f'<p>{txt}</p>'
-                       '<p>Do you want to remove the other shortcut'
-                       ' to save this one?</p>')
+                msg = (self.tr('<p>This shortcut is already used for:</p>'
+                               '<p>%s</p>'
+                               '<p>Do you want to remove the other shortcut'
+                               ' to save this one?</p>') % txt)
                 reply = QtWidgets.QMessageBox.question(
-                    self, 'Save Shortcut?', msg)
+                    self, self.tr('Save Shortcut?'), msg)
                 if reply == QtWidgets.QMessageBox.StandardButton.Yes:
                     self.remove_from_other = action
                 else:
@@ -89,6 +89,7 @@ class KeyboardShortcutsDelegate(QtWidgets.QStyledItemDelegate):
 class KeyboardShortcutsModel(QtCore.QAbstractTableModel):
     """An entry in the keyboard shortcuts table."""
 
+    # Note: Translations handled in headerData()
     HEADER = ('Action', constants.CHANGED_SYMBOL, 'Shortcut', 'Alternative')
 
     def __init__(self):
@@ -96,7 +97,7 @@ class KeyboardShortcutsModel(QtCore.QAbstractTableModel):
         self.settings = KeyboardSettings()
 
     def rowCount(self, parent):
-        return len(actions)
+        return len(get_actions())
 
     def columnCount(self, parent):
         return len(self.HEADER)
@@ -104,7 +105,7 @@ class KeyboardShortcutsModel(QtCore.QAbstractTableModel):
     def data(self, index, role):
         if role in (QtCore.Qt.ItemDataRole.DisplayRole,
                     QtCore.Qt.ItemDataRole.EditRole):
-            action = actions[index.row()]
+            action = get_actions()[index.row()]
             txt = ': '.join(action.menu_path + [action.text])
             if index.column() == 0:
                 return txt.replace('&', '').removesuffix('...')
@@ -114,17 +115,17 @@ class KeyboardShortcutsModel(QtCore.QAbstractTableModel):
                 return action.get_qkeysequence(index.column() - 2)
 
         if role == QtCore.Qt.ItemDataRole.ToolTipRole:
-            action = actions[index.row()]
+            action = get_actions()[index.row()]
             changed = action.shortcuts_changed()
             if changed and index.column() == 1:
-                return 'Changed from default'
+                return self.tr('Changed from default')
             if changed and index.column() > 1:
                 default = action.get_default_shortcut(index.column() - 2)
-                default = default or 'Not set'
-                return f'Default: {default}'
+                default = default or self.tr('Not set')
+                return self.tr('Default: %s') % default
 
     def setData(self, index, value, role, remove_from_other=None):
-        action = actions[index.row()]
+        action = get_actions()[index.row()]
         shortcuts = action.get_shortcuts() + [None, None]
         shortcuts[index.column() - 2] = value.toString()
         shortcuts = list(filter(bool, shortcuts))
@@ -142,7 +143,7 @@ class KeyboardShortcutsModel(QtCore.QAbstractTableModel):
             shortcuts = remove_from_other.get_shortcuts()
             shortcuts.remove(value.toString())
             remove_from_other.set_shortcuts(shortcuts)
-            row = list(actions.keys()).index(remove_from_other.id)
+            row = list(get_actions().keys()).index(remove_from_other.id)
             self.dataChanged.emit(self.index(row, 1),
                                   self.index(row, 3))
 
@@ -151,7 +152,11 @@ class KeyboardShortcutsModel(QtCore.QAbstractTableModel):
     def headerData(self, section, orientation, role):
         if (role == QtCore.Qt.ItemDataRole.DisplayRole
                 and orientation == QtCore.Qt.Orientation.Horizontal):
-            return self.HEADER[section]
+            header = self.HEADER[section]
+            # Translate header text (except symbol)
+            if header != constants.CHANGED_SYMBOL:
+                return self.tr(header)
+            return header
 
     def flags(self, index):
         base = (QtCore.Qt.ItemFlag.ItemIsEnabled
