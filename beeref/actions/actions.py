@@ -316,6 +316,20 @@ class ActionsRegistry(QObject):
                 group='active_when_items_in_scene',
             ),
             Action(
+                id='capture_area',
+                text=self.tr('Capture &Area'),
+                shortcuts=['Shift+A'],
+                callback='on_action_capture_area',
+                group='active_when_items_in_scene',
+            ),
+            Action(
+                id='capture_screen',
+                text=self.tr('Capture &Screen'),
+                shortcuts=['Shift+S'],
+                callback='on_action_capture_screen',
+                group='screen_capture_available',
+            ),
+            Action(
                 id='crop',
                 text=self.tr('&Crop'),
                 shortcuts=['Shift+C'],

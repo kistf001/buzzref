@@ -26,6 +26,7 @@ from beeref.widgets import (  # noqa: F401
     settings,
     welcome_overlay,
     color_gamut,
+    screen_capture,
 )
 
 
