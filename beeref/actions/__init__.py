@@ -13,7 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with BeeRef.  If not, see <https://www.gnu.org/licenses/>.
 
+from .actions import get_actions
 from .mixin import ActionsMixin
 
 
-__all__ = ['ActionsMixin']
+__all__ = ['ActionsMixin', 'get_actions']
