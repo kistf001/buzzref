@@ -119,30 +119,30 @@ def test_action_get_default_shortcut_second_when_none_set():
     assert action.get_default_shortcut(1) is None
 
 
-@patch('beeref.actions.actions.menu_structure',
-       [{'menu': 'Foo', 'items': ['bar', 'baz']}])
-def test_action_menu_path():
+@patch('beeref.actions.actions.get_menu_structure',
+       return_value=[{'menu': 'Foo', 'items': ['bar', 'baz']}])
+def test_action_menu_path(menu_mock):
     action = Action(id='baz', text='Foo')
     assert action.menu_path == ['Foo']
 
 
-@patch('beeref.actions.actions.menu_structure',
-       [{'menu': 'Foo', 'items': [{'menu': 'Bar', 'items': ['baz']}]}])
-def test_action_menu_path_with_submenus():
+@patch('beeref.actions.actions.get_menu_structure',
+       return_value=[{'menu': 'Foo', 'items': [{'menu': 'Bar', 'items': ['baz']}]}])
+def test_action_menu_path_with_submenus(menu_mock):
     action = Action(id='baz', text='Foo')
     assert action.menu_path == ['Foo', 'Bar']
 
 
-@patch('beeref.actions.actions.menu_structure',
-       [{'menu': 'Foo', 'items': '_build_recent_files'}])
-def test_action_menu_path_recent_files():
+@patch('beeref.actions.actions.get_menu_structure',
+       return_value=[{'menu': 'Foo', 'items': '_build_recent_files'}])
+def test_action_menu_path_recent_files(menu_mock):
     action = Action(id='baz', text='Foo', menu_id='_build_recent_files')
     assert action.menu_path == ['Foo']
 
 
-@patch('beeref.actions.actions.menu_structure',
-       [{'menu': 'Foo', 'items': [
+@patch('beeref.actions.actions.get_menu_structure',
+       return_value=[{'menu': 'Foo', 'items': [
            {'menu': 'Bar', 'items': '_build_recent_files'}]}])
-def test_action_menu_path_recent_files_in_submenu():
+def test_action_menu_path_recent_files_in_submenu(menu_mock):
     action = Action(id='baz', text='Foo', menu_id='_build_recent_files')
     assert action.menu_path == ['Foo', 'Bar']

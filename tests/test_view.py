@@ -8,7 +8,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtCore import Qt
 
 from beeref import commands, widgets
-from beeref.actions import actions
+from beeref.actions import get_actions
 from beeref.config import logfile_name
 from beeref.items import BeePixmapItem, BeeTextItem
 from beeref.view import BeeGraphicsView
@@ -807,17 +807,17 @@ def test_on_selection_changed_updates_grayscale_action(view):
     item = BeePixmapItem(QtGui.QImage())
     view.scene.addItem(item)
     item.grayscale = True
-    actions.actions['grayscale'].qaction.setChecked(False)
+    get_actions()['grayscale'].qaction.setChecked(False)
     item.setSelected(True)
-    assert actions.actions['grayscale'].qaction.isChecked() is True
+    assert get_actions()['grayscale'].qaction.isChecked() is True
 
 
 def test_on_selection_changed_grayscale_action_ignores_textitem(view):
     item = BeeTextItem('foo')
     view.scene.addItem(item)
-    actions.actions['grayscale'].qaction.setChecked(True)
+    get_actions()['grayscale'].qaction.setChecked(True)
     item.setSelected(True)
-    assert actions.actions['grayscale'].qaction.isChecked() is False
+    assert get_actions()['grayscale'].qaction.isChecked() is False
 
 
 def test_on_action_reset_scale(view, item):
@@ -1524,11 +1524,15 @@ def test_mouse_move_sample_color(mouse_event_mock, view):
 @patch('PyQt6.QtWidgets.QWidget.move')
 def test_mouse_move_movewin(move_mock, mouse_event_mock, view):
     view.movewin_active = True
-    view.event_start = QtCore.QPointF(10.0, 20.0)
+    # event_start is in global coordinates (set by mapToGlobal in enter_movewin_mode)
+    view.event_start = QtCore.QPointF(100.0, 200.0)
     event = MagicMock()
     event.position.return_value = QtCore.QPointF(15.0, 18.0)
-    view.mouseMoveEvent(event)
-    move_mock.assert_called_once_with(5, -2)
+    # Mock mapToGlobal to return known global coordinates
+    with patch.object(view, 'mapToGlobal', return_value=QtCore.QPointF(105.0, 198.0)):
+        view.mouseMoveEvent(event)
+    # Delta is (105-100, 198-200) = (5, -2)
+    move_mock.assert_called_once_with(view.main_window.x() + 5, view.main_window.y() - 2)
     mouse_event_mock.assert_not_called()
     event.accept.assert_called_once_with()
 
