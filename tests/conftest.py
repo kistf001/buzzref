@@ -17,13 +17,20 @@ def pytest_configure(config):
     import logging.config
     logging.config.dictConfig = MagicMock
 
+    # Disable translations during tests by setting locale to C
+    # This must be done before QApplication is created
+    import os
+    os.environ['LANGUAGE'] = 'C'
+    os.environ['LC_ALL'] = 'C'
+    os.environ['LANG'] = 'C'
+
 
 @pytest.fixture(autouse=True)
 def reset_beeref_actions():
-    from beeref.actions.actions import actions
-    for key in list(actions.keys()):
+    from beeref.actions.actions import get_actions
+    for key in list(get_actions().keys()):
         if key.startswith('recent_files_'):
-            actions.pop(key)
+            get_actions().pop(key)
 
 
 @pytest.fixture(autouse=True)

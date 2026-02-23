@@ -17,8 +17,9 @@ from functools import cached_property
 import logging
 
 from PyQt6 import QtGui
+from PyQt6.QtCore import QObject
 
-from beeref.actions.menu_structure import menu_structure
+from beeref.actions.menu_structure import get_menu_structure
 from beeref.config import KeyboardSettings, settings_events
 from beeref.utils import ActionList
 
@@ -33,7 +34,7 @@ class Action:
                  checkable=False, checked=False, group=None, settings=None,
                  enabled=True, menu_item=None, menu_id=None):
         self.id = id
-        self.text = text
+        self._text = text  # Store source text for translation
         self.callback = callback
         self.shortcuts = shortcuts or []
         self.checkable = checkable
@@ -47,6 +48,11 @@ class Action:
         self.kb_settings = KeyboardSettings()
         settings_events.restore_keyboard_defaults.connect(
             self.on_restore_defaults)
+
+    @property
+    def text(self):
+        """Return translated text (already translated at creation time)."""
+        return self._text
 
     def __eq__(self, other):
         return self.id == other.id
@@ -79,7 +85,7 @@ class Action:
                 path.append(menu_item['menu'])
                 return True
 
-        for menu_item in menu_structure:
+        for menu_item in get_menu_structure():
             _get_path(menu_item)
 
         return path[::-1]
@@ -113,354 +119,409 @@ class Action:
             return None
 
 
-actions = ActionList([
-    Action(
-        id='open',
-        text='&Open',
-        shortcuts=['Ctrl+O'],
-        callback='on_action_open',
-    ),
-    Action(
-        id='save',
-        text='&Save',
-        shortcuts=['Ctrl+S'],
-        callback='on_action_save',
-        group='active_when_items_in_scene',
-    ),
-    Action(
-        id='save_as',
-        text='Save &As...',
-        shortcuts=['Ctrl+Shift+S'],
-        callback='on_action_save_as',
-        group='active_when_items_in_scene',
-    ),
-    Action(
-        id='export_scene',
-        text='E&xport Scene...',
-        shortcuts=['Ctrl+Shift+E'],
-        callback='on_action_export_scene',
-        group='active_when_items_in_scene',
-    ),
-    Action(
-        id='export_images',
-        text='Export &Images...',
-        callback='on_action_export_images',
-        group='active_when_items_in_scene',
-    ),
-    Action(
-        id='quit',
-        text='&Quit',
-        shortcuts=['Ctrl+Q'],
-        callback='on_action_quit',
-    ),
-    Action(
-        id='insert_images',
-        text='&Images...',
-        shortcuts=['Ctrl+I'],
-        callback='on_action_insert_images',
-    ),
-    Action(
-        id='insert_text',
-        text='&Text',
-        shortcuts=['Ctrl+T'],
-        callback='on_action_insert_text',
-    ),
-    Action(
-        id='undo',
-        text='&Undo',
-        shortcuts=['Ctrl+Z'],
-        callback='on_action_undo',
-        group='active_when_can_undo',
-    ),
-    Action(
-        id='redo',
-        text='&Redo',
-        shortcuts=['Ctrl+Shift+Z'],
-        callback='on_action_redo',
-        group='active_when_can_redo',
-    ),
-    Action(
-        id='copy',
-        text='&Copy',
-        shortcuts=['Ctrl+C'],
-        callback='on_action_copy',
-        group='active_when_selection',
-    ),
-    Action(
-        id='cut',
-        text='Cu&t',
-        shortcuts=['Ctrl+X'],
-        callback='on_action_cut',
-        group='active_when_selection',
-    ),
-    Action(
-        id='paste',
-        text='&Paste',
-        shortcuts=['Ctrl+V'],
-        callback='on_action_paste',
-    ),
-    Action(
-        id='delete',
-        text='&Delete',
-        shortcuts=['Del'],
-        callback='on_action_delete_items',
-        group='active_when_selection',
-    ),
-    Action(
-        id='raise_to_top',
-        text='&Raise to Top',
-        shortcuts=['PgUp'],
-        callback='on_action_raise_to_top',
-        group='active_when_selection',
-    ),
-    Action(
-        id='lower_to_bottom',
-        text='Lower to Bottom',
-        shortcuts=['PgDown'],
-        callback='on_action_lower_to_bottom',
-        group='active_when_selection',
-    ),
-    Action(
-        id='normalize_height',
-        text='&Height',
-        shortcuts=['Shift+H'],
-        callback='on_action_normalize_height',
-        group='active_when_selection',
-    ),
-    Action(
-        id='normalize_width',
-        text='&Width',
-        shortcuts=['Shift+W'],
-        callback='on_action_normalize_width',
-        group='active_when_selection',
-    ),
-    Action(
-        id='normalize_size',
-        text='&Size',
-        shortcuts=['Shift+S'],
-        callback='on_action_normalize_size',
-        group='active_when_selection',
-    ),
-    Action(
-        id='arrange_optimal',
-        text='&Optimal',
-        shortcuts=['Shift+O'],
-        callback='on_action_arrange_optimal',
-        group='active_when_selection',
-    ),
-    Action(
-        id='arrange_horizontal',
-        text='&Horizontal (by filename)',
-        callback='on_action_arrange_horizontal',
-        group='active_when_selection',
-    ),
-    Action(
-        id='arrange_vertical',
-        text='&Vertical (by filename)',
-        callback='on_action_arrange_vertical',
-        group='active_when_selection',
-    ),
-    Action(
-        id='arrange_square',
-        text='&Square (by filename)',
-        callback='on_action_arrange_square',
-        group='active_when_selection',
-    ),
-    Action(
-        id='change_opacity',
-        text='Change &Opacity...',
-        callback='on_action_change_opacity',
-        group='active_when_selection',
-    ),
-    Action(
-        id='grayscale',
-        text='&Grayscale',
-        shortcuts=['G'],
-        checkable=True,
-        callback='on_action_grayscale',
-        group='active_when_selection',
-    ),
-    Action(
-        id='show_color_gamut',
-        text='Show &Color Gamut',
-        callback='on_action_show_color_gamut',
-        group='active_when_single_image',
-    ),
-    Action(
-        id='sample_color',
-        text='Sample Color',
-        shortcuts=['S'],
-        callback='on_action_sample_color',
-        group='active_when_items_in_scene',
-    ),
-    Action(
-        id='crop',
-        text='&Crop',
-        shortcuts=['Shift+C'],
-        callback='on_action_crop',
-        group='active_when_single_image',
-    ),
-    Action(
-        id='flip_horizontally',
-        text='Flip &Horizontally',
-        shortcuts=['H'],
-        callback='on_action_flip_horizontally',
-        group='active_when_selection',
-    ),
-    Action(
-        id='flip_vertically',
-        text='Flip &Vertically',
-        shortcuts=['V'],
-        callback='on_action_flip_vertically',
-        group='active_when_selection',
-    ),
-    Action(
-        id='new_scene',
-        text='&New Scene',
-        shortcuts=['Ctrl+N'],
-        callback='on_action_new_scene',
-    ),
-    Action(
-        id='fit_scene',
-        text='&Fit Scene',
-        shortcuts=['1'],
-        callback='on_action_fit_scene',
-    ),
-    Action(
-        id='fit_selection',
-        text='Fit &Selection',
-        shortcuts=['2'],
-        callback='on_action_fit_selection',
-        group='active_when_selection',
-    ),
-    Action(
-        id='reset_scale',
-        text='Reset &Scale',
-        callback='on_action_reset_scale',
-        group='active_when_selection',
-    ),
-    Action(
-        id='reset_rotation',
-        text='Reset &Rotation',
-        callback='on_action_reset_rotation',
-        group='active_when_selection',
-    ),
-    Action(
-        id='reset_flip',
-        text='Reset &Flip',
-        callback='on_action_reset_flip',
-        group='active_when_selection',
-    ),
-    Action(
-        id='reset_crop',
-        text='Reset Cro&p',
-        callback='on_action_reset_crop',
-        group='active_when_selection',
-    ),
-    Action(
-        id='reset_transforms',
-        text='Reset &All',
-        shortcuts=['R'],
-        callback='on_action_reset_transforms',
-        group='active_when_selection',
-    ),
-    Action(
-        id='select_all',
-        text='&Select All',
-        shortcuts=['Ctrl+A'],
-        callback='on_action_select_all',
-    ),
-    Action(
-        id='deselect_all',
-        text='Deselect &All',
-        shortcuts=['Ctrl+Shift+A'],
-        callback='on_action_deselect_all',
-    ),
-    Action(
-        id='help',
-        text='&Help',
-        shortcuts=['F1', 'Ctrl+H'],
-        callback='on_action_help',
-    ),
-    Action(
-        id='about',
-        text='&About',
-        callback='on_action_about',
-    ),
-    Action(
-        id='debuglog',
-        text='Show &Debug Log',
-        callback='on_action_debuglog',
-    ),
-    Action(
-        id='show_scrollbars',
-        text='Show &Scrollbars',
-        checkable=True,
-        settings='View/show_scrollbars',
-        callback='on_action_show_scrollbars',
-    ),
-    Action(
-        id='show_menubar',
-        text='Show &Menu Bar',
-        checkable=True,
-        settings='View/show_menubar',
-        callback='on_action_show_menubar',
-    ),
-    Action(
-        id='show_titlebar',
-        text='Show &Title Bar',
-        checkable=True,
-        checked=True,
-        callback='on_action_show_titlebar',
-    ),
-    Action(
-        id='move_window',
-        text='Move &Window',
-        shortcuts=['Ctrl+M'],
-        callback='on_action_move_window',
-    ),
-    Action(
-        id='fullscreen',
-        text='&Fullscreen',
-        shortcuts=['F11'],
-        checkable=True,
-        callback='on_action_fullscreen',
-    ),
-    Action(
-        id='always_on_top',
-        text='&Always On Top',
-        checkable=True,
-        callback='on_action_always_on_top',
-    ),
-    Action(
-        id='settings',
-        text='&Settings',
-        callback='on_action_settings',
-    ),
-    Action(
-        id='keyboard_settings',
-        text='&Keyboard && Mouse',
-        callback='on_action_keyboard_settings',
-    ),
-    Action(
-        id='open_settings_dir',
-        text='&Open Settings Folder',
-        callback='on_action_open_settings_dir',
-    ),
-    Action(
-        id='draw_mode',
-        text='&Draw',
-        shortcuts=['D'],
-        callback='on_action_draw_mode',
-    ),
-    Action(
-        id='set_brush_color',
-        text='Brush &Color...',
-        callback='on_action_set_brush_color',
-    ),
-    Action(
-        id='set_brush_size',
-        text='Brush &Size...',
-        callback='on_action_set_brush_size',
-    ),
-])
+class ActionsRegistry(QObject):
+    """Actions를 생성하고 관리하는 싱글톤 QObject.
+
+    pylupdate6 호환성을 위해 self.tr()을 사용합니다.
+    QApplication 생성 이후에 초기화되어야 합니다.
+    """
+    _instance = None
+
+    @classmethod
+    def instance(cls):
+        if cls._instance is None:
+            cls._instance = cls()
+        return cls._instance
+
+    def create_actions(self):
+        """번역된 텍스트로 모든 Action을 생성합니다."""
+        return ActionList([
+            Action(
+                id='open',
+                text=self.tr('&Open'),
+                shortcuts=['Ctrl+O'],
+                callback='on_action_open',
+            ),
+            Action(
+                id='save',
+                text=self.tr('&Save'),
+                shortcuts=['Ctrl+S'],
+                callback='on_action_save',
+                group='active_when_items_in_scene',
+            ),
+            Action(
+                id='save_as',
+                text=self.tr('Save &As...'),
+                shortcuts=['Ctrl+Shift+S'],
+                callback='on_action_save_as',
+                group='active_when_items_in_scene',
+            ),
+            Action(
+                id='export_scene',
+                text=self.tr('E&xport Scene...'),
+                shortcuts=['Ctrl+Shift+E'],
+                callback='on_action_export_scene',
+                group='active_when_items_in_scene',
+            ),
+            Action(
+                id='export_images',
+                text=self.tr('Export &Images...'),
+                callback='on_action_export_images',
+                group='active_when_items_in_scene',
+            ),
+            Action(
+                id='quit',
+                text=self.tr('&Quit'),
+                shortcuts=['Ctrl+Q'],
+                callback='on_action_quit',
+            ),
+            Action(
+                id='insert_images',
+                text=self.tr('&Images...'),
+                shortcuts=['Ctrl+I'],
+                callback='on_action_insert_images',
+            ),
+            Action(
+                id='insert_text',
+                text=self.tr('&Text'),
+                shortcuts=['Ctrl+T'],
+                callback='on_action_insert_text',
+            ),
+            Action(
+                id='undo',
+                text=self.tr('&Undo'),
+                shortcuts=['Ctrl+Z'],
+                callback='on_action_undo',
+                group='active_when_can_undo',
+            ),
+            Action(
+                id='redo',
+                text=self.tr('&Redo'),
+                shortcuts=['Ctrl+Shift+Z'],
+                callback='on_action_redo',
+                group='active_when_can_redo',
+            ),
+            Action(
+                id='copy',
+                text=self.tr('&Copy'),
+                shortcuts=['Ctrl+C'],
+                callback='on_action_copy',
+                group='active_when_selection',
+            ),
+            Action(
+                id='cut',
+                text=self.tr('Cu&t'),
+                shortcuts=['Ctrl+X'],
+                callback='on_action_cut',
+                group='active_when_selection',
+            ),
+            Action(
+                id='paste',
+                text=self.tr('&Paste'),
+                shortcuts=['Ctrl+V'],
+                callback='on_action_paste',
+            ),
+            Action(
+                id='delete',
+                text=self.tr('&Delete'),
+                shortcuts=['Del'],
+                callback='on_action_delete_items',
+                group='active_when_selection',
+            ),
+            Action(
+                id='raise_to_top',
+                text=self.tr('&Raise to Top'),
+                shortcuts=['PgUp'],
+                callback='on_action_raise_to_top',
+                group='active_when_selection',
+            ),
+            Action(
+                id='lower_to_bottom',
+                text=self.tr('Lower to Bottom'),
+                shortcuts=['PgDown'],
+                callback='on_action_lower_to_bottom',
+                group='active_when_selection',
+            ),
+            Action(
+                id='normalize_height',
+                text=self.tr('&Height'),
+                shortcuts=['Shift+H'],
+                callback='on_action_normalize_height',
+                group='active_when_selection',
+            ),
+            Action(
+                id='normalize_width',
+                text=self.tr('&Width'),
+                shortcuts=['Shift+W'],
+                callback='on_action_normalize_width',
+                group='active_when_selection',
+            ),
+            Action(
+                id='normalize_size',
+                text=self.tr('&Size'),
+                shortcuts=['Shift+S'],
+                callback='on_action_normalize_size',
+                group='active_when_selection',
+            ),
+            Action(
+                id='arrange_optimal',
+                text=self.tr('&Optimal'),
+                shortcuts=['Shift+O'],
+                callback='on_action_arrange_optimal',
+                group='active_when_selection',
+            ),
+            Action(
+                id='arrange_horizontal',
+                text=self.tr('&Horizontal (by filename)'),
+                callback='on_action_arrange_horizontal',
+                group='active_when_selection',
+            ),
+            Action(
+                id='arrange_vertical',
+                text=self.tr('&Vertical (by filename)'),
+                callback='on_action_arrange_vertical',
+                group='active_when_selection',
+            ),
+            Action(
+                id='arrange_square',
+                text=self.tr('&Square (by filename)'),
+                callback='on_action_arrange_square',
+                group='active_when_selection',
+            ),
+            Action(
+                id='change_opacity',
+                text=self.tr('Change &Opacity...'),
+                callback='on_action_change_opacity',
+                group='active_when_selection',
+            ),
+            Action(
+                id='grayscale',
+                text=self.tr('&Grayscale'),
+                shortcuts=['G'],
+                checkable=True,
+                callback='on_action_grayscale',
+                group='active_when_selection',
+            ),
+            Action(
+                id='show_color_gamut',
+                text=self.tr('Show &Color Gamut'),
+                callback='on_action_show_color_gamut',
+                group='active_when_single_image',
+            ),
+            Action(
+                id='sample_color',
+                text=self.tr('Sample Color'),
+                shortcuts=['S'],
+                callback='on_action_sample_color',
+                group='active_when_items_in_scene',
+            ),
+            Action(
+                id='show_filename',
+                text=self.tr('Show &Filename'),
+                shortcuts=['F'],
+                callback='on_action_show_filename',
+                group='active_when_single_image',
+            ),
+            Action(
+                id='capture',
+                text=self.tr('Capture...'),
+                callback='on_action_capture',
+                group='active_when_items_in_scene',
+            ),
+            Action(
+                id='capture_area',
+                text=self.tr('Capture Area'),
+                shortcuts=['Shift+A'],
+                callback='on_action_capture_area',
+                group='active_when_items_in_scene',
+            ),
+            Action(
+                id='crop',
+                text=self.tr('&Crop'),
+                shortcuts=['Shift+C'],
+                callback='on_action_crop',
+                group='active_when_single_image',
+            ),
+            Action(
+                id='flip_horizontally',
+                text=self.tr('Flip &Horizontally'),
+                shortcuts=['H'],
+                callback='on_action_flip_horizontally',
+                group='active_when_selection',
+            ),
+            Action(
+                id='flip_vertically',
+                text=self.tr('Flip &Vertically'),
+                shortcuts=['V'],
+                callback='on_action_flip_vertically',
+                group='active_when_selection',
+            ),
+            Action(
+                id='new_scene',
+                text=self.tr('&New Scene'),
+                shortcuts=['Ctrl+N'],
+                callback='on_action_new_scene',
+            ),
+            Action(
+                id='fit_scene',
+                text=self.tr('&Fit Scene'),
+                shortcuts=['1'],
+                callback='on_action_fit_scene',
+            ),
+            Action(
+                id='fit_selection',
+                text=self.tr('Fit &Selection'),
+                shortcuts=['2'],
+                callback='on_action_fit_selection',
+                group='active_when_selection',
+            ),
+            Action(
+                id='reset_scale',
+                text=self.tr('Reset &Scale'),
+                callback='on_action_reset_scale',
+                group='active_when_selection',
+            ),
+            Action(
+                id='reset_rotation',
+                text=self.tr('Reset &Rotation'),
+                callback='on_action_reset_rotation',
+                group='active_when_selection',
+            ),
+            Action(
+                id='reset_flip',
+                text=self.tr('Reset &Flip'),
+                callback='on_action_reset_flip',
+                group='active_when_selection',
+            ),
+            Action(
+                id='reset_crop',
+                text=self.tr('Reset Cro&p'),
+                callback='on_action_reset_crop',
+                group='active_when_selection',
+            ),
+            Action(
+                id='reset_transforms',
+                text=self.tr('Reset &All'),
+                shortcuts=['R'],
+                callback='on_action_reset_transforms',
+                group='active_when_selection',
+            ),
+            Action(
+                id='select_all',
+                text=self.tr('&Select All'),
+                shortcuts=['Ctrl+A'],
+                callback='on_action_select_all',
+            ),
+            Action(
+                id='deselect_all',
+                text=self.tr('Deselect &All'),
+                shortcuts=['Ctrl+Shift+A'],
+                callback='on_action_deselect_all',
+            ),
+            Action(
+                id='help',
+                text=self.tr('&Help'),
+                shortcuts=['F1', 'Ctrl+H'],
+                callback='on_action_help',
+            ),
+            Action(
+                id='about',
+                text=self.tr('&About'),
+                callback='on_action_about',
+            ),
+            Action(
+                id='debuglog',
+                text=self.tr('Show &Debug Log'),
+                callback='on_action_debuglog',
+            ),
+            Action(
+                id='show_scrollbars',
+                text=self.tr('Show &Scrollbars'),
+                checkable=True,
+                settings='View/show_scrollbars',
+                callback='on_action_show_scrollbars',
+            ),
+            Action(
+                id='show_menubar',
+                text=self.tr('Show &Menu Bar'),
+                checkable=True,
+                settings='View/show_menubar',
+                callback='on_action_show_menubar',
+            ),
+            Action(
+                id='show_titlebar',
+                text=self.tr('Show &Title Bar'),
+                checkable=True,
+                checked=True,
+                callback='on_action_show_titlebar',
+            ),
+            Action(
+                id='move_window',
+                text=self.tr('Move &Window'),
+                shortcuts=['Ctrl+M'],
+                callback='on_action_move_window',
+            ),
+            Action(
+                id='fullscreen',
+                text=self.tr('&Fullscreen'),
+                shortcuts=['F11'],
+                checkable=True,
+                callback='on_action_fullscreen',
+            ),
+            Action(
+                id='always_on_top',
+                text=self.tr('&Always On Top'),
+                checkable=True,
+                callback='on_action_always_on_top',
+            ),
+            Action(
+                id='settings',
+                text=self.tr('&Settings'),
+                callback='on_action_settings',
+            ),
+            Action(
+                id='keyboard_settings',
+                text=self.tr('&Keyboard && Mouse'),
+                callback='on_action_keyboard_settings',
+            ),
+            Action(
+                id='open_settings_dir',
+                text=self.tr('&Open Settings Folder'),
+                callback='on_action_open_settings_dir',
+            ),
+            Action(
+                id='draw_mode',
+                text=self.tr('&Draw'),
+                shortcuts=['D'],
+                callback='on_action_draw_mode',
+            ),
+            Action(
+                id='set_brush_color',
+                text=self.tr('Brush &Color...'),
+                callback='on_action_set_brush_color',
+            ),
+            Action(
+                id='set_brush_size',
+                text=self.tr('Brush &Size...'),
+                callback='on_action_set_brush_size',
+            ),
+        ])
+
+
+# Lazy accessor for backward compatibility
+_actions = None
+
+
+def get_actions():
+    """Get the actions list, creating it if necessary.
+
+    This function should be called after QApplication is created.
+    """
+    global _actions
+    if _actions is None:
+        _actions = ActionsRegistry.instance().create_actions()
+    return _actions
+
+
+# Backward compatibility alias (deprecated)
+actions = None  # Will be initialized on first access via get_actions()

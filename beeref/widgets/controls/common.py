@@ -31,7 +31,7 @@ class MouseControlsEditorBase(QtWidgets.QDialog):
         super().__init__(parent)
         self.actions = actions
         self.action = self.actions[index.row()]
-        self.setWindowTitle(f'title {self.action.text}')
+        self.setWindowTitle(f'{title} {self.action.text}')
         self.old_modifiers = self.action.get_modifiers()
         self.remove_from_other = None
         self.ignore_on_changed = False
@@ -41,7 +41,7 @@ class MouseControlsEditorBase(QtWidgets.QDialog):
         self.setModal(True)
 
     def init_modifiers_input(self):
-        group = QtWidgets.QGroupBox('Modifiers')
+        group = QtWidgets.QGroupBox(self.tr('Modifiers'))
         group_layout = QtWidgets.QVBoxLayout()
         group.setLayout(group_layout)
         self.layout.addWidget(group)
@@ -118,12 +118,12 @@ class MouseControlsEditorBase(QtWidgets.QDialog):
             if action == self.action:
                 continue
             if action.conflicts_with(temp):
-                msg = ('<p>These controls are already used for:</p>'
-                       f'<p>{action.text}</p>'
-                       '<p>Do you want to remove the other controls'
-                       ' to save these ones?</p>')
+                msg = (self.tr('<p>These controls are already used for:</p>'
+                               '<p>%s</p>'
+                               '<p>Do you want to remove the other controls'
+                               ' to save these ones?</p>') % action.text)
                 reply = QtWidgets.QMessageBox.question(
-                    self, 'Save Controls?', msg)
+                    self, self.tr('Save Controls?'), msg)
                 if reply == QtWidgets.QMessageBox.StandardButton.Yes:
                     self.remove_from_other = action
                     self.accept()
@@ -143,6 +143,7 @@ class MouseControlsModelBase(QtCore.QAbstractTableModel):
     COL_MODIFIERS = 4
     COL_INVERTED = 5
 
+    # Note: Translations are handled in headerData() method
     HEADERS = {
         COL_ACTION: 'Action',
         COL_CHANGED: constants.CHANGED_SYMBOL,
@@ -166,7 +167,11 @@ class MouseControlsModelBase(QtCore.QAbstractTableModel):
         if (role == QtCore.Qt.ItemDataRole.DisplayRole
                 and orientation == QtCore.Qt.Orientation.Horizontal):
             key = self.COLUMNS[section]
-            return self.HEADERS[key]
+            header = self.HEADERS[key]
+            # Translate header text (except symbol)
+            if header != constants.CHANGED_SYMBOL:
+                return self.tr(header)
+            return header
 
     def flags(self, index):
         key = self.COLUMNS[index.column()]
@@ -203,29 +208,29 @@ class MouseControlsModelBase(QtCore.QAbstractTableModel):
             if key == self.COL_INVERTED:
                 if not action.is_configured() or not action.invertible:
                     return None
-                return 'Yes' if action.get_inverted() else 'No'
+                return self.tr('Yes') if action.get_inverted() else self.tr('No')
 
         if role == QtCore.Qt.ItemDataRole.ToolTipRole:
             changed = action.controls_changed()
             if not changed:
                 return
             if key == self.COL_CHANGED:
-                return 'Changed from default'
+                return self.tr('Changed from default')
             if key == self.COL_BUTTON:
                 if action.button == 'Not Configured':
-                    default = 'Not configured'
+                    default = self.tr('Not configured')
                 else:
                     default = action.button
-                return f'Default: {default}'
+                return self.tr('Default: %s') % default
             if key == self.COL_MODIFIERS:
                 if not action.modifiers:
-                    default = 'Not configured'
+                    default = self.tr('Not configured')
                 else:
                     default = ' + '.join(action.modifiers)
-                return f'Default: {default}'
+                return self.tr('Default: %s') % default
             if key == self.COL_INVERTED and action.invertible:
-                default = 'Yes' if action.inverted else 'No'
-                return f'Default: {default}'
+                default = self.tr('Yes') if action.inverted else self.tr('No')
+                return self.tr('Default: %s') % default
 
         if role == QtCore.Qt.ItemDataRole.CheckStateRole:
             if (key == self.COL_INVERTED

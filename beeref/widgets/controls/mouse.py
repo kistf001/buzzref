@@ -33,10 +33,10 @@ class MouseControlsEditor(MouseControlsEditorBase):
 
     def __init__(self, parent, index):
         self.init_dialog(parent, index, KeyboardSettings.MOUSE_ACTIONS,
-                         'Mouse Controls for:')
+                         self.tr('Mouse Controls for:'))
         self.old_button = self.action.get_button()
 
-        self.layout.addWidget(QtWidgets.QLabel('Mouse Button:'))
+        self.layout.addWidget(QtWidgets.QLabel(self.tr('Mouse Button:')))
         self.button_input = QtWidgets.QComboBox(parent=parent)
         self.button_input.insertItems(0, self.action.BUTTON_MAP.keys())
         values = list(self.action.BUTTON_MAP.keys())

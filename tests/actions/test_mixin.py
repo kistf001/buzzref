@@ -26,17 +26,18 @@ class FooWidget(QtWidgets.QWidget, ActionsMixin):
 
 @patch('PyQt6.QtGui.QAction.triggered')
 @patch('PyQt6.QtGui.QAction.toggled')
-@patch('beeref.actions.mixin.menu_structure',
-       [{'menu': 'Foo', 'items': ['foo']}])
-@patch('beeref.actions.mixin.actions',
-       ActionList([Action(
-           id='foo',
-           text='&Foo',
-           shortcuts=['Ctrl+F'],
-           callback='on_foo',
-       )]))
+@patch('beeref.actions.mixin.get_menu_structure',
+       return_value=[{'menu': 'Foo', 'items': ['foo']}])
+@patch('beeref.actions.mixin.get_actions')
 @patch('beeref.config.KeyboardSettings.get_list')
-def test_create_actions(kb_mock, toggle_mock, trigger_mock, qapp):
+def test_create_actions(kb_mock, actions_mock, menu_mock, toggle_mock, trigger_mock, qapp):
+    test_actions = ActionList([Action(
+        id='foo',
+        text='&Foo',
+        shortcuts=['Ctrl+F'],
+        callback='on_foo',
+    )])
+    actions_mock.return_value = test_actions
     kb_mock.side_effect = lambda group, key, default: default
     widget = FooWidget()
     widget.build_menu_and_actions()
@@ -48,42 +49,43 @@ def test_create_actions(kb_mock, toggle_mock, trigger_mock, qapp):
     assert qaction.text() == '&Foo'
     assert qaction.shortcut() == 'Ctrl+F'
     assert qaction.isEnabled() is True
-    from beeref.actions.mixin import actions
-    assert actions['foo'].qaction == qaction
+    assert test_actions['foo'].qaction == qaction
     kb_mock.assert_called_once_with('Actions', 'foo', ['Ctrl+F'])
 
 
-@patch('beeref.actions.mixin.menu_structure',
-       [{'menu': 'Foo', 'items': ['foo']}])
-def test_create_actions_with_shortcut_from_settings(qapp, kbsettings):
-    with patch('beeref.actions.mixin.actions',
-               ActionList([Action(
-                   id='foo',
-                   text='&Foo',
-                   shortcuts=['Ctrl+F'],
-                   callback='on_foo')])):
-        # Create Action inside the test function so that its
-        # kbsettings get created after the kbsettings fixture changes
-        # the file path
-        kbsettings.set_list('Actions', 'foo', ['Alt+O'])
-        widget = FooWidget()
-        widget.build_menu_and_actions()
-        qaction = widget.actions()[0]
-        assert qaction.shortcuts() == ['Alt+O']
+@patch('beeref.actions.mixin.get_menu_structure',
+       return_value=[{'menu': 'Foo', 'items': ['foo']}])
+@patch('beeref.actions.mixin.get_actions')
+def test_create_actions_with_shortcut_from_settings(actions_mock, menu_mock, qapp, kbsettings):
+    test_actions = ActionList([Action(
+        id='foo',
+        text='&Foo',
+        shortcuts=['Ctrl+F'],
+        callback='on_foo')])
+    actions_mock.return_value = test_actions
+    # Create Action inside the test function so that its
+    # kbsettings get created after the kbsettings fixture changes
+    # the file path
+    kbsettings.set_list('Actions', 'foo', ['Alt+O'])
+    widget = FooWidget()
+    widget.build_menu_and_actions()
+    qaction = widget.actions()[0]
+    assert qaction.shortcuts() == ['Alt+O']
 
 
 @patch('PyQt6.QtGui.QAction.triggered')
 @patch('PyQt6.QtGui.QAction.toggled')
-@patch('beeref.actions.mixin.menu_structure',
-       [{'menu': 'Foo', 'items': ['foo']}])
-@patch('beeref.actions.mixin.actions',
-       ActionList([Action(
-           id='foo',
-           text='&Foo',
-           checkable=True,
-           callback='on_foo',
-       )]))
-def test_create_actions_checkable(toggle_mock, trigger_mock, qapp):
+@patch('beeref.actions.mixin.get_menu_structure',
+       return_value=[{'menu': 'Foo', 'items': ['foo']}])
+@patch('beeref.actions.mixin.get_actions')
+def test_create_actions_checkable(actions_mock, menu_mock, toggle_mock, trigger_mock, qapp):
+    test_actions = ActionList([Action(
+        id='foo',
+        text='&Foo',
+        checkable=True,
+        callback='on_foo',
+    )])
+    actions_mock.return_value = test_actions
     widget = FooWidget()
     widget.build_menu_and_actions()
     trigger_mock.connect.assert_not_called()
@@ -98,18 +100,19 @@ def test_create_actions_checkable(toggle_mock, trigger_mock, qapp):
 
 @patch('PyQt6.QtGui.QAction.triggered')
 @patch('PyQt6.QtGui.QAction.toggled')
-@patch('beeref.actions.mixin.menu_structure',
-       [{'menu': 'Foo', 'items': ['foo']}])
-@patch('beeref.actions.mixin.actions',
-       ActionList([Action(
-           id='foo',
-           text='&Foo',
-           checkable=True,
-           checked=True,
-           callback='on_foo',
-       )]))
+@patch('beeref.actions.mixin.get_menu_structure',
+       return_value=[{'menu': 'Foo', 'items': ['foo']}])
+@patch('beeref.actions.mixin.get_actions')
 def test_create_actions_checkable_checked_true(
-        toggle_mock, trigger_mock, qapp):
+        actions_mock, menu_mock, toggle_mock, trigger_mock, qapp):
+    test_actions = ActionList([Action(
+        id='foo',
+        text='&Foo',
+        checkable=True,
+        checked=True,
+        callback='on_foo',
+    )])
+    actions_mock.return_value = test_actions
     widget = FooWidget()
     widget.build_menu_and_actions()
     trigger_mock.connect.assert_not_called()
@@ -125,18 +128,19 @@ def test_create_actions_checkable_checked_true(
 @patch.object(FooWidget, 'on_foo')
 @patch.object(FooWidget, 'settings')
 @patch('PyQt6.QtGui.QAction.toggled')
-@patch('beeref.actions.mixin.menu_structure',
-       [{'menu': 'Foo', 'items': ['foo']}])
-@patch('beeref.actions.mixin.actions',
-       ActionList([Action(
-           id='foo',
-           text='&Foo',
-           checkable=True,
-           settings='foo/bar',
-           callback='on_foo',
-       )]))
+@patch('beeref.actions.mixin.get_menu_structure',
+       return_value=[{'menu': 'Foo', 'items': ['foo']}])
+@patch('beeref.actions.mixin.get_actions')
 def test_create_actions_checkable_with_settings(
-        toggle_mock, settings_mock, callback_mock, qapp):
+        actions_mock, menu_mock, toggle_mock, settings_mock, callback_mock, qapp):
+    test_actions = ActionList([Action(
+        id='foo',
+        text='&Foo',
+        checkable=True,
+        settings='foo/bar',
+        callback='on_foo',
+    )])
+    actions_mock.return_value = test_actions
     widget = FooWidget()
     settings_mock.value.return_value = True
     widget.build_menu_and_actions()
@@ -148,16 +152,17 @@ def test_create_actions_checkable_with_settings(
     callback_mock.assert_called_once_with(True)
 
 
-@patch('beeref.actions.mixin.menu_structure',
-       [{'menu': 'Foo', 'items': ['foo']}])
-@patch('beeref.actions.mixin.actions',
-       ActionList([Action(
-           id='foo',
-           text='&Foo',
-           callback='on_foo',
-           group='bar',
-       )]))
-def test_create_actions_with_group(qapp):
+@patch('beeref.actions.mixin.get_menu_structure',
+       return_value=[{'menu': 'Foo', 'items': ['foo']}])
+@patch('beeref.actions.mixin.get_actions')
+def test_create_actions_with_group(actions_mock, menu_mock, qapp):
+    test_actions = ActionList([Action(
+        id='foo',
+        text='&Foo',
+        callback='on_foo',
+        group='bar',
+    )])
+    actions_mock.return_value = test_actions
     widget = FooWidget()
     widget.build_menu_and_actions()
     assert len(widget.actions()) == 1
@@ -165,27 +170,27 @@ def test_create_actions_with_group(qapp):
     assert widget.bee_actiongroups['bar'] == [qaction]
 
 
-@patch('beeref.actions.mixin.menu_structure',
-       [{'menu': 'Foo', 'items': ['foo']}])
-@patch('beeref.actions.mixin.actions',
-       ActionList([Action(
-           id='foo',
-           text='&Foo',
-           callback='on_foo',
-       )]))
-def test_build_menu_and_actions_with_actions(qapp):
+@patch('beeref.actions.mixin.get_menu_structure',
+       return_value=[{'menu': 'Foo', 'items': ['foo']}])
+@patch('beeref.actions.mixin.get_actions')
+def test_build_menu_and_actions_with_actions(actions_mock, menu_mock, qapp):
+    test_actions = ActionList([Action(
+        id='foo',
+        text='&Foo',
+        callback='on_foo',
+    )])
+    actions_mock.return_value = test_actions
     widget = FooWidget()
     with patch('PyQt6.QtWidgets.QMenu.addAction') as add_mock:
         widget.build_menu_and_actions()
         assert isinstance(widget.context_menu, QtWidgets.QMenu)
-        from beeref.actions.mixin import actions
-        add_mock.assert_called_once_with(actions['foo'].qaction)
+        add_mock.assert_called_once_with(test_actions['foo'].qaction)
 
 
-@patch('beeref.actions.mixin.menu_structure',
-       [{'menu': 'Foo', 'items': [MENU_SEPARATOR]}])
-@patch('beeref.actions.mixin.actions', ActionList([]))
-def test_build_menu_and_actions_with_separator(qapp):
+@patch('beeref.actions.mixin.get_menu_structure',
+       return_value=[{'menu': 'Foo', 'items': [MENU_SEPARATOR]}])
+@patch('beeref.actions.mixin.get_actions', return_value=ActionList([]))
+def test_build_menu_and_actions_with_separator(actions_mock, menu_mock, qapp):
     widget = FooWidget()
     with patch('PyQt6.QtWidgets.QMenu.addSeparator') as sep_mock:
         widget.build_menu_and_actions()
@@ -193,15 +198,16 @@ def test_build_menu_and_actions_with_separator(qapp):
         sep_mock.assert_called_once_with()
 
 
-@patch('beeref.actions.mixin.menu_structure',
-       [{'menu': 'Foo', 'items': [{'menu': 'Bar', 'items': ['foo']}]}])
-@patch('beeref.actions.mixin.actions',
-       ActionList([Action(
-           id='foo',
-           text='&Foo',
-           callback='on_foo',
-       )]))
-def test_build_menu_and_actions_with_submenu(qapp):
+@patch('beeref.actions.mixin.get_menu_structure',
+       return_value=[{'menu': 'Foo', 'items': [{'menu': 'Bar', 'items': ['foo']}]}])
+@patch('beeref.actions.mixin.get_actions')
+def test_build_menu_and_actions_with_submenu(actions_mock, menu_mock, qapp):
+    test_actions = ActionList([Action(
+        id='foo',
+        text='&Foo',
+        callback='on_foo',
+    )])
+    actions_mock.return_value = test_actions
     widget = FooWidget()
     with patch('PyQt6.QtWidgets.QMenu.addAction') as add_mock:
         with patch('PyQt6.QtWidgets.QMenu.addMenu') as addmenu_mock:
@@ -209,46 +215,46 @@ def test_build_menu_and_actions_with_submenu(qapp):
             widget.build_menu_and_actions()
             assert isinstance(widget.context_menu, QtWidgets.QMenu)
             addmenu_mock.assert_called_with('Bar')
-            from beeref.actions.mixin import actions
-            add_mock.assert_called_once_with(actions['foo'].qaction)
+            add_mock.assert_called_once_with(test_actions['foo'].qaction)
 
 
-@patch('beeref.actions.mixin.menu_structure',
-       [{'menu': 'Foo', 'items': ['foo']}])
-@patch('beeref.actions.mixin.actions',
-       ActionList([
-           Action(
-               id='foo',
-               text='&Foo',
-               callback='on_foo',
-               group='g1',
-           ),
-           Action(
-               id='bar',
-               text='&Bar',
-               callback='on_foo',
-               group='g2',
-           ),
-       ]))
-def test_actiongroup_set_enabled(qapp):
+@patch('beeref.actions.mixin.get_menu_structure',
+       return_value=[{'menu': 'Foo', 'items': ['foo']}])
+@patch('beeref.actions.mixin.get_actions')
+def test_actiongroup_set_enabled(actions_mock, menu_mock, qapp):
+    test_actions = ActionList([
+        Action(
+            id='foo',
+            text='&Foo',
+            callback='on_foo',
+            group='g1',
+        ),
+        Action(
+            id='bar',
+            text='&Bar',
+            callback='on_foo',
+            group='g2',
+        ),
+    ])
+    actions_mock.return_value = test_actions
     widget = FooWidget()
     widget.build_menu_and_actions()
     widget.actiongroup_set_enabled('g1', True)
-    from beeref.actions.mixin import actions
-    assert actions['foo'].qaction.isEnabled() is True
-    assert actions['bar'].qaction.isEnabled() is False
+    assert test_actions['foo'].qaction.isEnabled() is True
+    assert test_actions['bar'].qaction.isEnabled() is False
 
 
-@patch('beeref.actions.mixin.menu_structure',
-       [{'menu': 'Foo', 'items': ['foo']}])
-@patch('beeref.actions.mixin.actions',
-       ActionList([Action(
-           id='foo',
-           text='&Foo',
-           callback='on_foo',
-           group='active_when_selection',
-       )]))
-def test_build_menu_and_actions_disables_actiongroups(qapp):
+@patch('beeref.actions.mixin.get_menu_structure',
+       return_value=[{'menu': 'Foo', 'items': ['foo']}])
+@patch('beeref.actions.mixin.get_actions')
+def test_build_menu_and_actions_disables_actiongroups(actions_mock, menu_mock, qapp):
+    test_actions = ActionList([Action(
+        id='foo',
+        text='&Foo',
+        callback='on_foo',
+        group='active_when_selection',
+    )])
+    actions_mock.return_value = test_actions
     widget = FooWidget()
     widget.scene.has_selection.return_value = False
     widget.build_menu_and_actions()
@@ -258,11 +264,11 @@ def test_build_menu_and_actions_disables_actiongroups(qapp):
 
 @patch('PyQt6.QtGui.QAction.triggered')
 @patch('beeref.config.KeyboardSettings.get_list')
-@patch('beeref.actions.mixin.menu_structure',
-       [{'menu': 'Foo', 'items': '_build_recent_files'}])
-@patch('beeref.actions.mixin.actions', ActionList([]))
+@patch('beeref.actions.mixin.get_menu_structure',
+       return_value=[{'menu': 'Foo', 'items': '_build_recent_files'}])
+@patch('beeref.actions.mixin.get_actions', return_value=ActionList([]))
 def test_create_recent_files_more_than_10_files(
-        kb_mock, triggered_mock, qapp):
+        actions_mock, menu_mock, kb_mock, triggered_mock, qapp):
     kb_mock.side_effect = lambda group, key, default: default
     widget = FooWidget()
     widget.settings.get_recent_files.return_value = [
@@ -272,17 +278,17 @@ def test_create_recent_files_more_than_10_files(
     triggered_mock.connect.assert_called()
     assert len(widget.actions()) == 10
 
-    from beeref.actions.mixin import actions
+    test_actions = actions_mock.return_value
     qaction1 = widget.actions()[0]
     assert qaction1.text() == '0.bee'
     assert qaction1.shortcut() == 'Ctrl+1'
     assert qaction1.isEnabled() is True
-    assert actions['recent_files_0'].qaction == qaction1
+    assert test_actions['recent_files_0'].qaction == qaction1
     qaction10 = widget.actions()[9]
     assert qaction10.text() == '9.bee'
     assert qaction10.shortcut() == 'Ctrl+0'
     assert qaction10.isEnabled() is True
-    assert actions['recent_files_9'].qaction == qaction10
+    assert test_actions['recent_files_9'].qaction == qaction10
 
     assert kb_mock.call_count == 10
     kb_mock.assert_has_calls(
@@ -292,12 +298,12 @@ def test_create_recent_files_more_than_10_files(
 
 
 @patch('PyQt6.QtGui.QAction.triggered')
-@patch('beeref.actions.mixin.menu_structure',
-       [{'menu': 'Foo', 'items': '_build_recent_files'}])
-@patch('beeref.actions.mixin.actions', ActionList([]))
+@patch('beeref.actions.mixin.get_menu_structure',
+       return_value=[{'menu': 'Foo', 'items': '_build_recent_files'}])
+@patch('beeref.actions.mixin.get_actions', return_value=ActionList([]))
 @patch('beeref.config.KeyboardSettings.get_list')
 def test_create_recent_files_fewer_files_than_10_files(
-        kb_mock, triggered_mock, qapp):
+        kb_mock, actions_mock, menu_mock, triggered_mock, qapp):
     kb_mock.side_effect = lambda group, key, default: default
     widget = FooWidget()
     widget.settings.get_recent_files.return_value = [
@@ -307,18 +313,18 @@ def test_create_recent_files_fewer_files_than_10_files(
     triggered_mock.connect.assert_called()
     assert len(widget.actions()) == 5
 
-    from beeref.actions.mixin import actions
+    test_actions = actions_mock.return_value
     qaction1 = widget.actions()[0]
     assert qaction1.text() == '0.bee'
     assert qaction1.shortcut() == 'Ctrl+1'
     assert qaction1.isEnabled() is True
-    assert actions['recent_files_0'].qaction == qaction1
+    assert test_actions['recent_files_0'].qaction == qaction1
     qaction5 = widget.actions()[4]
     assert qaction5.text() == '4.bee'
     assert qaction5.shortcut() == 'Ctrl+5'
     assert qaction5.isEnabled() is True
-    assert actions['recent_files_4'].qaction == qaction5
-    assert actions['recent_files_5'].qaction is None
+    assert test_actions['recent_files_4'].qaction == qaction5
+    assert test_actions['recent_files_5'].qaction is None
 
     assert kb_mock.call_count == 5
     kb_mock.assert_has_calls(
@@ -327,11 +333,11 @@ def test_create_recent_files_fewer_files_than_10_files(
         any_order=True)
 
 
-@patch('beeref.actions.mixin.menu_structure',
-       [{'menu': 'Foo', 'items': '_build_recent_files'}])
-@patch('beeref.actions.mixin.actions', ActionList([]))
+@patch('beeref.actions.mixin.get_menu_structure',
+       return_value=[{'menu': 'Foo', 'items': '_build_recent_files'}])
+@patch('beeref.actions.mixin.get_actions', return_value=ActionList([]))
 @patch('beeref.config.KeyboardSettings.get_list')
-def test_create_recent_files_when_no_files(kb_mock, qapp):
+def test_create_recent_files_when_no_files(kb_mock, actions_mock, menu_mock, qapp):
     kb_mock.side_effect = lambda group, key, default: default
     widget = FooWidget()
     widget.settings.get_recent_files.return_value = []
@@ -341,10 +347,10 @@ def test_create_recent_files_when_no_files(kb_mock, qapp):
 
 
 @patch('PyQt6.QtGui.QAction.triggered')
-@patch('beeref.actions.mixin.menu_structure',
-       [{'menu': 'Foo', 'items': '_build_recent_files'}])
-@patch('beeref.actions.mixin.actions', ActionList([]))
-def test_update_recent_files(triggered_mock, qapp):
+@patch('beeref.actions.mixin.get_menu_structure',
+       return_value=[{'menu': 'Foo', 'items': '_build_recent_files'}])
+@patch('beeref.actions.mixin.get_actions', return_value=ActionList([]))
+def test_update_recent_files(actions_mock, menu_mock, triggered_mock, qapp):
     widget = FooWidget()
     widget.settings.get_recent_files.return_value = [
         os.path.abspath('foo.bee')]

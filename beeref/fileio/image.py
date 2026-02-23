@@ -15,15 +15,20 @@
 
 import logging
 import os.path
+import ssl
 import tempfile
 from urllib.error import URLError
 from urllib import parse, request
 
+import certifi
 from PyQt6 import QtGui
 
 import exif
 from lxml import etree
 import plum
+
+# User-Agent for web requests (needed for sites like ArtStation)
+USER_AGENT = 'BeeRef Reference Image Viewer'
 
 
 logger = logging.getLogger(__name__)
@@ -92,15 +97,24 @@ def load_image(path):
     url = bytes(path.toEncoded()).decode()
     domain = '.'.join(parse.urlparse(url).netloc.split(".")[-2:])
     img = exif_rotated_image()
+
+    # SSL context with certifi for proper certificate verification
+    ssl_context = ssl.create_default_context(cafile=certifi.where())
+
+    # Request with User-Agent header (needed for ArtStation, etc.)
+    headers = {'User-Agent': USER_AGENT}
+
     if domain == 'pinterest.com':
         try:
-            page_data = request.urlopen(url).read()
+            req = request.Request(url, headers=headers)
+            page_data = request.urlopen(req, context=ssl_context).read()
             root = etree.HTML(page_data)
             url = root.xpath("//img")[0].get('src')
         except Exception as e:
             logger.debug(f'Pinterest image download failed: {e}')
     try:
-        imgdata = request.urlopen(url).read()
+        req = request.Request(url, headers=headers)
+        imgdata = request.urlopen(req, context=ssl_context).read()
     except URLError as e:
         logger.debug(f'Downloading image failed: {e.reason}')
     else:

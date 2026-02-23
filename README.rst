@@ -30,12 +30,15 @@ What's Different from BeeRef
 
 * **Sketching/Drawing Mode** — Press ``D`` to enter draw mode. Supports tablet pressure sensitivity, customizable brush size and color
 * **Movable Crop Rectangle** — Drag the crop area to reposition it before applying
+* **Show Filename** — Press ``F`` to display the filename of selected image
+* **Capture** — Capture scene area or screen with ``Shift+A``
 * Improved pytest integration (command line flags no longer conflict)
 
 **Compatibility:**
 
 * Python 3.9+ support (including Python 3.13)
 * Updated dependency constraints for better compatibility
+* Improved web image download (ArtStation, Pinterest) with proper SSL and User-Agent handling
 
 
 Installation
@@ -110,6 +113,7 @@ Credits
 * Sketching feature (`PR #150 <https://github.com/rbreu/beeref/pull/150>`_) by `Cinderflame-Linear <https://github.com/Cinderflame-Linear>`_
 * Crop rectangle improvements (`PR #115 <https://github.com/rbreu/beeref/pull/115>`_) by `DarkDefender <https://github.com/DarkDefender>`_
 * Pytest flag fix (`PR #117 <https://github.com/rbreu/beeref/pull/117>`_) by `DarkDefender <https://github.com/DarkDefender>`_
+* Show filename feature, SSL/User-Agent improvements by `g-rix <https://github.com/g-rix>`_
 
 
 License

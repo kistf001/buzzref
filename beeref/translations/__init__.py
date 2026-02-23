@@ -13,8 +13,20 @@
 # You should have received a copy of the GNU General Public License
 # along with BeeRef.  If not, see <https://www.gnu.org/licenses/>.
 
-from .actions import get_actions
-from .mixin import ActionsMixin
+"""Translation files for BeeRef.
 
+This package contains .qm (compiled) and .ts (source) translation files
+for internationalization support.
 
-__all__ = ['ActionsMixin', 'get_actions']
+Supported languages:
+- ko (Korean / 한국어)
+
+To add a new language:
+1. Create beeref_{lang}.ts file (copy from beeref_ko.ts)
+2. Translate strings in the .ts file
+3. Compile: pyside6-lrelease beeref_{lang}.ts -qm beeref_{lang}.qm
+"""
+
+import os
+
+TRANSLATIONS_PATH = os.path.dirname(__file__)
