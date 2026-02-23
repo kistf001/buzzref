@@ -255,16 +255,6 @@ class LanguageWidget(GroupBase):
                     'System Default') if code == 'system' else name
                 self.combo.addItem(display_name, code)
 
-    @property
-    def TITLE(self):
-        return self.tr('Language:')
-
-    @property
-    def HELPTEXT(self):
-        return self.tr(
-            'Select the application language. '
-            'Restart required for changes to take effect.')
-
         # Set current value
         current = self.settings.valueOrDefault(self.KEY)
         index = self.combo.findData(current)
@@ -275,6 +265,16 @@ class LanguageWidget(GroupBase):
         self.layout.addWidget(self.combo)
         self.layout.addStretch(100)
 
+    @property
+    def TITLE(self):
+        return self.tr('Language:')
+
+    @property
+    def HELPTEXT(self):
+        return self.tr(
+            'Select the application language. '
+            'Restart required for changes to take effect.')
+
     def _get_available_languages(self):
         """Scan translations directory for available .qm files."""
         available = set()
@@ -283,7 +283,7 @@ class LanguageWidget(GroupBase):
                 if filename.startswith(
                         'buzzref_') and filename.endswith('.qm'):
                     # Extract language code from buzzref_ko.qm -> ko
-                    lang = filename[7:-3]  # Remove 'buzzref_' and '.qm'
+                    lang = filename[8:-3]  # Remove 'buzzref_' and '.qm'
                     # Handle both 'ko' and 'ko_KR' formats
                     available.add(lang.split('_')[0])
         return available
