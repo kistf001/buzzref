@@ -174,9 +174,10 @@ class ImageStorageFormatWidget(RadioGroup):
     def OPTIONS(self):
         return (
             ('best', self.tr('Best Guess'),
-             self.tr('Small images and images with alpha channel are stored as png,'
-                     ' everything else as jpg')),
-            ('png', self.tr('Always PNG'), self.tr('Lossless, but large bee file')),
+             self.tr('Small images and images with alpha channel '
+                     'are stored as png, everything else as jpg')),
+            ('png', self.tr('Always PNG'), self.tr(
+                'Lossless, but large bee file')),
             ('jpg', self.tr('Always JPG'),
              self.tr('Small bee file, but lossy and no transparency support')))
 
@@ -206,8 +207,8 @@ class AllocationLimitWidget(IntegerGroup):
 
     @property
     def HELPTEXT(self):
-        return self.tr('The maximum image size that can be loaded (in megabytes). '
-                       'Set to 0 for no limitation.')
+        return self.tr('The maximum image size that can be loaded '
+                       '(in megabytes). Set to 0 for no limitation.')
 
 
 class ConfirmCloseUnsavedWidget(SingleCheckboxGroup):
@@ -219,8 +220,8 @@ class ConfirmCloseUnsavedWidget(SingleCheckboxGroup):
 
     @property
     def HELPTEXT(self):
-        return self.tr('When about to close an unsaved file, should BuzzRef ask for '
-                       'confirmation?')
+        return self.tr('When about to close an unsaved file, '
+                       'should BuzzRef ask for confirmation?')
 
     @property
     def LABEL(self):
@@ -250,7 +251,8 @@ class LanguageWidget(GroupBase):
         for code, name in self.LANGUAGES.items():
             if code in available or code in ('system', 'en'):
                 # Translate 'System Default' at runtime
-                display_name = self.tr('System Default') if code == 'system' else name
+                display_name = self.tr(
+                    'System Default') if code == 'system' else name
                 self.combo.addItem(display_name, code)
 
     @property
@@ -259,7 +261,9 @@ class LanguageWidget(GroupBase):
 
     @property
     def HELPTEXT(self):
-        return self.tr('Select the application language. Restart required for changes to take effect.')
+        return self.tr(
+            'Select the application language. '
+            'Restart required for changes to take effect.')
 
         # Set current value
         current = self.settings.valueOrDefault(self.KEY)
@@ -276,7 +280,8 @@ class LanguageWidget(GroupBase):
         available = set()
         if os.path.exists(TRANSLATIONS_PATH):
             for filename in os.listdir(TRANSLATIONS_PATH):
-                if filename.startswith('buzzref_') and filename.endswith('.qm'):
+                if filename.startswith(
+                        'buzzref_') and filename.endswith('.qm'):
                     # Extract language code from buzzref_ko.qm -> ko
                     lang = filename[7:-3]  # Remove 'buzzref_' and '.qm'
                     # Handle both 'ko' and 'ko_KR' formats
@@ -337,10 +342,12 @@ class SettingsDialog(QtWidgets.QDialog):
         self.show()
 
     def on_restore_defaults(self, *args, **kwargs):
+        msg = self.tr('Do you want to restore all settings '
+                      'to their default values?')
         reply = QtWidgets.QMessageBox.question(
             self,
             self.tr('Restore defaults?'),
-            self.tr('Do you want to restore all settings to their default values?'))
+            msg)
 
         if reply == QtWidgets.QMessageBox.StandardButton.Yes:
             BuzzSettings().restore_defaults()

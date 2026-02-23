@@ -927,8 +927,8 @@ def test_sample_color_in_greyscale_mode(qapp, view):
     item.grayscale = True
     view.scene.addItem(item)
     gray = item.sample_color_at(QtCore.QPointF(2, 2))
-    # Grayscale value may vary slightly depending on Qt version/rendering backend
-    # Accept values in range 127-130
+    # Grayscale value may vary slightly depending on
+    # Qt version/rendering backend. Accept values in range 127-130
     assert 127 <= gray.red() <= 130
     assert gray.red() == gray.green() == gray.blue()
 

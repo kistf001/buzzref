@@ -92,10 +92,12 @@ class ScreenCaptureOverlay(QtWidgets.QWidget):
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
             if self.start_pos and self.current_pos:
-                rect = QtCore.QRect(self.start_pos, self.current_pos).normalized()
+                rect = QtCore.QRect(
+                    self.start_pos, self.current_pos).normalized()
                 if rect.width() > 5 and rect.height() > 5:
                     cropped = self.screenshot.copy(rect)
-                    logger.debug(f'Screen captured: {rect.width()}x{rect.height()}')
+                    logger.debug(
+                        f'Screen captured: {rect.width()}x{rect.height()}')
                     self.captured.emit(cropped)
                 else:
                     logger.debug('Selection too small, canceling')

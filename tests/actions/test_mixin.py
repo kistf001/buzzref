@@ -30,7 +30,8 @@ class FooWidget(QtWidgets.QWidget, ActionsMixin):
        return_value=[{'menu': 'Foo', 'items': ['foo']}])
 @patch('buzzref.actions.mixin.get_actions')
 @patch('buzzref.config.KeyboardSettings.get_list')
-def test_create_actions(kb_mock, actions_mock, menu_mock, toggle_mock, trigger_mock, qapp):
+def test_create_actions(kb_mock, actions_mock, menu_mock,
+                        toggle_mock, trigger_mock, qapp):
     test_actions = ActionList([Action(
         id='foo',
         text='&Foo',
@@ -56,7 +57,8 @@ def test_create_actions(kb_mock, actions_mock, menu_mock, toggle_mock, trigger_m
 @patch('buzzref.actions.mixin.get_menu_structure',
        return_value=[{'menu': 'Foo', 'items': ['foo']}])
 @patch('buzzref.actions.mixin.get_actions')
-def test_create_actions_with_shortcut_from_settings(actions_mock, menu_mock, qapp, kbsettings):
+def test_create_actions_with_shortcut_from_settings(
+        actions_mock, menu_mock, qapp, kbsettings):
     test_actions = ActionList([Action(
         id='foo',
         text='&Foo',
@@ -78,7 +80,8 @@ def test_create_actions_with_shortcut_from_settings(actions_mock, menu_mock, qap
 @patch('buzzref.actions.mixin.get_menu_structure',
        return_value=[{'menu': 'Foo', 'items': ['foo']}])
 @patch('buzzref.actions.mixin.get_actions')
-def test_create_actions_checkable(actions_mock, menu_mock, toggle_mock, trigger_mock, qapp):
+def test_create_actions_checkable(
+        actions_mock, menu_mock, toggle_mock, trigger_mock, qapp):
     test_actions = ActionList([Action(
         id='foo',
         text='&Foo',
@@ -132,7 +135,8 @@ def test_create_actions_checkable_checked_true(
        return_value=[{'menu': 'Foo', 'items': ['foo']}])
 @patch('buzzref.actions.mixin.get_actions')
 def test_create_actions_checkable_with_settings(
-        actions_mock, menu_mock, toggle_mock, settings_mock, callback_mock, qapp):
+        actions_mock, menu_mock, toggle_mock, settings_mock,
+        callback_mock, qapp):
     test_actions = ActionList([Action(
         id='foo',
         text='&Foo',
@@ -199,7 +203,8 @@ def test_build_menu_and_actions_with_separator(actions_mock, menu_mock, qapp):
 
 
 @patch('buzzref.actions.mixin.get_menu_structure',
-       return_value=[{'menu': 'Foo', 'items': [{'menu': 'Bar', 'items': ['foo']}]}])
+       return_value=[{'menu': 'Foo',
+                      'items': [{'menu': 'Bar', 'items': ['foo']}]}])
 @patch('buzzref.actions.mixin.get_actions')
 def test_build_menu_and_actions_with_submenu(actions_mock, menu_mock, qapp):
     test_actions = ActionList([Action(
@@ -247,7 +252,8 @@ def test_actiongroup_set_enabled(actions_mock, menu_mock, qapp):
 @patch('buzzref.actions.mixin.get_menu_structure',
        return_value=[{'menu': 'Foo', 'items': ['foo']}])
 @patch('buzzref.actions.mixin.get_actions')
-def test_build_menu_and_actions_disables_actiongroups(actions_mock, menu_mock, qapp):
+def test_build_menu_and_actions_disables_actiongroups(
+        actions_mock, menu_mock, qapp):
     test_actions = ActionList([Action(
         id='foo',
         text='&Foo',
@@ -337,7 +343,8 @@ def test_create_recent_files_fewer_files_than_10_files(
        return_value=[{'menu': 'Foo', 'items': '_build_recent_files'}])
 @patch('buzzref.actions.mixin.get_actions', return_value=ActionList([]))
 @patch('buzzref.config.KeyboardSettings.get_list')
-def test_create_recent_files_when_no_files(kb_mock, actions_mock, menu_mock, qapp):
+def test_create_recent_files_when_no_files(
+        kb_mock, actions_mock, menu_mock, qapp):
     kb_mock.side_effect = lambda group, key, default: default
     widget = FooWidget()
     widget.settings.get_recent_files.return_value = []

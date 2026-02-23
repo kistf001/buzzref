@@ -101,7 +101,8 @@ def tmpfile(tmpdir):
 @pytest.fixture
 def item():
     from buzzref.items import BuzzPixmapItem
-    yield BuzzPixmapItem(QtGui.QImage(10, 10, QtGui.QImage.Format.Format_RGB32))
+    img = QtGui.QImage(10, 10, QtGui.QImage.Format.Format_RGB32)
+    yield BuzzPixmapItem(img)
 
 
 @pytest.fixture(scope="session")

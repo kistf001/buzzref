@@ -48,8 +48,8 @@ def is_wayland():
 
 
 class BuzzGraphicsView(MainControlsMixin,
-                      QtWidgets.QGraphicsView,
-                      ActionsMixin):
+                       QtWidgets.QGraphicsView,
+                       ActionsMixin):
 
     PAN_MODE = 1
     ZOOM_MODE = 2
@@ -523,7 +523,8 @@ class BuzzGraphicsView(MainControlsMixin,
 
         # Create new BuzzPixmapItem and add to scene
         item = BuzzPixmapItem(image)
-        self.undo_stack.push(commands.InsertItems(self.scene, [item], rect.center()))
+        self.undo_stack.push(commands.InsertItems(
+            self.scene, [item], rect.center()))
 
         # Restore selection
         for sel_item in selected_items:
@@ -589,7 +590,8 @@ class BuzzGraphicsView(MainControlsMixin,
             self._on_screen_capture_canceled()
             return
 
-        logger.debug(f'Screen captured: {screenshot.width()}x{screenshot.height()}')
+        logger.debug(
+            f'Screen captured: {screenshot.width()}x{screenshot.height()}')
         self._show_screen_capture_overlay(screenshot)
 
     def _capture_screen_wayland(self):
@@ -610,10 +612,12 @@ class BuzzGraphicsView(MainControlsMixin,
         # Generate unique token
         base = bus.baseService()[1:].replace('.', '_')
         token = f'buzzref_{int(time.time())}'
-        response_path = f'/org/freedesktop/portal/desktop/request/{base}/{token}'
+        response_path = (f'/org/freedesktop/portal/desktop/request/'
+                         f'{base}/{token}')
 
         # Create runtime handler with proper QDBusMessage slot
-        # This must be defined inside the method to use QtDBus.QDBusMessage type
+        # This must be defined inside the method to use QtDBus.QDBusMessage
+        # type
         class _PortalHandler(QtCore.QObject):
             def __init__(self, view):
                 super().__init__(view)
@@ -649,7 +653,8 @@ class BuzzGraphicsView(MainControlsMixin,
         msg = interface.call('Screenshot', '', options)
 
         if msg.type() == QtDBus.QDBusMessage.MessageType.ErrorMessage:
-            logger.error(f'Portal Screenshot call failed: {msg.errorMessage()}')
+            logger.error(
+                f'Portal Screenshot call failed: {msg.errorMessage()}')
             self._on_screen_capture_canceled()
 
     def _handle_portal_response(self, message):
@@ -692,7 +697,8 @@ class BuzzGraphicsView(MainControlsMixin,
             logger.error('Failed to load screenshot from portal')
             return
 
-        logger.debug(f'Portal screenshot loaded: {pixmap.width()}x{pixmap.height()}')
+        logger.debug(
+            f'Portal screenshot loaded: {pixmap.width()}x{pixmap.height()}')
 
         # Add directly to scene (Portal handled region selection)
         item = BuzzPixmapItem(pixmap.toImage())
@@ -703,8 +709,8 @@ class BuzzGraphicsView(MainControlsMixin,
 
     def _show_screen_capture_overlay(self, pixmap):
         """Show the screen capture overlay for region selection."""
-        self.screen_capture_overlay = widgets.screen_capture.ScreenCaptureOverlay(
-            pixmap)
+        overlay_class = widgets.screen_capture.ScreenCaptureOverlay
+        self.screen_capture_overlay = overlay_class(pixmap)
         self.screen_capture_overlay.captured.connect(self._on_screen_captured)
         self.screen_capture_overlay.canceled.connect(
             self._on_screen_capture_canceled)
@@ -784,11 +790,12 @@ class BuzzGraphicsView(MainControlsMixin,
 
     def on_loading_finished(self, filename, errors):
         if errors:
+            msg = self.tr('<p>Problem loading file %s</p>'
+                          '<p>Not accessible or not a proper bee file</p>')
             QtWidgets.QMessageBox.warning(
                 self,
                 self.tr('Problem loading file'),
-                self.tr('<p>Problem loading file %s</p>'
-                        '<p>Not accessible or not a proper bee file</p>') % filename)
+                msg % filename)
         else:
             self.filename = filename
             self.scene.add_queued_items()
@@ -948,8 +955,9 @@ class BuzzGraphicsView(MainControlsMixin,
             self.worker.start()
 
     def on_action_quit(self):
-        confirm = self.get_confirmation_unsaved_changes(
-            self.tr('There are unsaved changes. Are you sure you want to quit?'))
+        msg = self.tr('There are unsaved changes. '
+                      'Are you sure you want to quit?')
+        confirm = self.get_confirmation_unsaved_changes(msg)
         if confirm:
             logger.info('User quit. Exiting...')
             self.app.quit()
@@ -991,7 +999,8 @@ class BuzzGraphicsView(MainControlsMixin,
                 f'<li>{fn}</li>' for fn in errors]
             errornames = '<ul>%s</ul>' % '\n'.join(errornames)
             num = len(errors)
-            msg = self.tr('%n image(s) could not be opened.', '', num) + '<br/>'
+            msg = self.tr('%n image(s) could not be opened.',
+                          '', num) + '<br/>'
             QtWidgets.QMessageBox.warning(
                 self,
                 self.tr('Problem loading images'),
@@ -1207,7 +1216,7 @@ class BuzzGraphicsView(MainControlsMixin,
                 return
         else:
             if self.get_zoom_size(min) > 50:
-                self.scale(1/factor, 1/factor)
+                self.scale(1 / factor, 1 / factor)
             else:
                 logger.debug('Minimum zoom size reached')
                 return
