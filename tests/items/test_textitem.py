@@ -3,16 +3,16 @@ from unittest.mock import patch, MagicMock
 from PyQt6 import QtCore, QtWidgets
 from PyQt6.QtCore import Qt
 
-from beeref.items import BeeTextItem, item_registry
+from buzzref.items import BuzzTextItem, item_registry
 
 
 def test_in_items_registry():
-    assert item_registry['text'] == BeeTextItem
+    assert item_registry['text'] == BuzzTextItem
 
 
-@patch('beeref.selection.SelectableMixin.init_selectable')
+@patch('buzzref.selection.SelectableMixin.init_selectable')
 def test_init(selectable_mock, qapp):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     assert item.save_id is None
     assert item.width
     assert item.height
@@ -25,13 +25,13 @@ def test_init(selectable_mock, qapp):
 
 
 def test_sample_color_at(qapp, view):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     view.scene.addItem(item)
     assert item.sample_color_at(QtCore.QPointF(2.0, 2.0)) is None
 
 
 def test_set_pos_center(qapp):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     with patch.object(item, 'bounding_rect_unselected',
                       return_value=QtCore.QRectF(0, 0, 200, 100)):
         item.set_pos_center(QtCore.QPointF(0, 0))
@@ -40,7 +40,7 @@ def test_set_pos_center(qapp):
 
 
 def test_set_pos_center_when_scaled(qapp):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     item.setScale(2)
     with patch.object(item, 'bounding_rect_unselected',
                       return_value=QtCore.QRectF(0, 0, 200, 100)):
@@ -50,7 +50,7 @@ def test_set_pos_center_when_scaled(qapp):
 
 
 def test_set_pos_center_when_rotated(qapp):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     item.setRotation(90)
     with patch.object(item, 'bounding_rect_unselected',
                       return_value=QtCore.QRectF(0, 0, 200, 100)):
@@ -60,29 +60,29 @@ def test_set_pos_center_when_rotated(qapp):
 
 
 def test_get_extra_save_data(qapp):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     assert item.get_extra_save_data() == {'text': 'foo bar'}
 
 
-@patch('beeref.items.BeeTextItem.boundingRect')
+@patch('buzzref.items.BuzzTextItem.boundingRect')
 def test_contains_when_inside_bounds(brect_mock, qapp):
     brect_mock.return_value = QtCore.QRectF(20, 30, 50, 50)
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     item.contains(QtCore.QPointF(33, 45)) is True
     brect_mock.assert_called_once_with()
 
 
-@patch('beeref.items.BeeTextItem.boundingRect')
+@patch('buzzref.items.BuzzTextItem.boundingRect')
 def test_contains_when_outside_bounds(brect_mock, qapp):
     brect_mock.return_value = QtCore.QRectF(20, 30, 50, 50)
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     item.contains(QtCore.QPointF(19, 29)) is False
     brect_mock.assert_called_once_with()
 
 
 @patch('PyQt6.QtWidgets.QGraphicsTextItem.paint')
 def test_paint(paint_mock, qapp):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     item.paint_selectable = MagicMock()
     painter = MagicMock()
     option = MagicMock()
@@ -94,67 +94,67 @@ def test_paint(paint_mock, qapp):
 
 
 def test_has_selection_outline_when_not_selected(view):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     view.scene.addItem(item)
     item.setSelected(False)
     item.has_selection_outline() is False
 
 
 def test_has_selection_outline_when_selected(view):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     view.scene.addItem(item)
     item.setSelected(True)
     item.has_selection_outline() is True
 
 
 def test_has_selection_handles_when_not_selected(view):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     view.scene.addItem(item)
     item.setSelected(False)
-    item2 = BeeTextItem('baz')
+    item2 = BuzzTextItem('baz')
     view.scene.addItem(item2)
     item2.setSelected(False)
     item.has_selection_handles() is False
 
 
 def test_has_selection_handles_when_selected_single(view):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     view.scene.addItem(item)
     item.setSelected(True)
-    item2 = BeeTextItem('baz')
+    item2 = BuzzTextItem('baz')
     view.scene.addItem(item2)
     item2.setSelected(False)
     item.has_selection_handles() is True
 
 
 def test_has_selection_handles_when_selected_multi(view):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     view.scene.addItem(item)
     item.setSelected(True)
-    item2 = BeeTextItem('baz')
+    item2 = BuzzTextItem('baz')
     view.scene.addItem(item2)
     item2.setSelected(True)
     item.has_selection_handles() is False
 
 
 def test_has_selection_handles_when_selected_single_and_edit_mode(view):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     item.edit_mode = False
     view.scene.addItem(item)
     item.setSelected(True)
-    item2 = BeeTextItem('baz')
+    item2 = BuzzTextItem('baz')
     view.scene.addItem(item2)
     item2.setSelected(False)
     item.has_selection_handles() is False
 
 
 def test_selection_action_items(qapp):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     assert item.selection_action_items() == [item]
 
 
 def test_update_from_data(qapp):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     item.update_from_data(
         save_id=3,
         x=11,
@@ -171,14 +171,14 @@ def test_update_from_data(qapp):
 
 
 def test_update_from_data_keeps_flip(qapp):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     item.do_flip()
     item.update_from_data(flip=-1)
     assert item.flip() == -1
 
 
 def test_update_from_data_keeps_unset_values(qapp):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     item.setScale(3)
     item.update_from_data(rotation=45)
     assert item.scale() == 3
@@ -186,12 +186,12 @@ def test_update_from_data_keeps_unset_values(qapp):
 
 
 def test_create_from_data(qapp):
-    item = BeeTextItem.create_from_data(data={'text': 'hello world'})
+    item = BuzzTextItem.create_from_data(data={'text': 'hello world'})
     item.toPlainText() == 'hello world'
 
 
 def test_create_copy(qapp):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     item.setPos(20, 30)
     item.setRotation(33)
     item.do_flip()
@@ -208,7 +208,7 @@ def test_create_copy(qapp):
 
 
 def test_enter_edit_mode(view):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     view.scene.addItem(item)
     item.enter_edit_mode()
     assert item.edit_mode is True
@@ -218,9 +218,9 @@ def test_enter_edit_mode(view):
 
 
 @patch('PyQt6.QtGui.QTextCursor')
-@patch('beeref.items.BeeTextItem.setTextCursor')
+@patch('buzzref.items.BuzzTextItem.setTextCursor')
 def test_exit_edit_mode(setcursor_mock, cursor_mock, view):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     item.edit_mode = True
     item.old_text = 'old'
     view.scene.addItem(item)
@@ -236,7 +236,7 @@ def test_exit_edit_mode(setcursor_mock, cursor_mock, view):
 
 
 def test_exit_edit_mode_when_text_empty(view):
-    item = BeeTextItem(' \r\n\t')
+    item = BuzzTextItem(' \r\n\t')
     item.edit_mode = True
     item.old_text = 'old'
     view.scene.addItem(item)
@@ -252,9 +252,9 @@ def test_exit_edit_mode_when_text_empty(view):
 
 
 @patch('PyQt6.QtGui.QTextCursor')
-@patch('beeref.items.BeeTextItem.setTextCursor')
+@patch('buzzref.items.BuzzTextItem.setTextCursor')
 def test_exit_edit_mode_when_commit_false(setcursor_mock, cursor_mock, view):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     item.edit_mode = True
     item.old_text = 'old'
     view.scene.addItem(item)
@@ -271,9 +271,9 @@ def test_exit_edit_mode_when_commit_false(setcursor_mock, cursor_mock, view):
 
 
 @patch('PyQt6.QtWidgets.QGraphicsTextItem.keyPressEvent')
-@patch('beeref.items.BeeTextItem.exit_edit_mode')
+@patch('buzzref.items.BuzzTextItem.exit_edit_mode')
 def test_key_press_event_any_key(exit_mock, key_press_mock, view):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     view.scene.addItem(item)
     view.scene.edit_item = item
     event = MagicMock()
@@ -286,9 +286,9 @@ def test_key_press_event_any_key(exit_mock, key_press_mock, view):
 
 
 @patch('PyQt6.QtWidgets.QGraphicsTextItem.keyPressEvent')
-@patch('beeref.items.BeeTextItem.exit_edit_mode')
+@patch('buzzref.items.BuzzTextItem.exit_edit_mode')
 def test_key_press_event_shift_return(exit_mock, key_press_mock, view):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     view.scene.addItem(item)
     view.scene.edit_item = item
     event = MagicMock()
@@ -301,9 +301,9 @@ def test_key_press_event_shift_return(exit_mock, key_press_mock, view):
 
 
 @patch('PyQt6.QtWidgets.QGraphicsTextItem.keyPressEvent')
-@patch('beeref.items.BeeTextItem.exit_edit_mode')
+@patch('buzzref.items.BuzzTextItem.exit_edit_mode')
 def test_key_press_event_shift_enter(exit_mock, key_press_mock, view):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     view.scene.addItem(item)
     view.scene.edit_item = item
     event = MagicMock()
@@ -316,9 +316,9 @@ def test_key_press_event_shift_enter(exit_mock, key_press_mock, view):
 
 
 @patch('PyQt6.QtWidgets.QGraphicsTextItem.keyPressEvent')
-@patch('beeref.items.BeeTextItem.exit_edit_mode')
+@patch('buzzref.items.BuzzTextItem.exit_edit_mode')
 def test_key_press_event_return(exit_mock, key_press_mock, view):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     view.scene.addItem(item)
     view.scene.edit_item = item
     event = MagicMock()
@@ -330,9 +330,9 @@ def test_key_press_event_return(exit_mock, key_press_mock, view):
 
 
 @patch('PyQt6.QtWidgets.QGraphicsTextItem.keyPressEvent')
-@patch('beeref.items.BeeTextItem.exit_edit_mode')
+@patch('buzzref.items.BuzzTextItem.exit_edit_mode')
 def test_key_press_event_enter(exit_mock, key_press_mock, view):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     view.scene.addItem(item)
     view.scene.edit_item = item
     event = MagicMock()
@@ -344,9 +344,9 @@ def test_key_press_event_enter(exit_mock, key_press_mock, view):
 
 
 @patch('PyQt6.QtWidgets.QGraphicsTextItem.keyPressEvent')
-@patch('beeref.items.BeeTextItem.exit_edit_mode')
+@patch('buzzref.items.BuzzTextItem.exit_edit_mode')
 def test_key_press_event_escape(exit_mock, key_press_mock, view):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     view.scene.addItem(item)
     view.scene.edit_item = item
     event = MagicMock()
@@ -359,6 +359,6 @@ def test_key_press_event_escape(exit_mock, key_press_mock, view):
 
 def test_item_to_clipboard(qapp):
     clipboard = QtWidgets.QApplication.clipboard()
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     item.copy_to_clipboard(clipboard)
     assert clipboard.text() == 'foo bar'

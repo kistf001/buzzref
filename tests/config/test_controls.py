@@ -2,7 +2,7 @@ from unittest.mock import patch, MagicMock
 
 from PyQt6.QtCore import Qt
 
-from beeref.config.controls import (
+from buzzref.config.controls import (
     KeyboardSettings,
     MouseConfig,
     MouseWheelConfig,
@@ -426,8 +426,8 @@ def test_keyboardsettings_get_list_default(kbsettings):
     assert shortcuts == ['Ctrl+B']
 
 
-@patch('beeref.config.KeyboardSettings.setValue')
-@patch('beeref.config.KeyboardSettings.remove')
+@patch('buzzref.config.KeyboardSettings.setValue')
+@patch('buzzref.config.KeyboardSettings.remove')
 def test_keyboardsettings_set_list_other_than_default_saves(
         remove_mock, set_mock, kbsettings):
     kbsettings.set_list('mygroup', 'bar', ['Ctrl+R'], ['Ctrl+Z'])
@@ -435,8 +435,8 @@ def test_keyboardsettings_set_list_other_than_default_saves(
     remove_mock.assert_not_called()
 
 
-@patch('beeref.config.KeyboardSettings.setValue')
-@patch('beeref.config.KeyboardSettings.remove')
+@patch('buzzref.config.KeyboardSettings.setValue')
+@patch('buzzref.config.KeyboardSettings.remove')
 def test_keyboardsettings_set_list_with_than_default_doesnt_save(
         remove_mock, set_mock, kbsettings):
     kbsettings.set_list('mygroup', 'bar', ['Ctrl+R'], ['Ctrl+R'])

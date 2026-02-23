@@ -2,8 +2,8 @@ from unittest.mock import MagicMock, patch
 
 from PyQt6 import QtCore, QtWidgets
 
-from beeref.view import BeeGraphicsView
-from beeref.widgets.welcome_overlay import (
+from buzzref.view import BuzzGraphicsView
+from buzzref.widgets.welcome_overlay import (
     RecentFilesModel,
     RecentFilesView,
     WelcomeOverlay,
@@ -30,11 +30,11 @@ def test_recent_files_model_data_fontrole(view):
     assert font.underline() is True
 
 
-@patch('beeref.widgets.welcome_overlay.BeeSettings.get_recent_files',
+@patch('buzzref.widgets.welcome_overlay.BuzzSettings.get_recent_files',
        return_value=[])
 def test_welcome_overlay_when_no_recent_files(qapp):
     parent = QtWidgets.QMainWindow()
-    view = BeeGraphicsView(qapp, parent)
+    view = BuzzGraphicsView(qapp, parent)
     overlay = WelcomeOverlay(view)
     overlay.show()
     assert overlay.layout.indexOf(overlay.files_widget) < 0
@@ -52,7 +52,7 @@ def test_recent_files_view_size_hint(qapp):
 
 def test_recent_files_view_on_click(qapp):
     parent = QtWidgets.QMainWindow()
-    view = BeeGraphicsView(qapp, parent)
+    view = BuzzGraphicsView(qapp, parent)
     view.open_from_file = MagicMock()
     overlay = WelcomeOverlay(view)
     overlay.files_view.update_files(['foo.bee', 'bar.bee'])
@@ -62,11 +62,11 @@ def test_recent_files_view_on_click(qapp):
     view.open_from_file.assert_called_once_with('bar.bee')
 
 
-@patch('beeref.widgets.welcome_overlay.BeeSettings.get_recent_files',
+@patch('buzzref.widgets.welcome_overlay.BuzzSettings.get_recent_files',
        return_value=['foo.bee', 'bar.bee'])
 def test_welcome_overlay_when_recent_files(qapp):
     parent = QtWidgets.QMainWindow()
-    view = BeeGraphicsView(qapp, parent)
+    view = BuzzGraphicsView(qapp, parent)
     overlay = WelcomeOverlay(view)
     overlay.show()
     assert overlay.layout.indexOf(overlay.files_widget) == 0
@@ -75,7 +75,7 @@ def test_welcome_overlay_when_recent_files(qapp):
 @patch('PyQt6.QtWidgets.QGraphicsView.mousePressEvent')
 def test_mouse_press_when_move_window_active(mouse_event_mock, qapp):
     parent = QtWidgets.QMainWindow()
-    view = BeeGraphicsView(qapp, parent)
+    view = BuzzGraphicsView(qapp, parent)
     overlay = WelcomeOverlay(view)
     overlay.movewin_active = True
     overlay.mousePressEvent(MagicMock())

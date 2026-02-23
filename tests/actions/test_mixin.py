@@ -3,10 +3,10 @@ from unittest.mock import patch, MagicMock, call
 
 from PyQt6 import QtWidgets
 
-from beeref.actions import ActionsMixin
-from beeref.actions.actions import Action
-from beeref.actions.menu_structure import MENU_SEPARATOR
-from beeref.utils import ActionList
+from buzzref.actions import ActionsMixin
+from buzzref.actions.actions import Action
+from buzzref.actions.menu_structure import MENU_SEPARATOR
+from buzzref.utils import ActionList
 
 
 class FooWidget(QtWidgets.QWidget, ActionsMixin):
@@ -26,10 +26,10 @@ class FooWidget(QtWidgets.QWidget, ActionsMixin):
 
 @patch('PyQt6.QtGui.QAction.triggered')
 @patch('PyQt6.QtGui.QAction.toggled')
-@patch('beeref.actions.mixin.get_menu_structure',
+@patch('buzzref.actions.mixin.get_menu_structure',
        return_value=[{'menu': 'Foo', 'items': ['foo']}])
-@patch('beeref.actions.mixin.get_actions')
-@patch('beeref.config.KeyboardSettings.get_list')
+@patch('buzzref.actions.mixin.get_actions')
+@patch('buzzref.config.KeyboardSettings.get_list')
 def test_create_actions(kb_mock, actions_mock, menu_mock, toggle_mock, trigger_mock, qapp):
     test_actions = ActionList([Action(
         id='foo',
@@ -53,9 +53,9 @@ def test_create_actions(kb_mock, actions_mock, menu_mock, toggle_mock, trigger_m
     kb_mock.assert_called_once_with('Actions', 'foo', ['Ctrl+F'])
 
 
-@patch('beeref.actions.mixin.get_menu_structure',
+@patch('buzzref.actions.mixin.get_menu_structure',
        return_value=[{'menu': 'Foo', 'items': ['foo']}])
-@patch('beeref.actions.mixin.get_actions')
+@patch('buzzref.actions.mixin.get_actions')
 def test_create_actions_with_shortcut_from_settings(actions_mock, menu_mock, qapp, kbsettings):
     test_actions = ActionList([Action(
         id='foo',
@@ -75,9 +75,9 @@ def test_create_actions_with_shortcut_from_settings(actions_mock, menu_mock, qap
 
 @patch('PyQt6.QtGui.QAction.triggered')
 @patch('PyQt6.QtGui.QAction.toggled')
-@patch('beeref.actions.mixin.get_menu_structure',
+@patch('buzzref.actions.mixin.get_menu_structure',
        return_value=[{'menu': 'Foo', 'items': ['foo']}])
-@patch('beeref.actions.mixin.get_actions')
+@patch('buzzref.actions.mixin.get_actions')
 def test_create_actions_checkable(actions_mock, menu_mock, toggle_mock, trigger_mock, qapp):
     test_actions = ActionList([Action(
         id='foo',
@@ -100,9 +100,9 @@ def test_create_actions_checkable(actions_mock, menu_mock, toggle_mock, trigger_
 
 @patch('PyQt6.QtGui.QAction.triggered')
 @patch('PyQt6.QtGui.QAction.toggled')
-@patch('beeref.actions.mixin.get_menu_structure',
+@patch('buzzref.actions.mixin.get_menu_structure',
        return_value=[{'menu': 'Foo', 'items': ['foo']}])
-@patch('beeref.actions.mixin.get_actions')
+@patch('buzzref.actions.mixin.get_actions')
 def test_create_actions_checkable_checked_true(
         actions_mock, menu_mock, toggle_mock, trigger_mock, qapp):
     test_actions = ActionList([Action(
@@ -128,9 +128,9 @@ def test_create_actions_checkable_checked_true(
 @patch.object(FooWidget, 'on_foo')
 @patch.object(FooWidget, 'settings')
 @patch('PyQt6.QtGui.QAction.toggled')
-@patch('beeref.actions.mixin.get_menu_structure',
+@patch('buzzref.actions.mixin.get_menu_structure',
        return_value=[{'menu': 'Foo', 'items': ['foo']}])
-@patch('beeref.actions.mixin.get_actions')
+@patch('buzzref.actions.mixin.get_actions')
 def test_create_actions_checkable_with_settings(
         actions_mock, menu_mock, toggle_mock, settings_mock, callback_mock, qapp):
     test_actions = ActionList([Action(
@@ -152,9 +152,9 @@ def test_create_actions_checkable_with_settings(
     callback_mock.assert_called_once_with(True)
 
 
-@patch('beeref.actions.mixin.get_menu_structure',
+@patch('buzzref.actions.mixin.get_menu_structure',
        return_value=[{'menu': 'Foo', 'items': ['foo']}])
-@patch('beeref.actions.mixin.get_actions')
+@patch('buzzref.actions.mixin.get_actions')
 def test_create_actions_with_group(actions_mock, menu_mock, qapp):
     test_actions = ActionList([Action(
         id='foo',
@@ -170,9 +170,9 @@ def test_create_actions_with_group(actions_mock, menu_mock, qapp):
     assert widget.bee_actiongroups['bar'] == [qaction]
 
 
-@patch('beeref.actions.mixin.get_menu_structure',
+@patch('buzzref.actions.mixin.get_menu_structure',
        return_value=[{'menu': 'Foo', 'items': ['foo']}])
-@patch('beeref.actions.mixin.get_actions')
+@patch('buzzref.actions.mixin.get_actions')
 def test_build_menu_and_actions_with_actions(actions_mock, menu_mock, qapp):
     test_actions = ActionList([Action(
         id='foo',
@@ -187,9 +187,9 @@ def test_build_menu_and_actions_with_actions(actions_mock, menu_mock, qapp):
         add_mock.assert_called_once_with(test_actions['foo'].qaction)
 
 
-@patch('beeref.actions.mixin.get_menu_structure',
+@patch('buzzref.actions.mixin.get_menu_structure',
        return_value=[{'menu': 'Foo', 'items': [MENU_SEPARATOR]}])
-@patch('beeref.actions.mixin.get_actions', return_value=ActionList([]))
+@patch('buzzref.actions.mixin.get_actions', return_value=ActionList([]))
 def test_build_menu_and_actions_with_separator(actions_mock, menu_mock, qapp):
     widget = FooWidget()
     with patch('PyQt6.QtWidgets.QMenu.addSeparator') as sep_mock:
@@ -198,9 +198,9 @@ def test_build_menu_and_actions_with_separator(actions_mock, menu_mock, qapp):
         sep_mock.assert_called_once_with()
 
 
-@patch('beeref.actions.mixin.get_menu_structure',
+@patch('buzzref.actions.mixin.get_menu_structure',
        return_value=[{'menu': 'Foo', 'items': [{'menu': 'Bar', 'items': ['foo']}]}])
-@patch('beeref.actions.mixin.get_actions')
+@patch('buzzref.actions.mixin.get_actions')
 def test_build_menu_and_actions_with_submenu(actions_mock, menu_mock, qapp):
     test_actions = ActionList([Action(
         id='foo',
@@ -218,9 +218,9 @@ def test_build_menu_and_actions_with_submenu(actions_mock, menu_mock, qapp):
             add_mock.assert_called_once_with(test_actions['foo'].qaction)
 
 
-@patch('beeref.actions.mixin.get_menu_structure',
+@patch('buzzref.actions.mixin.get_menu_structure',
        return_value=[{'menu': 'Foo', 'items': ['foo']}])
-@patch('beeref.actions.mixin.get_actions')
+@patch('buzzref.actions.mixin.get_actions')
 def test_actiongroup_set_enabled(actions_mock, menu_mock, qapp):
     test_actions = ActionList([
         Action(
@@ -244,9 +244,9 @@ def test_actiongroup_set_enabled(actions_mock, menu_mock, qapp):
     assert test_actions['bar'].qaction.isEnabled() is False
 
 
-@patch('beeref.actions.mixin.get_menu_structure',
+@patch('buzzref.actions.mixin.get_menu_structure',
        return_value=[{'menu': 'Foo', 'items': ['foo']}])
-@patch('beeref.actions.mixin.get_actions')
+@patch('buzzref.actions.mixin.get_actions')
 def test_build_menu_and_actions_disables_actiongroups(actions_mock, menu_mock, qapp):
     test_actions = ActionList([Action(
         id='foo',
@@ -263,10 +263,10 @@ def test_build_menu_and_actions_disables_actiongroups(actions_mock, menu_mock, q
 
 
 @patch('PyQt6.QtGui.QAction.triggered')
-@patch('beeref.config.KeyboardSettings.get_list')
-@patch('beeref.actions.mixin.get_menu_structure',
+@patch('buzzref.config.KeyboardSettings.get_list')
+@patch('buzzref.actions.mixin.get_menu_structure',
        return_value=[{'menu': 'Foo', 'items': '_build_recent_files'}])
-@patch('beeref.actions.mixin.get_actions', return_value=ActionList([]))
+@patch('buzzref.actions.mixin.get_actions', return_value=ActionList([]))
 def test_create_recent_files_more_than_10_files(
         actions_mock, menu_mock, kb_mock, triggered_mock, qapp):
     kb_mock.side_effect = lambda group, key, default: default
@@ -298,10 +298,10 @@ def test_create_recent_files_more_than_10_files(
 
 
 @patch('PyQt6.QtGui.QAction.triggered')
-@patch('beeref.actions.mixin.get_menu_structure',
+@patch('buzzref.actions.mixin.get_menu_structure',
        return_value=[{'menu': 'Foo', 'items': '_build_recent_files'}])
-@patch('beeref.actions.mixin.get_actions', return_value=ActionList([]))
-@patch('beeref.config.KeyboardSettings.get_list')
+@patch('buzzref.actions.mixin.get_actions', return_value=ActionList([]))
+@patch('buzzref.config.KeyboardSettings.get_list')
 def test_create_recent_files_fewer_files_than_10_files(
         kb_mock, actions_mock, menu_mock, triggered_mock, qapp):
     kb_mock.side_effect = lambda group, key, default: default
@@ -333,10 +333,10 @@ def test_create_recent_files_fewer_files_than_10_files(
         any_order=True)
 
 
-@patch('beeref.actions.mixin.get_menu_structure',
+@patch('buzzref.actions.mixin.get_menu_structure',
        return_value=[{'menu': 'Foo', 'items': '_build_recent_files'}])
-@patch('beeref.actions.mixin.get_actions', return_value=ActionList([]))
-@patch('beeref.config.KeyboardSettings.get_list')
+@patch('buzzref.actions.mixin.get_actions', return_value=ActionList([]))
+@patch('buzzref.config.KeyboardSettings.get_list')
 def test_create_recent_files_when_no_files(kb_mock, actions_mock, menu_mock, qapp):
     kb_mock.side_effect = lambda group, key, default: default
     widget = FooWidget()
@@ -347,9 +347,9 @@ def test_create_recent_files_when_no_files(kb_mock, actions_mock, menu_mock, qap
 
 
 @patch('PyQt6.QtGui.QAction.triggered')
-@patch('beeref.actions.mixin.get_menu_structure',
+@patch('buzzref.actions.mixin.get_menu_structure',
        return_value=[{'menu': 'Foo', 'items': '_build_recent_files'}])
-@patch('beeref.actions.mixin.get_actions', return_value=ActionList([]))
+@patch('buzzref.actions.mixin.get_actions', return_value=ActionList([]))
 def test_update_recent_files(actions_mock, menu_mock, triggered_mock, qapp):
     widget = FooWidget()
     widget.settings.get_recent_files.return_value = [

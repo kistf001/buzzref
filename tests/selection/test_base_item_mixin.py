@@ -2,11 +2,11 @@ from unittest.mock import patch, MagicMock
 
 from PyQt6 import QtCore, QtGui
 
-from beeref.items import BeePixmapItem
+from buzzref.items import BuzzPixmapItem
 
 
 def test_set_scale(qapp, imgfilename3x3):
-    item = BeePixmapItem(QtGui.QImage(imgfilename3x3), imgfilename3x3)
+    item = BuzzPixmapItem(QtGui.QImage(imgfilename3x3), imgfilename3x3)
     item.prepareGeometryChange = MagicMock()
     item.setScale(3)
     assert item.scale() == 3
@@ -50,7 +50,7 @@ def test_set_zvalue_sets_new_min(view, item):
 def test_bring_to_front(view, item):
     view.scene.addItem(item)
     item.setZValue(3.3)
-    item2 = BeePixmapItem(QtGui.QImage())
+    item2 = BuzzPixmapItem(QtGui.QImage())
     view.scene.addItem(item2)
     item2.bring_to_front()
     assert item2.zValue() > item.zValue()

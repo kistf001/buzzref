@@ -7,7 +7,7 @@ import pytest
 
 from PyQt6 import QtGui
 
-from beeref.config.settings import CommandlineArgs
+from buzzref.config.settings import CommandlineArgs
 
 
 def test_command_line_args_singleton():
@@ -16,7 +16,7 @@ def test_command_line_args_singleton():
     CommandlineArgs._instance = None
 
 
-@patch('beeref.config.settings.parser.parse_args')
+@patch('buzzref.config.settings.parser.parse_args')
 def test_command_line_args_with_check_forces_new_parsing(parse_mock):
     args1 = CommandlineArgs()
     parse_mock.assert_called_with([])

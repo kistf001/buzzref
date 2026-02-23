@@ -3,14 +3,14 @@ requires = ["setuptools>=61.0.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-include = ["beeref*"]
+include = ["buzzref*"]
 
 [tool.setuptools.package-data]
 "*" = ["*.html", "*.png"]
-"beeref.translations" = ["*.qm"]
+"buzzref.translations" = ["*.qm"]
 
 [project]
-name = "BeeRef"
+name = "BuzzRef"
 version = "0.3.4-dev"
 description = "A simple reference image viewer"
 readme = "README.rst"
@@ -29,7 +29,7 @@ dependencies = [
 ]
 
 [project.gui-scripts]
-beeref = "beeref.__main__:main"
+buzzref = "buzzref.__main__:main"
 
 [project.urls]
 Homepage = "https://beeref.org/"

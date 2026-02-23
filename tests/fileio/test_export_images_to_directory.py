@@ -5,16 +5,16 @@ import pytest
 
 from PyQt6 import QtGui
 
-from beeref.items import BeePixmapItem
-from beeref.fileio.errors import BeeFileIOError
-from beeref.fileio.export import ImagesToDirectoryExporter
+from buzzref.items import BuzzPixmapItem
+from buzzref.fileio.errors import BuzzFileIOError
+from buzzref.fileio.export import ImagesToDirectoryExporter
 
 
 def test_images_to_directory_exporter_export_writes_images(
         view, tmpdir, imgdata3x3, imgfilename3x3,):
-    item1 = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item1 = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item1)
-    item2 = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item2 = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     item2.save_id = 3
     view.scene.addItem(item2)
     exporter = ImagesToDirectoryExporter(view.scene, tmpdir)
@@ -28,9 +28,9 @@ def test_images_to_directory_exporter_export_writes_images(
 
 def test_images_to_directory_exporter_export_file_exists_no_user_input(
         view, tmpdir, imgdata3x3, imgfilename3x3,):
-    item1 = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item1 = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item1)
-    item2 = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item2 = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item2)
 
     with open(os.path.join(tmpdir, '0002.png'), 'w') as f:
@@ -49,11 +49,11 @@ def test_images_to_directory_exporter_export_file_exists_no_user_input(
 
 def test_images_to_directory_exporter_export_file_exists_skip(
         view, tmpdir, imgdata3x3, imgfilename3x3,):
-    item1 = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item1 = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item1)
-    item2 = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item2 = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item2)
-    item3 = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item3 = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item3)
 
     with open(os.path.join(tmpdir, '0002.png'), 'w') as f:
@@ -78,11 +78,11 @@ def test_images_to_directory_exporter_export_file_exists_skip(
 
 def test_images_to_directory_exporter_export_file_exists_skip_all(
         view, tmpdir, imgdata3x3, imgfilename3x3,):
-    item1 = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item1 = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item1)
-    item2 = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item2 = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item2)
-    item3 = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item3 = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item3)
 
     with open(os.path.join(tmpdir, '0002.png'), 'w') as f:
@@ -106,11 +106,11 @@ def test_images_to_directory_exporter_export_file_exists_skip_all(
 
 def test_images_to_directory_exporter_export_file_exists_overwrite(
         view, tmpdir, imgdata3x3, imgfilename3x3,):
-    item1 = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item1 = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item1)
-    item2 = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item2 = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item2)
-    item3 = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item3 = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item3)
 
     with open(os.path.join(tmpdir, '0002.png'), 'w') as f:
@@ -135,11 +135,11 @@ def test_images_to_directory_exporter_export_file_exists_overwrite(
 
 def test_images_to_directory_exporter_export_file_exists_overwrite_all(
         view, tmpdir, imgdata3x3, imgfilename3x3,):
-    item1 = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item1 = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item1)
-    item2 = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item2 = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item2)
-    item3 = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item3 = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item3)
 
     with open(os.path.join(tmpdir, '0002.png'), 'w') as f:
@@ -163,7 +163,7 @@ def test_images_to_directory_exporter_export_file_exists_overwrite_all(
 
 def test_images_to_directory_exporter_export_with_worker(
         view, tmpdir, imgdata3x3, imgfilename3x3,):
-    item = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item)
     worker = MagicMock(canceled=False)
     exporter = ImagesToDirectoryExporter(view.scene, tmpdir)
@@ -179,7 +179,7 @@ def test_images_to_directory_exporter_export_with_worker(
 
 def test_images_to_directory_exporter_export_with_worker_when_canceled(
         view, tmpdir, imgdata3x3, imgfilename3x3,):
-    item = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item)
     worker = MagicMock(canceled=True)
     exporter = ImagesToDirectoryExporter(view.scene, tmpdir)
@@ -194,7 +194,7 @@ def test_images_to_directory_exporter_export_with_worker_when_canceled(
 
 def test_images_to_directory_exporter_export_with_worker_when_file_exists(
         view, tmpdir, imgdata3x3, imgfilename3x3,):
-    item = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item)
 
     with open(os.path.join(tmpdir, '0001.png'), 'w') as f:
@@ -216,13 +216,13 @@ def test_images_to_directory_exporter_export_with_worker_when_file_exists(
 def test_images_to_directory_exporter_export_when_dir_not_writeable(
         view, tmpdir, imgdata3x3, imgfilename3x3,):
 
-    item = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item)
 
     os.chmod(tmpdir, stat.S_IREAD)
     exporter = ImagesToDirectoryExporter(view.scene, tmpdir)
 
-    with pytest.raises(BeeFileIOError) as e:
+    with pytest.raises(BuzzFileIOError) as e:
         exporter.export()
         assert e.filename == tmpdir
 
@@ -230,7 +230,7 @@ def test_images_to_directory_exporter_export_when_dir_not_writeable(
 def test_images_to_directory_exporter_export_when_dir_not_writeable_w_worker(
         view, tmpdir, imgdata3x3, imgfilename3x3,):
 
-    item = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item)
 
     os.chmod(tmpdir, stat.S_IREAD)
@@ -248,7 +248,7 @@ def test_images_to_directory_exporter_export_when_dir_not_writeable_w_worker(
 def test_images_to_directory_exporter_export_when_img_not_writeable(
         view, tmpdir, imgdata3x3, imgfilename3x3,):
 
-    item = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item)
 
     imgfilename = os.path.join(tmpdir, '0001.png')
@@ -259,7 +259,7 @@ def test_images_to_directory_exporter_export_when_img_not_writeable(
     exporter = ImagesToDirectoryExporter(view.scene, tmpdir)
     exporter.handle_existing = 'overwrite_all'
 
-    with pytest.raises(BeeFileIOError) as e:
+    with pytest.raises(BuzzFileIOError) as e:
         exporter.export()
         assert e.filename == tmpdir
 
@@ -267,7 +267,7 @@ def test_images_to_directory_exporter_export_when_img_not_writeable(
 def test_images_to_directory_exporter_export_when_img_not_writeable_w_worker(
         view, tmpdir, imgdata3x3, imgfilename3x3,):
 
-    item = BeePixmapItem(QtGui.QImage(imgfilename3x3))
+    item = BuzzPixmapItem(QtGui.QImage(imgfilename3x3))
     view.scene.addItem(item)
 
     imgfilename = os.path.join(tmpdir, '0001.png')
