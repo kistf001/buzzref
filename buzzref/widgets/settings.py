@@ -236,7 +236,12 @@ class LanguageWidget(GroupBase):
     LANGUAGES = {
         'system': None,  # Translated at runtime
         'en': 'English',
+        'es': 'Español (Spanish)',
+        'fr': 'Français (French)',
+        'ja': '日本語 (Japanese)',
         'ko': '한국어 (Korean)',
+        'zh_CN': '简体中文 (Chinese Simplified)',
+        'zh_TW': '繁體中文 (Chinese Traditional)',
     }
 
     def __init__(self):
@@ -284,8 +289,12 @@ class LanguageWidget(GroupBase):
                         'buzzref_') and filename.endswith('.qm'):
                     # Extract language code from buzzref_ko.qm -> ko
                     lang = filename[8:-3]  # Remove 'buzzref_' and '.qm'
-                    # Handle both 'ko' and 'ko_KR' formats
-                    available.add(lang.split('_')[0])
+                    # Keep full code for Chinese variants (zh_CN, zh_TW)
+                    # but simplify other locale variants (ko_KR -> ko)
+                    if lang.startswith('zh_'):
+                        available.add(lang)
+                    else:
+                        available.add(lang.split('_')[0])
         return available
 
     def _on_combo_changed(self, index):
