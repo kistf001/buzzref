@@ -294,6 +294,13 @@ class LanguageWidget(GroupBase):
         code = self.combo.itemData(index)
         self.on_value_changed(code)
 
+        # Show restart notification
+        QtWidgets.QMessageBox.information(
+            self,
+            self.tr('Language Changed'),
+            self.tr('Please restart BuzzRef for the language change to take effect.')
+        )
+
     def set_value(self, value):
         index = self.combo.findData(value)
         if index >= 0:
