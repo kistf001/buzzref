@@ -106,7 +106,8 @@ class BuzzGraphicsView(MainControlsMixin,
         # Load files given via command line
         if commandline_args.filenames:
             fn = commandline_args.filenames[0]
-            if os.path.splitext(fn)[1] == '.bee':
+            ext = os.path.splitext(fn)[1].lower()
+            if ext in ('.bee', '.pur'):
                 self.open_from_file(fn)
             else:
                 self.do_insert_images(commandline_args.filenames)
@@ -811,8 +812,13 @@ class BuzzGraphicsView(MainControlsMixin,
     def open_from_file(self, filename):
         logger.info(f'Opening file {filename}')
         self.clear_scene()
-        self.worker = fileio.ThreadedIO(
-            fileio.load_bee, filename, self.scene)
+        # Choose loader based on file extension
+        ext = os.path.splitext(filename)[1].lower()
+        if ext == '.pur':
+            loader = fileio.load_pur
+        else:
+            loader = fileio.load_bee
+        self.worker = fileio.ThreadedIO(loader, filename, self.scene)
         self.worker.progress.connect(self.on_items_loaded)
         self.worker.finished.connect(self.on_loading_finished)
         self.progress = widgets.BuzzProgressDialog(
@@ -832,7 +838,9 @@ class BuzzGraphicsView(MainControlsMixin,
         filename, f = QtWidgets.QFileDialog.getOpenFileName(
             parent=self,
             caption=self.tr('Open file'),
-            filter=f'{constants.APPNAME} File (*.bee)')
+            filter=(f'{constants.APPNAME} File (*.bee);;'
+                    'PureRef File (*.pur);;'
+                    'All Files (*)'))
         if filename:
             filename = os.path.normpath(filename)
             self.open_from_file(filename)

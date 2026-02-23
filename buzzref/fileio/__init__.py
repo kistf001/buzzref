@@ -20,6 +20,7 @@ from PyQt6 import QtCore
 from buzzref import commands
 from buzzref.fileio.errors import BuzzFileIOError
 from buzzref.fileio.image import load_image
+from buzzref.fileio.pureref import PureRefIO
 from buzzref.fileio.sql import SQLiteIO, is_bee_file
 from buzzref.items import BuzzPixmapItem
 
@@ -27,6 +28,7 @@ from buzzref.items import BuzzPixmapItem
 __all__ = [
     'is_bee_file',
     'load_bee',
+    'load_pur',
     'save_bee',
     'load_images',
     'ThreadedLoader',
@@ -40,6 +42,13 @@ def load_bee(filename, scene, worker=None):
     """Load BuzzRef native file."""
     logger.info(f'Loading from file {filename}...')
     io = SQLiteIO(filename, scene, readonly=True, worker=worker)
+    return io.read()
+
+
+def load_pur(filename, scene, worker=None):
+    """Load PureRef file."""
+    logger.info(f'Loading PureRef file {filename}...')
+    io = PureRefIO(filename, scene, worker=worker)
     return io.read()
 
 

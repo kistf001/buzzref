@@ -32,6 +32,7 @@ What's Different from BuzzRef
 * **Movable Crop Rectangle** — Drag the crop area to reposition it before applying
 * **Show Filename** — Press ``F`` to display the filename of selected image
 * **Capture** — Capture scene area or screen with ``Shift+A``
+* **PureRef Import** — Open ``.pur`` files directly to migrate from PureRef
 * Improved pytest integration (command line flags no longer conflict)
 
 **Compatibility:**
@@ -114,6 +115,7 @@ Credits
 * Crop rectangle improvements (`PR #115 <https://github.com/rbreu/buzzref/pull/115>`_) by `DarkDefender <https://github.com/DarkDefender>`_
 * Pytest flag fix (`PR #117 <https://github.com/rbreu/buzzref/pull/117>`_) by `DarkDefender <https://github.com/DarkDefender>`_
 * Show filename feature, SSL/User-Agent improvements by `g-rix <https://github.com/g-rix>`_
+* PureRef file format library by `FyorDev <https://github.com/FyorDev/PureRef-format>`_ (MIT License)
 
 
 License
