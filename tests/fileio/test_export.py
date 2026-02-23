@@ -1,6 +1,6 @@
 import pytest
 
-from beeref.fileio.export import (
+from buzzref.fileio.export import (
     exporter_registry,
     SceneToPixmapExporter,
     SceneToSVGExporter,

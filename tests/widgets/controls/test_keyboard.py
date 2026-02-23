@@ -2,20 +2,20 @@ from unittest.mock import patch, MagicMock
 
 from PyQt6 import QtWidgets, QtCore, QtGui
 
-from beeref.actions.actions import Action
-from beeref.widgets.controls.keyboard import (
+from buzzref.actions.actions import Action
+from buzzref.widgets.controls.keyboard import (
     KeyboardShortcutsDelegate,
     KeyboardShortcutsEditor,
     KeyboardShortcutsModel,
     KeyboardShortcutsProxy,
 )
-from beeref.utils import ActionList
+from buzzref.utils import ActionList
 
 
 def test_keyboard_shortcuts_editor_on_save_no_conflicts(view):
     a1 = Action(id='foo', text='Foo', shortcuts=['Ctrl+F'])
     a2 = Action(id='bar', text='Bar', shortcuts=['Ctrl+B'])
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([a1, a2])):
         editor = KeyboardShortcutsEditor(
             view,
@@ -31,7 +31,7 @@ def test_keyboard_shortcuts_editor_on_save_no_conflicts(view):
 def test_keyboard_shortcuts_editor_on_save_reenter_existing_shortcut(view):
     a1 = Action(id='foo', text='Foo', shortcuts=['Ctrl+F'])
     a2 = Action(id='bar', text='bar', shortcuts=['Ctrl+B'])
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([a1, a2])):
         editor = KeyboardShortcutsEditor(
             view,
@@ -50,7 +50,7 @@ def test_keyboard_shortcuts_editor_on_save_conflicts_cancel(
         question_mock, view):
     a1 = Action(id='foo', text='Foo', shortcuts=['Ctrl+F'])
     a2 = Action(id='bar', text='Bar', shortcuts=['Ctrl+B'])
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([a1, a2])):
         editor = KeyboardShortcutsEditor(
             view,
@@ -69,7 +69,7 @@ def test_keyboard_shortcuts_editor_on_save_conflicts_confirm(
         question_mock, view):
     a1 = Action(id='foo', text='Foo', shortcuts=['Ctrl+F'])
     a2 = Action(id='bar', text='Bar', shortcuts=['Ctrl+B'])
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([a1, a2])):
         editor = KeyboardShortcutsEditor(
             view,
@@ -88,7 +88,7 @@ def test_keyboard_shortcuts_editor_on_save_conflicts_cancel_when_no_shortcut(
         question_mock, view):
     a1 = Action(id='foo', text='Foo')
     a2 = Action(id='bar', text='Bar', shortcuts=['Ctrl+B'])
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([a1, a2])):
         editor = KeyboardShortcutsEditor(
             view,
@@ -104,7 +104,7 @@ def test_keyboard_shortcuts_editor_on_save_conflicts_cancel_when_no_shortcut(
 def test_keyboard_shortcuts_delegate_setmodeldata(view):
     a1 = Action(id='foo', text='Foo')
     a2 = Action(id='bar', text='Bar', shortcuts=['Ctrl+B'])
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([a1, a2])):
         model = KeyboardShortcutsModel()
         delegate = KeyboardShortcutsDelegate()
@@ -120,7 +120,7 @@ def test_keyboard_shortcuts_model_columncount():
     model.columnCount(None) == 4
 
 
-@patch('beeref.widgets.controls.keyboard.get_actions',
+@patch('buzzref.widgets.controls.keyboard.get_actions',
        return_value=ActionList([
            Action(id='foo', text='Foo', shortcuts=['Ctrl+F']),
            Action(id='bar', text='Bar', shortcuts=['Ctrl+B'])
@@ -133,7 +133,7 @@ def test_keyboard_shortcuts_model_rowcount(actions_mock):
 def test_keyboard_shortcuts_model_data_gets_text():
     action = Action(id='foo', text='&Foo', shortcuts=['Ctrl+F'])
     action.menu_path = ['&Bar', 'Ba&z']
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([action])):
         model = KeyboardShortcutsModel()
         value = model.data(
@@ -146,7 +146,7 @@ def test_keyboard_shortcuts_model_data_gets_text():
 
 def test_keyboard_shortcuts_model_data_gets_changed_when_not_changed():
     action = Action(id='foo', text='Foo', shortcuts=['Ctrl+F'])
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([action])):
         model = KeyboardShortcutsModel()
         value = model.data(
@@ -159,7 +159,7 @@ def test_keyboard_shortcuts_model_data_gets_changed_when_not_changed():
 
 def test_keyboard_shortcuts_model_data_gets_changed_when_changed(kbsettings):
     action = Action(id='foo', text='Foo', shortcuts=['Ctrl+F'])
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([action])):
         action.set_shortcuts(['Ctrl+B'])
         model = KeyboardShortcutsModel()
@@ -173,7 +173,7 @@ def test_keyboard_shortcuts_model_data_gets_changed_when_changed(kbsettings):
 
 def test_keyboard_shortcuts_model_data_gets_shortcut():
     action = Action(id='foo', text='Foo', shortcuts=['Ctrl+F'])
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([action])):
         model = KeyboardShortcutsModel()
         value = model.data(
@@ -186,7 +186,7 @@ def test_keyboard_shortcuts_model_data_gets_shortcut():
 
 def test_keyboard_shortcuts_model_data_tooltip_changed_when_not_changed():
     action = Action(id='foo', text='Foo', shortcuts=['Ctrl+F'])
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([action])):
         model = KeyboardShortcutsModel()
         value = model.data(
@@ -200,7 +200,7 @@ def test_keyboard_shortcuts_model_data_tooltip_changed_when_not_changed():
 def test_keyboard_shortcuts_model_data_tooltip_changed_when_changed():
     action = Action(id='foo', text='Foo', shortcuts=['Ctrl+F'])
     action.set_shortcuts(['Ctrl+B'])
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([action])):
         model = KeyboardShortcutsModel()
         value = model.data(
@@ -213,7 +213,7 @@ def test_keyboard_shortcuts_model_data_tooltip_changed_when_changed():
 
 def test_keyboard_shortcuts_model_data_tooltip_shortcut_when_not_changed():
     action = Action(id='foo', text='Foo', shortcuts=['Ctrl+F'])
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([action])):
         model = KeyboardShortcutsModel()
         value = model.data(
@@ -226,7 +226,7 @@ def test_keyboard_shortcuts_model_data_tooltip_shortcut_when_not_changed():
 
 def test_keyboard_shortcuts_model_data_tooltip_shortcut_not_changed_not_set():
     action = Action(id='foo', text='Foo')
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([action])):
         model = KeyboardShortcutsModel()
         value = model.data(
@@ -239,7 +239,7 @@ def test_keyboard_shortcuts_model_data_tooltip_shortcut_not_changed_not_set():
 
 def test_keyboard_shortcuts_model_data_tooltip_shortcut_when_changed():
     action = Action(id='foo', text='Foo', shortcuts=['Ctrl+F'])
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([action])):
         action.set_shortcuts(['Ctrl+B'])
         model = KeyboardShortcutsModel()
@@ -253,7 +253,7 @@ def test_keyboard_shortcuts_model_data_tooltip_shortcut_when_changed():
 
 def test_keyboard_shortcuts_model_data_tooltip_shortcut_changed_from_none():
     action = Action(id='foo', text='Foo')
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([action])):
         action.set_shortcuts(['Ctrl+B'])
         model = KeyboardShortcutsModel()
@@ -267,7 +267,7 @@ def test_keyboard_shortcuts_model_data_tooltip_shortcut_changed_from_none():
 
 def test_keyboard_shortcuts_model_setdata_saves():
     action = Action(id='foo', text='Foo', shortcuts=['Ctrl+F'])
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([action])):
         model = KeyboardShortcutsModel()
         model.setData(
@@ -281,7 +281,7 @@ def test_keyboard_shortcuts_model_setdata_saves():
 
 def test_keyboard_shortcuts_model_setdata_saves_second_shortcut():
     action = Action(id='foo', text='Foo', shortcuts=['Ctrl+F'])
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([action])):
         model = KeyboardShortcutsModel()
         model.setData(
@@ -295,7 +295,7 @@ def test_keyboard_shortcuts_model_setdata_saves_second_shortcut():
 
 def test_keyboard_shortcuts_model_setdata_saves_second_shortcut_no_first():
     action = Action(id='foo', text='Foo')
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([action])):
         model = KeyboardShortcutsModel()
         model.setData(
@@ -309,7 +309,7 @@ def test_keyboard_shortcuts_model_setdata_saves_second_shortcut_no_first():
 
 def test_keyboard_shortcuts_model_setdata_removes_duplicate():
     action = Action(id='foo', text='Foo', shortcuts=['Ctrl+B'])
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([action])):
         model = KeyboardShortcutsModel()
         model.setData(
@@ -324,7 +324,7 @@ def test_keyboard_shortcuts_model_setdata_removes_duplicate():
 def test_keyboard_shortcuts_model_setdata_remove_from_other():
     a1 = Action(id='foo', text='Foo', shortcuts=['Ctrl+F'])
     a2 = Action(id='bar', text='Bar', shortcuts=['Ctrl+B'])
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([a1, a2])):
         model = KeyboardShortcutsModel()
         model.setData(
@@ -362,7 +362,7 @@ def test_flags_shortcut_column():
                      | QtCore.Qt.ItemFlag.ItemIsEditable)
 
 
-@patch('beeref.widgets.controls.keyboard.get_actions',
+@patch('buzzref.widgets.controls.keyboard.get_actions',
        return_value=ActionList([Action(id='bar', text='Bar'),
                    Action(id='foo', text='Foo'),
                    Action(id='baz', text='Baz')]))
@@ -376,7 +376,7 @@ def test_keyboard_shortcuts_proxy_data_unfiltered(actions_mock):
         proxy.index(2, 0), QtCore.Qt.ItemDataRole.DisplayRole) == 'Baz'
 
 
-@patch('beeref.widgets.controls.keyboard.get_actions',
+@patch('buzzref.widgets.controls.keyboard.get_actions',
        return_value=ActionList([Action(id='bar', text='Bar'),
                    Action(id='foo', text='Foo'),
                    Action(id='baz', text='Baz')]))
@@ -394,7 +394,7 @@ def test_keyboard_shortcuts_proxy_setdata_saves_correct_filtered_index():
     a2 = Action(id='foo', text='Foo')
     a3 = Action(id='baz', text='Baz')
 
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([a1, a2, a3])):
         proxy = KeyboardShortcutsProxy()
         proxy.setFilterFixedString('b')
@@ -410,7 +410,7 @@ def test_keyboard_shortcuts_proxy_setdata_saves_correct_filtered_index():
 def test_keyboard_shortcuts_proxy_setdata_remove_from_other():
     a1 = Action(id='foo', text='Foo', shortcuts=['Ctrl+F'])
     a2 = Action(id='bar', text='Bar', shortcuts=['Ctrl+B'])
-    with patch('beeref.widgets.controls.keyboard.get_actions',
+    with patch('buzzref.widgets.controls.keyboard.get_actions',
                return_value=ActionList([a1, a2])):
         proxy = KeyboardShortcutsProxy()
         proxy.setData(

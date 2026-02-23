@@ -8,7 +8,7 @@ from PyQt6 import QtGui, QtWidgets
 
 
 def pytest_configure(config):
-    # Ignore logging configuration for BeeRef during test runs. This
+    # Ignore logging configuration for BuzzRef during test runs. This
     # avoids logging to the regular log file and spamming test output
     # with debug messages.
     #
@@ -26,8 +26,8 @@ def pytest_configure(config):
 
 
 @pytest.fixture(autouse=True)
-def reset_beeref_actions():
-    from beeref.actions.actions import get_actions
+def reset_buzzref_actions():
+    from buzzref.actions.actions import get_actions
     for key in list(get_actions().keys()):
         if key.startswith('recent_files_'):
             get_actions().pop(key)
@@ -35,7 +35,7 @@ def reset_beeref_actions():
 
 @pytest.fixture(autouse=True)
 def commandline_args():
-    config_patcher = patch('beeref.view.commandline_args')
+    config_patcher = patch('buzzref.view.commandline_args')
     config_mock = config_patcher.start()
     config_mock.filenames = []
     yield config_mock
@@ -44,11 +44,11 @@ def commandline_args():
 
 @pytest.fixture(autouse=True)
 def settings(tmpdir):
-    from beeref.config import BeeSettings
-    dir_patcher = patch('beeref.config.BeeSettings.get_settings_dir',
+    from buzzref.config import BuzzSettings
+    dir_patcher = patch('buzzref.config.BuzzSettings.get_settings_dir',
                         return_value=tmpdir.dirname)
     dir_patcher.start()
-    settings = BeeSettings()
+    settings = BuzzSettings()
     yield settings
     settings.clear()
     dir_patcher.stop()
@@ -56,8 +56,8 @@ def settings(tmpdir):
 
 @pytest.fixture(autouse=True)
 def kbsettings(tmpdir):
-    from beeref.config import KeyboardSettings
-    dir_patcher = patch('beeref.config.BeeSettings.get_settings_dir',
+    from buzzref.config import KeyboardSettings
+    dir_patcher = patch('buzzref.config.BuzzSettings.get_settings_dir',
                         return_value=tmpdir.dirname)
     dir_patcher.start()
     kbsettings = KeyboardSettings()
@@ -68,9 +68,9 @@ def kbsettings(tmpdir):
 
 @pytest.fixture
 def main_window(qtbot):
-    from beeref.__main__ import BeeRefMainWindow
+    from buzzref.__main__ import BuzzRefMainWindow
     app = QtWidgets.QApplication.instance()
-    main = BeeRefMainWindow(app)
+    main = BuzzRefMainWindow(app)
     qtbot.addWidget(main)
     yield main
 
@@ -100,11 +100,11 @@ def tmpfile(tmpdir):
 
 @pytest.fixture
 def item():
-    from beeref.items import BeePixmapItem
-    yield BeePixmapItem(QtGui.QImage(10, 10, QtGui.QImage.Format.Format_RGB32))
+    from buzzref.items import BuzzPixmapItem
+    yield BuzzPixmapItem(QtGui.QImage(10, 10, QtGui.QImage.Format.Format_RGB32))
 
 
 @pytest.fixture(scope="session")
 def qapp():
-    from beeref.__main__ import BeeRefApplication
-    yield BeeRefApplication([])
+    from buzzref.__main__ import BuzzRefApplication
+    yield BuzzRefApplication([])

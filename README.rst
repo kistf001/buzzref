@@ -3,15 +3,15 @@ BuzzRef — A Feature-Enhanced Reference Image Viewer
 
 .. raw:: html
 
-   <img align="left" width="100" height="100" src="https://raw.githubusercontent.com/kistf001/buzzref/main/beeref/assets/logo.png">
+   <img align="left" width="100" height="100" src="https://raw.githubusercontent.com/kistf001/buzzref/main/buzzref/assets/logo.png">
 
-**BuzzRef** is an actively maintained fork of `BeeRef <https://github.com/rbreu/beeref>`_ by Rebecca Breu, released under GPL-3.0.
+**BuzzRef** is an actively maintained fork of `BuzzRef <https://github.com/rbreu/buzzref>`_ by Rebecca Breu, released under GPL-3.0.
 
 This fork focuses on incorporating community contributions, bug fixes, and new features that enhance the creative workflow.
 
 |python-version| |github-ci-flake8| |github-ci-pytest|
 
-.. image:: https://github.com/rbreu/beeref/blob/main/images/screenshot.png
+.. image:: https://github.com/rbreu/buzzref/blob/main/images/screenshot.png
 
 .. |python-version| image:: https://img.shields.io/badge/python-3.9%2B-blue
    :target: https://www.python.org/
@@ -23,7 +23,7 @@ This fork focuses on incorporating community contributions, bug fixes, and new f
    :target: https://github.com/kistf001/buzzref/actions/workflows/pytest.yml
 
 
-What's Different from BeeRef
+What's Different from BuzzRef
 ----------------------------
 
 **New Features:**
@@ -51,7 +51,7 @@ Get the file for your operating system (Windows, Linux, macOS) from the `latest 
 
 **Linux users** need to give the file executable rights before running it.
 
-**MacOS X users**, look at `detailed instructions <https://beeref.org/macosx-run.html>`_ if you have problems running BuzzRef.
+**MacOS X users**, look at `detailed instructions <https://buzzref.org/macosx-run.html>`_ if you have problems running BuzzRef.
 
 
 Development Version
@@ -61,7 +61,7 @@ To get the current development version, you need to have a working Python 3.9+ e
 
   pip install git+https://github.com/kistf001/buzzref.git
 
-Then run ``beeref`` or ``beeref filename.bee``.
+Then run ``buzzref`` or ``buzzref filename.bee``.
 
 
 Features
@@ -93,11 +93,11 @@ You can access the log output via *Help -> Show Debug Log*. In case BuzzRef does
 
 Windows:
 
-  C:\Documents and Settings\USERNAME\Application Data\BeeRef\BeeRef.log
+  C:\Documents and Settings\USERNAME\Application Data\BuzzRef\BuzzRef.log
 
 Linux and MacOS:
 
-  /home/USERNAME/.config/BeeRef/BeeRef.log
+  /home/USERNAME/.config/BuzzRef/BuzzRef.log
 
 
 Notes for developers
@@ -109,10 +109,10 @@ BuzzRef is written in Python and PyQt6. For more info, see `CONTRIBUTING.rst <ht
 Credits
 -------
 
-* Original BeeRef by `Rebecca Breu <https://github.com/rbreu>`_
-* Sketching feature (`PR #150 <https://github.com/rbreu/beeref/pull/150>`_) by `Cinderflame-Linear <https://github.com/Cinderflame-Linear>`_
-* Crop rectangle improvements (`PR #115 <https://github.com/rbreu/beeref/pull/115>`_) by `DarkDefender <https://github.com/DarkDefender>`_
-* Pytest flag fix (`PR #117 <https://github.com/rbreu/beeref/pull/117>`_) by `DarkDefender <https://github.com/DarkDefender>`_
+* Original BuzzRef by `Rebecca Breu <https://github.com/rbreu>`_
+* Sketching feature (`PR #150 <https://github.com/rbreu/buzzref/pull/150>`_) by `Cinderflame-Linear <https://github.com/Cinderflame-Linear>`_
+* Crop rectangle improvements (`PR #115 <https://github.com/rbreu/buzzref/pull/115>`_) by `DarkDefender <https://github.com/DarkDefender>`_
+* Pytest flag fix (`PR #117 <https://github.com/rbreu/buzzref/pull/117>`_) by `DarkDefender <https://github.com/DarkDefender>`_
 * Show filename feature, SSL/User-Agent improvements by `g-rix <https://github.com/g-rix>`_
 
 

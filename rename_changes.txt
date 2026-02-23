@@ -1,0 +1,163 @@
+# BuzzRef → BuzzRef 리네이밍 변경 목록
+# Generated: 2026-02-23
+
+## 요약
+- 총 752개 buzzref/BuzzRef 참조
+- 155개 import 문
+- 16개 Bee* 클래스
+
+================================================================================
+## 1. 디렉토리/파일명 변경 (7개)
+================================================================================
+
+buzzref/                              → buzzref/
+buzzref.desktop                       → buzzref.desktop
+BuzzRef.spec                          → BuzzRef.spec
+BuzzRef.egg-info/                     → 삭제 (빌드 생성물)
+org.buzzref.BuzzRef.appdata.xml        → org.buzzref.BuzzRef.appdata.xml
+buzzref/translations/buzzref_ko.ts     → buzzref/translations/buzzref_ko.ts
+buzzref/translations/buzzref_ko.qm     → buzzref/translations/buzzref_ko.qm
+
+================================================================================
+## 2. 클래스명 변경 (16개)
+================================================================================
+
+BeeAssets               → BuzzAssets
+BeeErrorItem            → BuzzErrorItem
+BeeFileIOError          → BuzzFileIOError
+BeeGraphicsScene        → BuzzGraphicsScene
+BeeGraphicsView         → BuzzGraphicsView
+BeeItemMixin            → BuzzItemMixin
+BeeLogger               → BuzzLogger
+BeeNotification         → BuzzNotification
+BeePathItem             → BuzzPathItem
+BeePixmapItem           → BuzzPixmapItem
+BeeProgressDialog       → BuzzProgressDialog
+BuzzRefApplication       → BuzzRefApplication
+BuzzRefMainWindow        → BuzzRefMainWindow
+BeeRotatingFileHandler  → BuzzRotatingFileHandler
+BeeSettings             → BuzzSettings
+BeeSettingsEvents       → BuzzSettingsEvents
+BeeTextItem             → BuzzTextItem
+
+================================================================================
+## 3. 문자열 치환 규칙
+================================================================================
+
+패키지명:
+  buzzref              → buzzref
+  BuzzRef              → BuzzRef
+
+클래스 접두사:
+  Bee                 → Buzz  (클래스명에서만)
+
+================================================================================
+## 4. 영향받는 파일 목록 (75개)
+================================================================================
+
+### 설정/메타 파일
+- pyproject.toml
+- buzzref.desktop → buzzref.desktop
+- BuzzRef.spec → BuzzRef.spec
+- org.buzzref.BuzzRef.appdata.xml → org.buzzref.BuzzRef.appdata.xml
+
+### 문서
+- README.rst
+- CHANGELOG.rst
+- CONTRIBUTING.rst
+
+### 소스 코드 (buzzref/ → buzzref/)
+- __main__.py
+- actions/__init__.py
+- actions/actions.py
+- actions/menu_structure.py
+- actions/mixin.py
+- assets/__init__.py
+- commands.py
+- config/__init__.py
+- config/controls.py
+- config/settings.py
+- constants.py
+- fileio/__init__.py
+- fileio/errors.py
+- fileio/export.py
+- fileio/image.py
+- fileio/sql.py
+- items.py
+- logging.py
+- main_controls.py
+- scene.py
+- selection.py
+- translations/__init__.py
+- translations/buzzref_ko.ts → buzzref_ko.ts
+- utils.py
+- view.py
+- widgets/__init__.py
+- widgets/color_gamut.py
+- widgets/controls/__init__.py
+- widgets/controls/common.py
+- widgets/controls/keyboard.py
+- widgets/controls/mouse.py
+- widgets/controls/mousewheel.py
+- widgets/screen_capture.py
+- widgets/settings.py
+- widgets/welcome_overlay.py
+
+### 테스트 (tests/)
+- conftest.py
+- test_assets.py
+- test_commands.py
+- test_logging.py
+- test_main.py
+- test_scene.py
+- test_utils.py
+- test_view.py
+- actions/test_actions.py
+- actions/test_mixin.py
+- config/test_controls.py
+- config/test_settings.py
+- fileio/test_export.py
+- fileio/test_export_images_to_directory.py
+- fileio/test_export_scene_to_pixmap.py
+- fileio/test_export_scene_to_svg.py
+- fileio/test_image.py
+- fileio/test_init.py
+- fileio/test_sql.py
+- items/test_erroritem.py
+- items/test_items.py
+- items/test_pixmapitem.py
+- items/test_textitem.py
+- selection/test_base_item_mixin.py
+- selection/test_multi_select_item.py
+- selection/test_rubberband_item.py
+- selection/test_selectable_mixin.py
+- widgets/controls/test_controls.py
+- widgets/controls/test_keyboard.py
+- widgets/controls/test_mouse.py
+- widgets/controls/test_mousewheel.py
+- widgets/test_color_gamut.py
+- widgets/test_settings.py
+- widgets/test_welcome_overlay.py
+- widgets/test_widgets.py
+
+### 도구
+- tools/build_appimage.py
+- tools/find_linux_libs.py
+- tools/linux_libs_notes.rst
+- scripts/compile_translations.py
+
+================================================================================
+## 5. 유지되는 항목 (변경하지 않음)
+================================================================================
+
+- pyproject.toml의 upstream URL (buzzref.org, rbreu/buzzref)
+  → 원본 프로젝트 참조로 유지
+
+================================================================================
+## 6. 작업 후 필요한 조치
+================================================================================
+
+1. .venv 삭제 및 재생성
+2. pip install -e . 재실행
+3. pytest 실행하여 검증
+4. 번역 파일 재컴파일 (pyside6-lrelease)

@@ -3,14 +3,14 @@ from unittest.mock import patch, MagicMock
 from PyQt6 import QtWidgets, QtCore
 from PyQt6.QtCore import Qt
 
-from beeref.config.controls import MouseConfig
-from beeref.widgets.controls.mouse import (
+from buzzref.config.controls import MouseConfig
+from buzzref.widgets.controls.mouse import (
     MouseDelegate,
     MouseControlsEditor,
     MouseModel,
     MouseProxy,
 )
-from beeref.utils import ActionList
+from buzzref.utils import ActionList
 
 
 def test_mouse_editor_inits_buttons_and_modifiers_when_not_configured(view):
@@ -21,7 +21,7 @@ def test_mouse_editor_inits_buttons_and_modifiers_when_not_configured(view):
         button='Not Configured',
         modifiers=[],
         invertible=True)
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -42,7 +42,7 @@ def test_mouse_editor_inits_buttons_and_modifiers_when_configured(view):
         button='Left',
         modifiers=['Alt', 'Ctrl'],
         invertible=True)
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -66,7 +66,7 @@ def test_mouse_editor_set_modifiers_no_modifier(view):
         button='Left',
         modifiers=['Alt', 'Ctrl'],
         invertible=True)
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -87,7 +87,7 @@ def test_mouse_editor_on_modifiers_changed_when_no_modifiers_checked(view):
         button='Left',
         modifiers=['Alt', 'Ctrl'],
         invertible=True)
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -108,7 +108,7 @@ def test_mouse_editor_on_modifiers_changed_when_a_modifier_checked(view):
         button='Left',
         modifiers=['No Modifier'],
         invertible=True)
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -127,7 +127,7 @@ def test_mouse_editor_on_modifiers_changed_when_everything_unchecked(view):
         button='Left',
         modifiers=[],
         invertible=True)
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -148,7 +148,7 @@ def test_mouse_editor_get_modifiers(view):
         button='Left',
         modifiers=[],
         invertible=True)
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -165,7 +165,7 @@ def test_mouse_editor_get_modifiers_when_no_modifiers(view):
         button='Left',
         modifiers=[],
         invertible=True)
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -184,7 +184,7 @@ def test_mouse_editor_get_modifiers_when_not_configured_cleaned(view):
         button='Not Configured',
         modifiers=[],
         invertible=True)
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -205,7 +205,7 @@ def test_mouse_editor_get_modifiers_when_not_configured_cleaned_false(view):
         button='Not Configured',
         modifiers=[],
         invertible=True)
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -226,7 +226,7 @@ def test_mouse_editor_set_modifiers(view):
         button='Left',
         modifiers=[],
         invertible=True)
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -247,7 +247,7 @@ def test_mouse_editor_on_button_changed_when_button(view):
         button='Left',
         modifiers=['No Modifier'],
         invertible=True)
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -275,7 +275,7 @@ def test_mouse_editor_on_button_changed_when_no_button(view):
         button='Not Configured',
         modifiers=['No Modifier'],
         invertible=True)
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -300,7 +300,7 @@ def test_mouse_editor_set_modifiers_enabled_true(view):
         button='Not Configured',
         modifiers=[],
         invertible=True)
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -321,7 +321,7 @@ def test_mouse_editor_set_modifiers_enabled_false(view):
         button='Not Configured',
         modifiers=[],
         invertible=True)
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -342,7 +342,7 @@ def test_mouse_editor_get_button(view):
         button='Not Configured',
         modifiers=[],
         invertible=True)
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -359,7 +359,7 @@ def test_mouse_editor_set_button(view):
         button='Not Configured',
         modifiers=[],
         invertible=True)
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -376,7 +376,7 @@ def test_mouse_editor_get_temp_action(view):
         button='Left',
         modifiers=['Alt'],
         invertible=True)
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -394,7 +394,7 @@ def test_mouse_editor_reset_inputs(view):
         button='Left',
         modifiers=['Alt'],
         invertible=True)
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -406,7 +406,7 @@ def test_mouse_editor_reset_inputs(view):
     assert editor.get_modifiers() == ['Alt']
 
 
-@patch('beeref.widgets.controls.mouse.MouseControlsEditor.accept')
+@patch('buzzref.widgets.controls.mouse.MouseControlsEditor.accept')
 def test_mouse_editor_on_save_no_conflicts(accept_mock, view):
     a1 = MouseConfig(
         id='foo1',
@@ -423,7 +423,7 @@ def test_mouse_editor_on_save_no_conflicts(accept_mock, view):
         modifiers=['Ctrl'],
         invertible=True)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([a1, a2])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -437,7 +437,7 @@ def test_mouse_editor_on_save_no_conflicts(accept_mock, view):
     accept_mock.assert_called_once_with()
 
 
-@patch('beeref.widgets.controls.mouse.MouseControlsEditor.accept')
+@patch('buzzref.widgets.controls.mouse.MouseControlsEditor.accept')
 def test_mouse_editor_on_save_reenter_existing_shortcut(accept_mock, view):
     a1 = MouseConfig(
         id='foo1',
@@ -454,7 +454,7 @@ def test_mouse_editor_on_save_reenter_existing_shortcut(accept_mock, view):
         modifiers=['Ctrl'],
         invertible=True)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([a1, a2])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -468,7 +468,7 @@ def test_mouse_editor_on_save_reenter_existing_shortcut(accept_mock, view):
 
 @patch('PyQt6.QtWidgets.QMessageBox.question',
        return_value=QtWidgets.QMessageBox.StandardButton.No)
-@patch('beeref.widgets.controls.mouse.MouseControlsEditor.accept')
+@patch('buzzref.widgets.controls.mouse.MouseControlsEditor.accept')
 def test_mouse_editor_on_save_conflicts_cancel(accept_mock, msg_mock, view):
     a1 = MouseConfig(
         id='foo1',
@@ -485,7 +485,7 @@ def test_mouse_editor_on_save_conflicts_cancel(accept_mock, msg_mock, view):
         modifiers=['Ctrl'],
         invertible=True)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([a1, a2])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -501,7 +501,7 @@ def test_mouse_editor_on_save_conflicts_cancel(accept_mock, msg_mock, view):
 
 @patch('PyQt6.QtWidgets.QMessageBox.question',
        return_value=QtWidgets.QMessageBox.StandardButton.Yes)
-@patch('beeref.widgets.controls.mouse.MouseControlsEditor.accept')
+@patch('buzzref.widgets.controls.mouse.MouseControlsEditor.accept')
 def test_mouse_editor_on_save_conflicts_confirm(accept_mock, msg_mock, view):
     a1 = MouseConfig(
         id='foo1',
@@ -518,7 +518,7 @@ def test_mouse_editor_on_save_conflicts_confirm(accept_mock, msg_mock, view):
         modifiers=['Ctrl'],
         invertible=True)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([a1, a2])):
         editor = MouseControlsEditor(
             view, index=MagicMock(row=MagicMock(return_value=0)))
@@ -548,7 +548,7 @@ def test_mouse_delegate_setmodeldata(view):
         button='Left',
         modifiers=['Alt'],
         invertible=True)
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         delegate = MouseDelegate()
         model = MouseModel()
@@ -585,7 +585,7 @@ def test_mouse_model_rowcount():
         modifiers=['Ctrl'],
         invertible=True)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([a1, a2])):
         model = MouseModel()
         model.rowCount(None) == 2
@@ -624,7 +624,7 @@ def test_flags_inverted_column_when_invertible():
         modifiers=['Alt'],
         invertible=True)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -644,7 +644,7 @@ def test_flags_inverted_column_when_not_invertible():
         modifiers=['Alt'],
         invertible=False)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -662,7 +662,7 @@ def test_mouse_model_data_gets_text():
         modifiers=['Alt'],
         invertible=False)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -683,7 +683,7 @@ def test_mouse_model_data_gets_changed_when_not_changed():
         modifiers=['Alt'],
         invertible=False)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -704,7 +704,7 @@ def test_mouse_model_data_gets_changed_when_changed():
         modifiers=['Alt'],
         invertible=False)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -726,7 +726,7 @@ def test_mouse_model_data_gets_button():
         modifiers=['Alt'],
         invertible=False)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -747,7 +747,7 @@ def test_mouse_model_data_gets_modifiers():
         modifiers=['Ctrl', 'Alt'],
         invertible=False)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -768,7 +768,7 @@ def test_mouse_model_data_gets_inverted_when_invertible():
         modifiers=['Ctrl', 'Alt'],
         invertible=True)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -789,7 +789,7 @@ def test_mouse_model_data_gets_inverted_when_not_invertible():
         modifiers=['Ctrl', 'Alt'],
         invertible=False)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -810,7 +810,7 @@ def test_mouse_model_data_tooltip_changed_when_not_changed():
         modifiers=['Ctrl', 'Alt'],
         invertible=False)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
     value = model.data(
@@ -830,7 +830,7 @@ def test_mouse_model_data_tooltip_changed_when_changed():
         modifiers=['Alt'],
         invertible=False)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -852,7 +852,7 @@ def test_mouse_model_data_tooltip_button_when_changed():
         modifiers=['Ctrl', 'Alt'],
         invertible=False)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -874,7 +874,7 @@ def test_mouse_model_data_tooltip_button_when_changed_from_not_configured():
         modifiers=[],
         invertible=False)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -896,7 +896,7 @@ def test_mouse_model_data_tooltip_modifiers_when_changed_from_not_configured():
         modifiers=[],
         invertible=False)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -918,7 +918,7 @@ def test_mouse_model_data_tooltip_modifiers_when_changed():
         modifiers=['Ctrl', 'Alt'],
         invertible=False)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -940,7 +940,7 @@ def test_mouse_model_data_tooltip_inverted_when_changed_and_invertible():
         modifiers=['Alt'],
         invertible=True)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -962,7 +962,7 @@ def test_mouse_model_data_tooltip_inverted_when_changed_and_not_invertible():
         modifiers=['Alt'],
         invertible=False)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -984,7 +984,7 @@ def test_mouse_model_data_checkstaterole_invertible_invertedcol_inverted():
         modifiers=['Alt'],
         invertible=True)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -1006,7 +1006,7 @@ def test_mouse_model_data_checkstaterole_invertible_invertedcol_not_inverted():
         modifiers=['Alt'],
         invertible=True)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -1027,7 +1027,7 @@ def test_mouse_model_data_checkstaterole_other_column():
         modifiers=['Alt'],
         invertible=True)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -1048,7 +1048,7 @@ def test_mouse_model_setdate_saves_inverted():
         modifiers=['Alt'],
         invertible=True)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -1070,7 +1070,7 @@ def test_mouse_model_setdata_saves_controls():
         modifiers=['Alt'],
         invertible=True)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([action])):
         model = MouseModel()
 
@@ -1101,7 +1101,7 @@ def test_mouse_model_setdata_saves_controls_and_removes_from_other():
         modifiers=['Ctrl'],
         invertible=True)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([a1, a2])):
         model = MouseModel()
 
@@ -1142,7 +1142,7 @@ def test_mouse_proxy_data_unfiltered():
         modifiers=['Shift'],
         invertible=True)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([a2, a1, a3])):
         proxy = MouseProxy()
 
@@ -1177,7 +1177,7 @@ def test_mouse_proxy_data_filtered():
         modifiers=['Shift'],
         invertible=True)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([a2, a1, a3])):
         proxy = MouseProxy()
 
@@ -1211,7 +1211,7 @@ def test_mouse_proxy_setdata_saves_correct_filtered_index():
         modifiers=['Shift'],
         invertible=True)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([a2, a1, a3])):
         proxy = MouseProxy()
 
@@ -1241,7 +1241,7 @@ def test_mouse_proxy_setdata_remove_from_other():
         modifiers=['Ctrl'],
         invertible=True)
 
-    with patch('beeref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
+    with patch('buzzref.config.controls.KeyboardSettings.MOUSE_ACTIONS',
                ActionList([a2, a1])):
         proxy = MouseProxy()
 

@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from PyQt6 import QtWidgets
 
-from beeref.widgets.settings import (
+from buzzref.widgets.settings import (
     ArrangeGapWidget,
     ConfirmCloseUnsavedWidget,
     ImageStorageFormatWidget,

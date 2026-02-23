@@ -4,12 +4,12 @@ from unittest.mock import MagicMock, patch
 
 from PyQt6 import QtCore
 
-from beeref import fileio
-from beeref import commands
+from buzzref import fileio
+from buzzref import commands
 from ..utils import queue2list
 
 
-@patch('beeref.fileio.sql.SQLiteIO.write')
+@patch('buzzref.fileio.sql.SQLiteIO.write')
 def test_save_bee_create_new_false(write_mock):
     with tempfile.TemporaryDirectory() as dirname:
         fname = os.path.join(dirname, 'test.bee')
@@ -17,7 +17,7 @@ def test_save_bee_create_new_false(write_mock):
         write_mock.assert_called_once()
 
 
-@patch('beeref.fileio.sql.SQLiteIO.read')
+@patch('buzzref.fileio.sql.SQLiteIO.read')
 def test_read_bee(read_mock):
     with tempfile.TemporaryDirectory() as dirname:
         fname = os.path.join(dirname, 'test.bee')

@@ -7,10 +7,10 @@ from unittest.mock import MagicMock, patch
 from PyQt6 import QtCore, QtGui
 import pytest
 
-from beeref.fileio import schema, is_bee_file
-from beeref.fileio.errors import BeeFileIOError
-from beeref.fileio.sql import SQLiteIO
-from beeref.items import BeePixmapItem, BeeTextItem, BeeErrorItem
+from buzzref.fileio import schema, is_bee_file
+from buzzref.fileio.errors import BuzzFileIOError
+from buzzref.fileio.sql import SQLiteIO
+from buzzref.items import BuzzPixmapItem, BuzzTextItem, BuzzErrorItem
 
 
 @pytest.mark.parametrize('filename,expected',
@@ -26,13 +26,13 @@ def test_sqliteio_migrate_does_nothing_when_version_ok(tmpfile):
     io.ex('PRAGMA user_version=%s' % schema.USER_VERSION)
     io.connection.commit()
     del io
-    with patch('beeref.fileio.sql.SQLiteIO.ex') as ex_mock:
+    with patch('buzzref.fileio.sql.SQLiteIO.ex') as ex_mock:
         SQLiteIO(tmpfile, MagicMock())
         ex_mock.assert_not_called()
 
 
-@patch('beeref.fileio.sql.USER_VERSION', 3)
-@patch('beeref.fileio.sql.MIGRATIONS', {
+@patch('buzzref.fileio.sql.USER_VERSION', 3)
+@patch('buzzref.fileio.sql.MIGRATIONS', {
     2: ['CREATE TABLE foo (col1 INT)',
         'CREATE TABLE bar (baz INT)'],
     3: ['ALTER TABLE foo ADD COLUMN col2 TEXT']})
@@ -48,8 +48,8 @@ def test_sqliteio_migrate_migrates(tmpfile):
     assert result[0] == 3
 
 
-@patch('beeref.fileio.sql.USER_VERSION', 3)
-@patch('beeref.fileio.sql.MIGRATIONS', {
+@patch('buzzref.fileio.sql.USER_VERSION', 3)
+@patch('buzzref.fileio.sql.MIGRATIONS', {
     2: ['CREATE TABLE foo (col1 INT)',
         'CREATE TABLE bar (baz INT)'],
     3: ['ALTER TABLE foo ADD COLUMN col2 TEXT']})
@@ -152,7 +152,7 @@ def test_sqliteio_create_schema_on_new_when_create_new(tmpfile):
     scene_mock.clear_save_ids.assert_called_once()
 
 
-@patch('beeref.fileio.sql.SQLiteIO._migrate')
+@patch('buzzref.fileio.sql.SQLiteIO._migrate')
 def test_sqliteio_create_schema_on_new_when_not_create_new(
         migrate_mock, tmpfile):
     scene_mock = MagicMock()
@@ -170,7 +170,7 @@ def test_sqliteio_readonly_doesnt_allow_write(view, tmpfile):
         f.write('foobar')
     io = SQLiteIO(tmpfile, view.scene, readonly=True)
 
-    with pytest.raises(BeeFileIOError) as exinfo:
+    with pytest.raises(BuzzFileIOError) as exinfo:
         io.write()
 
     assert exinfo.value.filename == tmpfile
@@ -197,7 +197,7 @@ def test_sqliteio_write_calls_write_meta(tmpfile, view):
 
 
 def test_sqliteio_write_inserts_new_text_item(tmpfile, view):
-    item = BeeTextItem(text='foo bar')
+    item = BuzzTextItem(text='foo bar')
     view.scene.addItem(item)
     item.setScale(1.3)
     item.setPos(44, 55)
@@ -226,7 +226,7 @@ def test_sqliteio_write_inserts_new_text_item(tmpfile, view):
 
 
 def test_sqliteio_write_inserts_new_pixmap_item_png(tmpfile, view):
-    item = BeePixmapItem(QtGui.QImage(), filename='bee.jpg')
+    item = BuzzPixmapItem(QtGui.QImage(), filename='bee.jpg')
     view.scene.addItem(item)
     item.setOpacity(0.66)
     item.setScale(1.3)
@@ -264,7 +264,7 @@ def test_sqliteio_write_inserts_new_pixmap_item_png(tmpfile, view):
 
 
 def test_sqliteio_write_inserts_new_pixmap_item_jpg(tmpfile, view):
-    item = BeePixmapItem(QtGui.QImage(), filename='bee.jpg')
+    item = BuzzPixmapItem(QtGui.QImage(), filename='bee.jpg')
     view.scene.addItem(item)
     item.pixmap_to_bytes = MagicMock(return_value=(b'abc', 'jpg'))
     io = SQLiteIO(tmpfile, view.scene, create_new=True)
@@ -295,7 +295,7 @@ def test_sqliteio_write_inserts_new_pixmap_item_without_filename(
 
 
 def test_sqliteio_write_updates_existing_text_item(tmpfile, view):
-    item = BeeTextItem(text='foo bar')
+    item = BuzzTextItem(text='foo bar')
     view.scene.addItem(item)
     item.setScale(1.3)
     item.setPos(44, 55)
@@ -331,7 +331,7 @@ def test_sqliteio_write_updates_existing_text_item(tmpfile, view):
 
 
 def test_sqliteio_write_updates_existing_pixmap_item(tmpfile, view):
-    item = BeePixmapItem(QtGui.QImage(), filename='bee.png')
+    item = BuzzPixmapItem(QtGui.QImage(), filename='bee.png')
     view.scene.addItem(item)
     item.setScale(1.3)
     item.setPos(44, 55)
@@ -379,7 +379,7 @@ def test_sqliteio_write_updates_existing_pixmap_item(tmpfile, view):
 
 
 def test_sqliteio_write_keeps_pixmap_item_of_error_item(tmpfile, view):
-    item = BeePixmapItem(QtGui.QImage(), filename='bee.png')
+    item = BuzzPixmapItem(QtGui.QImage(), filename='bee.png')
     view.scene.addItem(item)
     item.setScale(1.3)
     item.setPos(44, 55)
@@ -394,7 +394,7 @@ def test_sqliteio_write_keeps_pixmap_item_of_error_item(tmpfile, view):
     view.scene.removeItem(item)
     assert io.fetchone('SELECT COUNT(*) from items') == (1,)
 
-    err_item = BeeErrorItem('errormsg')
+    err_item = BuzzErrorItem('errormsg')
     err_item.original_save_id = 1
     err_item.setScale(0.7)
     err_item.setPos(20, 30)
@@ -425,7 +425,7 @@ def test_sqliteio_write_keeps_pixmap_item_of_error_item(tmpfile, view):
 
 
 def test_sqliteio_doesnt_write_error_item_to_new_file(tmpfile, view):
-    err_item = BeeErrorItem('errormsg')
+    err_item = BuzzErrorItem('errormsg')
     err_item.original_save_id = 1
     view.scene.addItem(err_item)
     io = SQLiteIO(tmpfile, view.scene, create_new=True)
@@ -435,7 +435,7 @@ def test_sqliteio_doesnt_write_error_item_to_new_file(tmpfile, view):
 
 
 def test_sqliteio_write_removes_nonexisting_text_item(tmpfile, view):
-    item = BeeTextItem('foo bar')
+    item = BuzzTextItem('foo bar')
     item.setScale(1.3)
     item.setPos(44, 55)
     view.scene.addItem(item)
@@ -451,7 +451,7 @@ def test_sqliteio_write_removes_nonexisting_text_item(tmpfile, view):
 
 
 def test_sqliteio_write_removes_nonexisting_pixmap_item(tmpfile, view):
-    item = BeePixmapItem(QtGui.QImage(), filename='bee.png')
+    item = BuzzPixmapItem(QtGui.QImage(), filename='bee.png')
     item.setScale(1.3)
     item.setPos(44, 55)
     view.scene.addItem(item)
@@ -471,7 +471,7 @@ def test_sqliteio_write_removes_nonexisting_pixmap_item(tmpfile, view):
 
 
 def test_sqliteio_write_update_recovers_from_borked_file(view, tmpfile):
-    item = BeePixmapItem(QtGui.QImage(), filename='bee.png')
+    item = BuzzPixmapItem(QtGui.QImage(), filename='bee.png')
     item.save_id = 1
     view.scene.addItem(item)
 
@@ -485,7 +485,7 @@ def test_sqliteio_write_update_recovers_from_borked_file(view, tmpfile):
 
 
 def test_sqliteio_write_update_recovers_from_nonexisting_file(view, tmpfile):
-    item = BeePixmapItem(QtGui.QImage(), filename='bee.png')
+    item = BuzzPixmapItem(QtGui.QImage(), filename='bee.png')
     item.save_id = 1
     view.scene.addItem(item)
     io = SQLiteIO(tmpfile, view.scene, create_new=False)
@@ -497,7 +497,7 @@ def test_sqliteio_write_update_recovers_from_nonexisting_file(view, tmpfile):
 def test_sqliteio_write_updates_progress(tmpfile, view):
     worker = MagicMock(canceled=False)
     io = SQLiteIO(tmpfile, view.scene, create_new=True, worker=worker)
-    item = BeePixmapItem(QtGui.QImage())
+    item = BuzzPixmapItem(QtGui.QImage())
     view.scene.addItem(item)
     io.write()
     worker.begin_processing.emit.assert_called_once_with(1)
@@ -508,9 +508,9 @@ def test_sqliteio_write_updates_progress(tmpfile, view):
 def test_sqliteio_write_canceled(tmpfile, view):
     worker = MagicMock(canceled=True)
     io = SQLiteIO(tmpfile, view.scene, create_new=True, worker=worker)
-    item = BeePixmapItem(QtGui.QImage())
+    item = BuzzPixmapItem(QtGui.QImage())
     view.scene.addItem(item)
-    item = BeePixmapItem(QtGui.QImage())
+    item = BuzzPixmapItem(QtGui.QImage())
     view.scene.addItem(item)
     io.write()
     worker.begin_processing.emit.assert_called_once_with(2)
@@ -534,7 +534,7 @@ def test_sqliteio_read_reads_readonly_text_item(tmpfile, view):
     view.scene.add_queued_items()
     assert len(view.scene.items()) == 1
     item = view.scene.items()[0]
-    assert isinstance(item, BeeTextItem)
+    assert isinstance(item, BuzzTextItem)
     assert item.isSelected() is False
     assert item.save_id == 1
     assert item.pos().x() == 22.2
@@ -565,7 +565,7 @@ def test_sqliteio_read_reads_readonly_pixmap_item(tmpfile, view, imgdata3x3):
     view.scene.add_queued_items()
     assert len(view.scene.items()) == 1
     item = view.scene.items()[0]
-    assert isinstance(item, BeePixmapItem)
+    assert isinstance(item, BuzzPixmapItem)
     assert item.isSelected() is False
     assert item.save_id == 1
     assert item.pos().x() == 22.2
@@ -601,7 +601,7 @@ def test_sqliteio_read_reads_readonly_pixmap_item_error(tmpfile, view):
     view.scene.add_queued_items()
     assert len(view.scene.items()) == 1
     item = view.scene.items()[0]
-    assert isinstance(item, BeeErrorItem)
+    assert isinstance(item, BuzzErrorItem)
     item.toPlainText().startswith('Unknown')
     assert view.scene.items_to_add.empty() is True
 
@@ -649,7 +649,7 @@ def test_sqliteio_read_raises_error_when_file_borked(view, tmpfile):
         f.write('foobar')
 
     io = SQLiteIO(tmpfile, view.scene, readonly=True)
-    with pytest.raises(BeeFileIOError) as exinfo:
+    with pytest.raises(BuzzFileIOError) as exinfo:
         io.read()
     assert exinfo.value.filename == tmpfile
 
@@ -669,7 +669,7 @@ def test_sqliteio_read_emits_error_message_when_file_borked(view, tmpfile):
 
 def test_sqliteio_read_raises_error_when_file_empty(view, tmpfile):
     io = SQLiteIO(tmpfile, view.scene, readonly=True)
-    with pytest.raises(BeeFileIOError) as exinfo:
+    with pytest.raises(BuzzFileIOError) as exinfo:
         io.read()
     assert exinfo.value.filename == tmpfile
 

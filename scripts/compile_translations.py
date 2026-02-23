@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-BeeRef Translation Compiler
+BuzzRef Translation Compiler
 ===========================
 
 Qt 번역 파일(.ts)을 바이너리 파일(.qm)로 컴파일합니다.
@@ -13,12 +13,12 @@ QTranslator는 .qm 파일만 로드할 수 있으므로, 앱 실행 전에 컴�
 
 디렉토리 구조
 ------------
-beeref/translations/
+buzzref/translations/
 ├── __init__.py          # 패키지 초기화
-├── beeref_ko.ts         # 한국어 소스 파일
-├── beeref_ko.qm         # 한국어 컴파일 파일 (자동 생성)
-├── beeref_ja.ts         # 일본어 소스 파일 (추가 예정)
-└── beeref_ja.qm         # 일본어 컴파일 파일 (자동 생성)
+├── buzzref_ko.ts         # 한국어 소스 파일
+├── buzzref_ko.qm         # 한국어 컴파일 파일 (자동 생성)
+├── buzzref_ja.ts         # 일본어 소스 파일 (추가 예정)
+└── buzzref_ja.qm         # 일본어 컴파일 파일 (자동 생성)
 
 사용법
 ------
@@ -29,7 +29,7 @@ beeref/translations/
 
 2. 개별 파일 컴파일:
 
-    pyside6-lrelease beeref/translations/beeref_ko.ts
+    pyside6-lrelease buzzref/translations/buzzref_ko.ts
 
 의존성 설치
 -----------
@@ -46,7 +46,7 @@ beeref/translations/
 ----------------
 
 1. 기존 .ts 파일 복사:
-    cp beeref/translations/beeref_ko.ts beeref/translations/beeref_ja.ts
+    cp buzzref/translations/buzzref_ko.ts buzzref/translations/buzzref_ja.ts
 
 2. 파일 상단의 language 속성 수정:
     <TS version="2.1" language="ja_JP">
@@ -59,14 +59,14 @@ beeref/translations/
     python scripts/compile_translations.py
 
 5. 테스트:
-    LANG=ja_JP.UTF-8 python -m beeref
+    LANG=ja_JP.UTF-8 python -m buzzref
 
 번역 업데이트하기
 -----------------
 
 1. .ts 파일 직접 편집 (XML 형식)
 2. 또는 Qt Linguist 사용 (GUI 도구):
-    linguist beeref/translations/beeref_ko.ts
+    linguist buzzref/translations/buzzref_ko.ts
 
 3. 변경 후 재컴파일:
     python scripts/compile_translations.py
@@ -75,7 +75,7 @@ beeref/translations/
 -----------
 
 특정 언어로 앱 실행:
-    LANG=ko_KR.UTF-8 python -m beeref
+    LANG=ko_KR.UTF-8 python -m buzzref
 
 로그에서 번역 로드 확인:
     INFO __main__: Loaded translation for locale: ko_KR
@@ -100,14 +100,14 @@ Menu    : 메뉴 이름 (파일, 편집, 보기 등)
    - self.tr('English text') 사용
 
 2. QObject 외부 (모듈 레벨):
-   - from beeref.i18n import _tr
+   - from buzzref.i18n import _tr
    - _tr('Context', 'English text') 사용
 
 3. 새 Action 추가 시:
-   a) beeref/actions/actions.py에 Action 추가:
+   a) buzzref/actions/actions.py에 Action 추가:
       Action(id='my_action', text='&My Action', ...)
 
-   b) beeref/translations/*.ts 파일에 문자열 추가:
+   b) buzzref/translations/*.ts 파일에 문자열 추가:
       <message>
           <source>&amp;My Action</source>
           <translation>내 액션(&amp;M)</translation>
@@ -116,8 +116,8 @@ Menu    : 메뉴 이름 (파일, 편집, 보기 등)
    c) 재컴파일: python scripts/compile_translations.py
 
 4. 새 메뉴 추가 시:
-   a) beeref/actions/menu_structure.py에 메뉴 추가
-   b) beeref/translations/*.ts의 Menu context에 추가
+   a) buzzref/actions/menu_structure.py에 메뉴 추가
+   b) buzzref/translations/*.ts의 Menu context에 추가
 
 5. 다이얼로그/위젯 텍스트:
    a) QObject 내부면 self.tr() 사용
@@ -145,8 +145,8 @@ A: 1) .qm 파일이 있는지 확인
    3) 로그에서 "Loaded translation" 메시지 확인
 
 Q: 새 액션/메뉴가 번역되지 않음
-A: 1) beeref/actions/actions.py에 추가된 텍스트를
-   2) beeref/translations/*.ts 파일에 수동 추가
+A: 1) buzzref/actions/actions.py에 추가된 텍스트를
+   2) buzzref/translations/*.ts 파일에 수동 추가
    3) 재컴파일
 
 """
@@ -184,7 +184,7 @@ def find_lrelease():
 
 def compile_translations():
     """Compile all .ts files to .qm."""
-    translations_dir = Path(__file__).parent.parent / 'beeref' / 'translations'
+    translations_dir = Path(__file__).parent.parent / 'buzzref' / 'translations'
     ts_files = list(translations_dir.glob('*.ts'))
 
     if not ts_files:
