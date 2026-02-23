@@ -167,14 +167,17 @@ def find_lrelease():
 
     for cmd in candidates:
         try:
-            # Use -help instead of --version (pyside6-lrelease doesn't support --version)
+            # Use -help instead of --version (pyside6-lrelease doesn't support
+            # --version)
             result = subprocess.run(
                 [cmd, '-help'],
                 capture_output=True,
                 text=True
             )
             # If command exists and shows help, it's valid
-            if 'lrelease' in result.stdout.lower() or 'lrelease' in result.stderr.lower():
+            stdout_has = 'lrelease' in result.stdout.lower()
+            stderr_has = 'lrelease' in result.stderr.lower()
+            if stdout_has or stderr_has:
                 return cmd
         except FileNotFoundError:
             continue
@@ -184,7 +187,8 @@ def find_lrelease():
 
 def compile_translations():
     """Compile all .ts files to .qm."""
-    translations_dir = Path(__file__).parent.parent / 'buzzref' / 'translations'
+    translations_dir = Path(__file__).parent.parent / \
+        'buzzref' / 'translations'
     ts_files = list(translations_dir.glob('*.ts'))
 
     if not ts_files:

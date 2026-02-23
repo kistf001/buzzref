@@ -127,7 +127,8 @@ def test_action_menu_path(menu_mock):
 
 
 @patch('buzzref.actions.actions.get_menu_structure',
-       return_value=[{'menu': 'Foo', 'items': [{'menu': 'Bar', 'items': ['baz']}]}])
+       return_value=[{'menu': 'Foo',
+                      'items': [{'menu': 'Bar', 'items': ['baz']}]}])
 def test_action_menu_path_with_submenus(menu_mock):
     action = Action(id='baz', text='Foo')
     assert action.menu_path == ['Foo', 'Bar']

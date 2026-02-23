@@ -179,4 +179,5 @@ def get_menu_structure():
 
 
 # Backward compatibility alias (deprecated)
-menu_structure = None  # Will be initialized on first access via get_menu_structure()
+# Will be initialized on first access via get_menu_structure()
+menu_structure = None

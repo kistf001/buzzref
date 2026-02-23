@@ -364,8 +364,8 @@ def test_flags_shortcut_column():
 
 @patch('buzzref.widgets.controls.keyboard.get_actions',
        return_value=ActionList([Action(id='bar', text='Bar'),
-                   Action(id='foo', text='Foo'),
-                   Action(id='baz', text='Baz')]))
+                                Action(id='foo', text='Foo'),
+                                Action(id='baz', text='Baz')]))
 def test_keyboard_shortcuts_proxy_data_unfiltered(actions_mock):
     proxy = KeyboardShortcutsProxy()
     assert proxy.data(
@@ -378,8 +378,8 @@ def test_keyboard_shortcuts_proxy_data_unfiltered(actions_mock):
 
 @patch('buzzref.widgets.controls.keyboard.get_actions',
        return_value=ActionList([Action(id='bar', text='Bar'),
-                   Action(id='foo', text='Foo'),
-                   Action(id='baz', text='Baz')]))
+                                Action(id='foo', text='Foo'),
+                                Action(id='baz', text='Baz')]))
 def test_keyboard_shortcuts_proxy_data_filtered(actions_mock):
     proxy = KeyboardShortcutsProxy()
     proxy.setFilterFixedString('b')

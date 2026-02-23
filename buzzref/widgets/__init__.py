@@ -98,8 +98,8 @@ class HelpDialog(QtWidgets.QDialog):
 
     def _get_language_code(self):
         """Get the current language code from settings or system locale."""
-        settings = BuzzSettings()
-        lang = settings.valueOrDefault('General/language')
+        buzz_settings = BuzzSettings()
+        lang = buzz_settings.valueOrDefault('General/language')
         if lang == 'system':
             locale = QtCore.QLocale.system()
             lang = locale.name().split('_')[0]

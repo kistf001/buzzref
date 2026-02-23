@@ -208,7 +208,8 @@ class MouseControlsModelBase(QtCore.QAbstractTableModel):
             if key == self.COL_INVERTED:
                 if not action.is_configured() or not action.invertible:
                     return None
-                return self.tr('Yes') if action.get_inverted() else self.tr('No')
+                return self.tr(
+                    'Yes') if action.get_inverted() else self.tr('No')
 
         if role == QtCore.Qt.ItemDataRole.ToolTipRole:
             changed = action.controls_changed()

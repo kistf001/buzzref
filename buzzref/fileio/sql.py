@@ -66,7 +66,8 @@ def handle_sqlite_errors(func):
             if self.worker:
                 self.worker.finished.emit(self.filename, [str(e)])
             else:
-                raise BuzzFileIOError(msg=str(e), filename=self.filename) from e
+                raise BuzzFileIOError(
+                    msg=str(e), filename=self.filename) from e
 
     return wrapper
 
