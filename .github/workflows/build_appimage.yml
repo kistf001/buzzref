@@ -1,6 +1,8 @@
 name: build_appimage
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    branches: [prod]
 
 jobs:
 
@@ -11,15 +13,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python 3.11
+      - name: Set up Python 3.13
         uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: "3.13"
+      - name: Update apt cache
+        run: sudo apt-get update
       - name: Build appimage
         run: |
           python3 tools/build_appimage.py --version=${{ github.ref_name }} --jsonfile=tools/linux_libs.json
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          path: BeeRef*.appimage
+          path: BuzzRef*.appimage
           retention-days: 5

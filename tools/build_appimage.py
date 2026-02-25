@@ -50,10 +50,10 @@ args = parser.parse_args()
 
 
 BEEVERSION = args.version.removeprefix('v')
-APPIMAGE = 'python3.11.9-cp311-cp311-manylinux2014_x86_64.AppImage'
+APPIMAGE = 'python3.13.9-cp313-cp313-manylinux2014_x86_64.AppImage'
 # ^ Siehe:
 # https://python-appimage.readthedocs.io/en/latest/#alternative-site-packages-location
-PYVER = '3.11'
+PYVER = '3.13'
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=getattr(logging, args.loglevel))
 
@@ -224,5 +224,6 @@ url = ('https://github.com/AppImage/AppImageKit/releases/download/'
 
 download_file(url, filename='appimagetool.appimage')
 run_command('./appimagetool.appimage',
+            '--appimage-extract-and-run',
             'squashfs-root',
             f'BuzzRef-{BEEVERSION}.appimage')

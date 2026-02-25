@@ -19,7 +19,7 @@ Once the vitrual environment is set up, you can enter it with::
 
 Clone the repository and install buzzref and its dependencies::
 
-  git clone https://github.com/rbreu/buzzref.git
+  git clone https://github.com/kistf001/buzzref.git
   cd buzzref
   pip install -e .
 
@@ -37,7 +37,7 @@ Run codechecks with::
 
   flake8 .
 
-Beeref files are sqlite databases, so they can be inspected with any sqlite browser.
+Beeref files (.bee) are sqlite databases, so they can be inspected with any sqlite browser.
 
 For debugging options, run::
 
@@ -61,7 +61,7 @@ The Python version badge in the README is generated with pybadges::
 
   python -m pybadges --left-text=Python --right-text="3.9 | 3.10 | 3.11" > images/python_version_badge.svg
 
-The `website <https://rbreu.github.io/buzzref/>`_ is hosted via Github pages from the gh-pages branch. You can run it locally if you have Ruby and bundler installed::
+The `website <https://kistf001.github.io/buzzref/>`_ is hosted via Github pages from the gh-pages branch. You can run it locally if you have Ruby and bundler installed::
 
   bundle install
   bundle exec jekyll serve --baseurl ""

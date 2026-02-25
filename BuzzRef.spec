@@ -22,7 +22,8 @@ a = Analysis(
     binaries=[],
     datas=[
         (join('buzzref', 'documentation'), join('buzzref', 'documentation')),
-        (join('buzzref', 'assets', '*.png'), join('buzzref', 'assets'))],
+        (join('buzzref', 'assets', '*.png'), join('buzzref', 'assets')),
+        (join('buzzref', 'translations', '*.qm'), join('buzzref', 'translations'))],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

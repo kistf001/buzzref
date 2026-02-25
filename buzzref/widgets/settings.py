@@ -307,7 +307,8 @@ class LanguageWidget(GroupBase):
         QtWidgets.QMessageBox.information(
             self,
             self.tr('Language Changed'),
-            self.tr('Please restart BuzzRef for the language change to take effect.')
+            self.tr('Please restart BuzzRef for the language change '
+                    'to take effect.')
         )
 
     def set_value(self, value):

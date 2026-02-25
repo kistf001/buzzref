@@ -32,8 +32,8 @@ dependencies = [
 buzzref = "buzzref.__main__:main"
 
 [project.urls]
-Homepage = "https://beeref.org/"
-Repository = "https://github.com/rbreu/beeref"
+Homepage = "https://github.com/kistf001/buzzref"
+Repository = "https://github.com/kistf001/buzzref"
 # Documentation =
-Issues = "https://github.com/rbreu/beeref/issues"
-Changelog = "https://github.com/rbreu/beeref/blob/main/CHANGELOG.rst"
+Issues = "https://github.com/kistf001/buzzref/issues"
+Changelog = "https://github.com/kistf001/buzzref/blob/main/CHANGELOG.rst"
