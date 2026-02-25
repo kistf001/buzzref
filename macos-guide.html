@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="macos.title">Running BuzzRef on macOS - BuzzRef</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="./" class="logo">
+                <img src="./images/logo.png" alt="BuzzRef">
+                <span>BuzzRef</span>
+            </a>
+            <div class="nav-links">
+                <a href="./#features" data-i18n="nav.features">Features</a>
+                <a href="./#download" data-i18n="nav.download">Download</a>
+                <a href="https://github.com/kistf001/buzzref" target="_blank">GitHub</a>
+            </div>
+            <div class="nav-auth">
+                <div class="lang-selector" id="lang-selector-container">
+                    <!-- Language selector will be inserted by i18n.js -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <section class="guide-section">
+                <h1 class="section-title" data-i18n="macos.title">Running BuzzRef on macOS</h1>
+                <p class="guide-intro" data-i18n="macos.intro">When you first open BuzzRef on macOS, you may see a security warning because the app is from an unidentified developer. Follow these steps to run it:</p>
+
+                <div class="guide-steps">
+                    <div class="guide-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3 data-i18n="macos.step1_title">Close the Error Dialog</h3>
+                            <p data-i18n="macos.step1_desc">Click OK to close the initial warning dialog.</p>
+                            <div class="step-image">
+                                <img src="./images/macosx-unidentified-dev.png" alt="macOS unidentified developer warning">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guide-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3 data-i18n="macos.step2_title">Open System Settings</h3>
+                            <p data-i18n="macos.step2_desc">Go to Apple menu - System Settings (or System Preferences on older macOS).</p>
+                        </div>
+                    </div>
+
+                    <div class="guide-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3 data-i18n="macos.step3_title">Go to Privacy & Security</h3>
+                            <p data-i18n="macos.step3_desc">Navigate to Privacy & Security settings.</p>
+                        </div>
+                    </div>
+
+                    <div class="guide-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3 data-i18n="macos.step4_title">Allow the App</h3>
+                            <p data-i18n="macos.step4_desc">Look for a message about BuzzRef being blocked. Click 'Open Anyway'.</p>
+                            <div class="step-image">
+                                <img src="./images/macosx-open-from-sys-prefs.png" alt="macOS Security & Privacy settings">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guide-step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h3 data-i18n="macos.step5_title">Reopen BuzzRef</h3>
+                            <p data-i18n="macos.step5_desc">Double-click BuzzRef.app again to launch it.</p>
+                        </div>
+                    </div>
+
+                    <div class="guide-step">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <h3 data-i18n="macos.step6_title">Confirm</h3>
+                            <p data-i18n="macos.step6_desc">Click 'Open' in the confirmation dialog.</p>
+                            <div class="step-image">
+                                <img src="./images/macosx-open-anyway.png" alt="macOS Open Anyway confirmation">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guide-note">
+                    <p data-i18n="macos.note">This authorization is only required once. After this, BuzzRef will open normally.</p>
+                </div>
+
+                <div class="text-center" style="margin-top: 2rem;">
+                    <a href="./" class="btn btn-secondary" data-i18n="nav.home">Home</a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p data-i18n="footer.copyright">&copy; 2024 BuzzRef. Open source under GPL-3.0.</p>
+            <div class="footer-links">
+                <a href="https://github.com/kistf001/buzzref" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./js/i18n.js"></script>
+    <script src="./js/main.js"></script>
+</body>
+</html>

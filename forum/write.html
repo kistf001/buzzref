@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="forum.new_post">New Post - BuzzRef Forum</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="../" class="logo">
+                <img src="../images/logo.png" alt="BuzzRef">
+                <span>BuzzRef</span>
+            </a>
+            <div class="nav-links">
+                <a href="../#features" data-i18n="nav.features">Features</a>
+                <a href="../#download" data-i18n="nav.download">Download</a>
+                <a href="./" data-i18n="nav.forum">Forum</a>
+                <a href="https://github.com/kistf001/buzzref" target="_blank">GitHub</a>
+            </div>
+            <div class="nav-auth">
+                <div class="lang-selector" id="lang-selector-container"></div>
+                <div id="auth-buttons"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <p class="mb-2">
+                <a href="./" data-i18n="forum.back_to_forum">Back to Forum</a> &gt;
+                <a href="#" id="back-to-category"></a>
+            </p>
+
+            <div class="auth-form" style="max-width: 600px;">
+                <h1 data-i18n="forum.new_post">New Post</h1>
+
+                <div id="error-message" class="form-error" style="display: none;"></div>
+
+                <form id="post-form">
+                    <div class="form-group">
+                        <label for="title" data-i18n="forum.title_label">Title</label>
+                        <input type="text" id="title" name="title" required maxlength="200">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="content" data-i18n="forum.content_label">Content (Markdown supported)</label>
+                        <textarea id="content" name="content" rows="10" required></textarea>
+                    </div>
+
+                    <div class="flex-between">
+                        <a href="#" id="cancel-btn" class="btn btn-secondary" data-i18n="forum.cancel">Cancel</a>
+                        <button type="submit" class="btn btn-primary" data-i18n="forum.submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p data-i18n="footer.copyright">&copy; 2024 BuzzRef. Open source under GPL-3.0.</p>
+            <div class="footer-links">
+                <a href="https://github.com/kistf001/buzzref" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/i18n.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/forum.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const slug = urlParams.get('slug');
+
+        if (!slug) {
+            window.location.href = './';
+        }
+
+        // Redirect if not logged in
+        if (!Auth.isLoggedIn()) {
+            window.location.href = '../auth/login.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('back-to-category').href = `./category.html?slug=${slug}`;
+            document.getElementById('back-to-category').textContent = slug;
+            document.getElementById('cancel-btn').href = `./category.html?slug=${slug}`;
+        });
+
+        document.getElementById('post-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const errorDiv = document.getElementById('error-message');
+
+            try {
+                const result = await API.forum.createPost(slug, title, content);
+                window.location.href = `./post.html?slug=${slug}&id=${result.id}`;
+            } catch (error) {
+                errorDiv.textContent = error.message;
+                errorDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

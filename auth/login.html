@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="nav.login">Login - BuzzRef</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="../" class="logo">
+                <img src="../images/logo.png" alt="BuzzRef">
+                <span>BuzzRef</span>
+            </a>
+            <div class="nav-links">
+                <a href="../#features" data-i18n="nav.features">Features</a>
+                <a href="../#download" data-i18n="nav.download">Download</a>
+                <a href="https://github.com/kistf001/buzzref" target="_blank">GitHub</a>
+            </div>
+            <div class="nav-auth">
+                <div class="lang-selector" id="lang-selector-container"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="auth-form">
+            <h1 data-i18n="nav.login">Login</h1>
+
+            <div id="error-message" class="form-error" style="display: none;"></div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;" data-i18n="nav.login">Login</button>
+            </form>
+
+            <p class="auth-link">
+                Don't have an account? <a href="./register.html" data-i18n="nav.signup">Sign Up</a>
+            </p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p data-i18n="footer.copyright">&copy; 2024 BuzzRef. Open source under GPL-3.0.</p>
+            <div class="footer-links">
+                <a href="https://github.com/kistf001/buzzref" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/i18n.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('error-message');
+
+            try {
+                await Auth.login(username, password);
+                window.location.href = '../';
+            } catch (error) {
+                errorDiv.textContent = error.message;
+                errorDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

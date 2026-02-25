@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="forum.title">Community Forum - BuzzRef</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="../" class="logo">
+                <img src="../images/logo.png" alt="BuzzRef">
+                <span>BuzzRef</span>
+            </a>
+            <div class="nav-links">
+                <a href="../#features" data-i18n="nav.features">Features</a>
+                <a href="../#download" data-i18n="nav.download">Download</a>
+                <a href="./" data-i18n="nav.forum">Forum</a>
+                <a href="https://github.com/kistf001/buzzref" target="_blank">GitHub</a>
+            </div>
+            <div class="nav-auth">
+                <div class="lang-selector" id="lang-selector-container"></div>
+                <div id="auth-buttons"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <div class="forum-header">
+                <h1 data-i18n="forum.title">Community Forum</h1>
+                <p data-i18n="forum.subtitle">Join the discussion, ask questions, and share your ideas.</p>
+            </div>
+
+            <div id="categories-list" class="category-list">
+                <!-- Categories will be loaded dynamically -->
+                <div class="text-center text-muted">Loading categories...</div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p data-i18n="footer.copyright">&copy; 2024 BuzzRef. Open source under GPL-3.0.</p>
+            <div class="footer-links">
+                <a href="https://github.com/kistf001/buzzref" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/i18n.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/forum.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const categories = await API.forum.getCategories();
+                const container = document.getElementById('categories-list');
+
+                if (categories.length === 0) {
+                    container.innerHTML = '<p class="text-center text-muted">No categories available.</p>';
+                    return;
+                }
+
+                container.innerHTML = categories.map(cat => `
+                    <a href="./category.html?slug=${cat.slug}" class="category-card">
+                        <div class="category-info">
+                            <h3>${cat.name}</h3>
+                            <p>${cat.description}</p>
+                        </div>
+                        <div class="category-stats">
+                            ${cat.post_count} ${I18n.get('forum.posts')}
+                        </div>
+                    </a>
+                `).join('');
+            } catch (error) {
+                document.getElementById('categories-list').innerHTML = `
+                    <p class="text-center text-muted">Failed to load categories. Please check if the API server is running.</p>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

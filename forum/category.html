@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category - BuzzRef Forum</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="../" class="logo">
+                <img src="../images/logo.png" alt="BuzzRef">
+                <span>BuzzRef</span>
+            </a>
+            <div class="nav-links">
+                <a href="../#features" data-i18n="nav.features">Features</a>
+                <a href="../#download" data-i18n="nav.download">Download</a>
+                <a href="./" data-i18n="nav.forum">Forum</a>
+                <a href="https://github.com/kistf001/buzzref" target="_blank">GitHub</a>
+            </div>
+            <div class="nav-auth">
+                <div class="lang-selector" id="lang-selector-container"></div>
+                <div id="auth-buttons"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <div class="forum-header flex-between">
+                <div>
+                    <h1 id="category-name">Category</h1>
+                    <p id="category-desc"></p>
+                </div>
+                <div id="new-post-btn"></div>
+            </div>
+
+            <div id="posts-list" class="post-list">
+                <div class="text-center text-muted">Loading posts...</div>
+            </div>
+
+            <div id="pagination" class="pagination"></div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p data-i18n="footer.copyright">&copy; 2024 BuzzRef. Open source under GPL-3.0.</p>
+            <div class="footer-links">
+                <a href="https://github.com/kistf001/buzzref" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/i18n.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/forum.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const slug = urlParams.get('slug');
+        const page = parseInt(urlParams.get('page')) || 1;
+
+        if (!slug) {
+            window.location.href = './';
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const data = await API.forum.getPosts(slug, page);
+
+                document.getElementById('category-name').textContent = data.category.name;
+                document.getElementById('category-desc').textContent = data.category.description;
+                document.title = `${data.category.name} - BuzzRef Forum`;
+
+                // Show new post button if logged in
+                if (Auth.isLoggedIn()) {
+                    document.getElementById('new-post-btn').innerHTML = `
+                        <a href="./write.html?slug=${slug}" class="btn btn-primary" data-i18n="forum.new_post">New Post</a>
+                    `;
+                    I18n.applyTranslations();
+                }
+
+                const container = document.getElementById('posts-list');
+
+                if (data.posts.length === 0) {
+                    container.innerHTML = `<p class="text-center text-muted" data-i18n="forum.no_posts">No posts yet.</p>`;
+                    I18n.applyTranslations();
+                    return;
+                }
+
+                container.innerHTML = data.posts.map(post => `
+                    <a href="./post.html?slug=${slug}&id=${post.id}" class="post-item">
+                        <div>
+                            <div class="post-title">${post.title}</div>
+                            <div class="post-meta">${I18n.get('forum.by')} ${post.author} - ${post.created_at}</div>
+                        </div>
+                        <div class="post-meta">${post.reply_count} ${I18n.get('forum.reply_count')}</div>
+                    </a>
+                `).join('');
+
+                // Pagination
+                if (data.total_pages > 1) {
+                    let paginationHtml = '';
+                    for (let i = 1; i <= data.total_pages; i++) {
+                        if (i === page) {
+                            paginationHtml += `<span class="active">${i}</span>`;
+                        } else {
+                            paginationHtml += `<a href="?slug=${slug}&page=${i}">${i}</a>`;
+                        }
+                    }
+                    document.getElementById('pagination').innerHTML = paginationHtml;
+                }
+            } catch (error) {
+                document.getElementById('posts-list').innerHTML = `
+                    <p class="text-center text-muted">Failed to load posts.</p>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

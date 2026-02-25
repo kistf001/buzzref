@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post - BuzzRef Forum</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="../" class="logo">
+                <img src="../images/logo.png" alt="BuzzRef">
+                <span>BuzzRef</span>
+            </a>
+            <div class="nav-links">
+                <a href="../#features" data-i18n="nav.features">Features</a>
+                <a href="../#download" data-i18n="nav.download">Download</a>
+                <a href="./" data-i18n="nav.forum">Forum</a>
+                <a href="https://github.com/kistf001/buzzref" target="_blank">GitHub</a>
+            </div>
+            <div class="nav-auth">
+                <div class="lang-selector" id="lang-selector-container"></div>
+                <div id="auth-buttons"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <p class="mb-2">
+                <a href="./" data-i18n="forum.back_to_forum">Back to Forum</a> &gt;
+                <a href="#" id="back-to-category"></a>
+            </p>
+
+            <article id="post-detail" class="post-detail">
+                <div class="text-center text-muted">Loading post...</div>
+            </article>
+
+            <section id="replies-section" class="replies-section" style="display: none;">
+                <h2><span data-i18n="forum.replies">Replies</span> (<span id="reply-count">0</span>)</h2>
+                <div id="replies-list"></div>
+            </section>
+
+            <section id="reply-form-section" style="display: none; margin-top: 2rem;">
+                <h3 data-i18n="forum.write_reply">Write a reply...</h3>
+                <form id="reply-form">
+                    <div class="form-group">
+                        <textarea id="reply-content" rows="4" required data-i18n="forum.write_reply"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" data-i18n="forum.post_reply">Post Reply</button>
+                </form>
+            </section>
+
+            <p id="login-prompt" class="text-center text-muted" style="margin-top: 2rem; display: none;">
+                <a href="../auth/login.html" data-i18n="forum.login_to_reply">Login to reply</a>
+            </p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p data-i18n="footer.copyright">&copy; 2024 BuzzRef. Open source under GPL-3.0.</p>
+            <div class="footer-links">
+                <a href="https://github.com/kistf001/buzzref" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/i18n.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/forum.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const slug = urlParams.get('slug');
+        const postId = urlParams.get('id');
+
+        if (!slug || !postId) {
+            window.location.href = './';
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const data = await API.forum.getPost(slug, postId);
+                const post = data.post;
+
+                document.title = `${post.title} - BuzzRef Forum`;
+
+                document.getElementById('back-to-category').href = `./category.html?slug=${slug}`;
+                document.getElementById('back-to-category').textContent = data.category.name;
+
+                const user = Auth.getUser();
+                const canDelete = user && (user.username === post.author || user.is_admin);
+
+                document.getElementById('post-detail').innerHTML = `
+                    <div class="flex-between">
+                        <h1>${post.title}</h1>
+                        ${canDelete ? `<button onclick="deletePost()" class="btn btn-danger" data-i18n="forum.delete">Delete</button>` : ''}
+                    </div>
+                    <div class="post-meta mb-2">${I18n.get('forum.by')} <span class="reply-author">${post.author}</span> - ${post.created_at}</div>
+                    <div class="post-content">${post.content_html}</div>
+                `;
+
+                // Show replies
+                if (data.replies && data.replies.length > 0) {
+                    document.getElementById('replies-section').style.display = 'block';
+                    document.getElementById('reply-count').textContent = data.replies.length;
+                    document.getElementById('replies-list').innerHTML = data.replies.map(reply => `
+                        <div class="reply-item">
+                            <div class="reply-header">
+                                <span class="reply-author">${reply.author}</span>
+                                <span>${reply.created_at}</span>
+                            </div>
+                            <div class="reply-content">${reply.content_html}</div>
+                        </div>
+                    `).join('');
+                }
+
+                // Show reply form or login prompt
+                if (Auth.isLoggedIn()) {
+                    document.getElementById('reply-form-section').style.display = 'block';
+                } else {
+                    document.getElementById('login-prompt').style.display = 'block';
+                }
+
+                I18n.applyTranslations();
+            } catch (error) {
+                document.getElementById('post-detail').innerHTML = `
+                    <p class="text-center text-muted">Failed to load post.</p>
+                `;
+            }
+        });
+
+        // Reply form handler
+        document.getElementById('reply-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const content = document.getElementById('reply-content').value;
+
+            try {
+                await API.forum.createReply(slug, postId, content);
+                window.location.reload();
+            } catch (error) {
+                alert('Failed to post reply: ' + error.message);
+            }
+        });
+
+        // Delete post
+        async function deletePost() {
+            if (!confirm('Are you sure you want to delete this post?')) return;
+
+            try {
+                await API.forum.deletePost(slug, postId);
+                window.location.href = `./category.html?slug=${slug}`;
+            } catch (error) {
+                alert('Failed to delete post: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

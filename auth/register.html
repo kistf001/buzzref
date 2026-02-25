@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="nav.signup">Sign Up - BuzzRef</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="../" class="logo">
+                <img src="../images/logo.png" alt="BuzzRef">
+                <span>BuzzRef</span>
+            </a>
+            <div class="nav-links">
+                <a href="../#features" data-i18n="nav.features">Features</a>
+                <a href="../#download" data-i18n="nav.download">Download</a>
+                <a href="https://github.com/kistf001/buzzref" target="_blank">GitHub</a>
+            </div>
+            <div class="nav-auth">
+                <div class="lang-selector" id="lang-selector-container"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="auth-form">
+            <h1 data-i18n="nav.signup">Sign Up</h1>
+
+            <div id="error-message" class="form-error" style="display: none;"></div>
+
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required minlength="3" maxlength="20">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required minlength="6">
+                </div>
+
+                <div class="form-group">
+                    <label for="captcha">CAPTCHA</label>
+                    <div style="margin-bottom: 0.5rem;">
+                        <img id="captcha-image" src="" alt="CAPTCHA" style="background: white; border-radius: 4px;">
+                        <button type="button" onclick="loadCaptcha()" class="btn btn-secondary" style="margin-left: 0.5rem;">Refresh</button>
+                    </div>
+                    <input type="text" id="captcha" name="captcha" required>
+                    <input type="hidden" id="captcha-id" name="captcha_id">
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;" data-i18n="nav.signup">Sign Up</button>
+            </form>
+
+            <p class="auth-link">
+                Already have an account? <a href="./login.html" data-i18n="nav.login">Login</a>
+            </p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p data-i18n="footer.copyright">&copy; 2024 BuzzRef. Open source under GPL-3.0.</p>
+            <div class="footer-links">
+                <a href="https://github.com/kistf001/buzzref" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/i18n.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        async function loadCaptcha() {
+            try {
+                const data = await Auth.getCaptcha();
+                document.getElementById('captcha-image').src = data.image_url;
+                document.getElementById('captcha-id').value = data.captcha_id;
+            } catch (error) {
+                console.error('Failed to load captcha:', error);
+            }
+        }
+
+        // Load captcha on page load
+        loadCaptcha();
+
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const captchaId = document.getElementById('captcha-id').value;
+            const captchaAnswer = document.getElementById('captcha').value;
+            const errorDiv = document.getElementById('error-message');
+
+            try {
+                await Auth.register(username, email, password, captchaId, captchaAnswer);
+                alert('Registration successful! Please login.');
+                window.location.href = './login.html';
+            } catch (error) {
+                errorDiv.textContent = error.message;
+                errorDiv.style.display = 'block';
+                loadCaptcha(); // Refresh captcha on error
+            }
+        });
+    </script>
+</body>
+</html>
